@@ -1,17 +1,9 @@
-﻿using MvvmCross.Core;
-using MvvmCross.Platforms.Wpf.Core;
-using MvvmCross.Platforms.Wpf.Views;
-
-namespace BattleBoats.Wpf
+﻿namespace BattleBoats.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : MvxApplication
+    public partial class App
     {
-        protected override void RegisterSetup()
-        {
-            this.RegisterSetupType<MvxWpfSetup<Core.App>>();
-        }
     }
 }
