@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:BattleBoats.Wpf.Styles">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="TitleTextBoxLight">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontFamily" Value="Bahnschrift Light" />
+    </Style>
     
 </ResourceDictionary>
