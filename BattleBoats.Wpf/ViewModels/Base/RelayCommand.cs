@@ -7,29 +7,22 @@ namespace BattleBoats.Wpf.ViewModels.Base
 {
     public class RelayCommand : ICommand
     {
-        private Action<object> execute;
-        private Func<object, bool> canExecute;
+        private Action _action;
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler CanExecuteChanged = (sender, e) => { };
+        public RelayCommand(Action action)
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            this.execute = execute;
-            this.canExecute = canExecute;
+            _action = action;
         }
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute == null || this.canExecute(parameter);
+            return true;
         }
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            _action();
         }
     }
 }

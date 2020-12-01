@@ -1,8 +1,10 @@
 ﻿using BattleBoats.Wpf.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace BattleBoats.Wpf.ViewModels
@@ -13,7 +15,6 @@ namespace BattleBoats.Wpf.ViewModels
         public MainWindowViewModel(Window window)
         {
             _window = window;
-
             window.StateChanged += (sender, e) =>
             {
                 OnPropertyChanged(nameof(ResizeBorderThickness));
@@ -22,8 +23,21 @@ namespace BattleBoats.Wpf.ViewModels
                 OnPropertyChanged(nameof(WindowRadius));
                 OnPropertyChanged(nameof(WindowCornerRadius));
             };
+
+            MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
+            // ^= is xor, so either 0 or 2 which is normal or maximized
+            MaximizeCommand = new RelayCommand(() => _window.WindowState ^= WindowState.Maximized);
+            CloseCommand = new RelayCommand(() => _window.Close());
+            MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePosition()));
+
         }
         private Window _window;
+
+        public ICommand MinimizeCommand { get; set; }
+        public ICommand MaximizeCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
+        public ICommand MenuCommand { get; set; }
+
 
         // Thickness that user can resize the window
         public int ResizeBorder { get; set; } = 3;
@@ -56,7 +70,13 @@ namespace BattleBoats.Wpf.ViewModels
         public CornerRadius WindowCornerRadius => new CornerRadius(WindowRadius);
 
         // Height of title bar
-        public int TitleHeight { get; set; } = 30;
+        public int TitleHeight { get; set; } = 50;
         public GridLength TitleHeightGridLength => new GridLength(TitleHeight + ResizeBorder);
+
+        private Point GetMousePosition()
+        {
+            Point position = Mouse.GetPosition(_window);
+            return new Point(position.X + _window.Left, position.Y + _window.Top);
+        }
     }
 }
