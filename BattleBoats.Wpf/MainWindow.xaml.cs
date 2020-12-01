@@ -1,5 +1,4 @@
 ﻿using BattleBoats.Wpf.ViewModels;
-using MvvmCross.Platforms.Wpf.Views;
 
 namespace BattleBoats.Wpf
 {
