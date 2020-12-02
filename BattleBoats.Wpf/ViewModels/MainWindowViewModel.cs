@@ -1,4 +1,5 @@
 ﻿using BattleBoats.Wpf.ViewModels.Base;
+using BattleBoats.Wpf.WindowHelpers;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -17,11 +18,7 @@ namespace BattleBoats.Wpf.ViewModels
             _window = window;
             window.StateChanged += (sender, e) =>
             {
-                OnPropertyChanged(nameof(ResizeBorderThickness));
-                OnPropertyChanged(nameof(OuterMarginSize));
-                OnPropertyChanged(nameof(OuterMarginSizeThickness));
-                OnPropertyChanged(nameof(WindowRadius));
-                OnPropertyChanged(nameof(WindowCornerRadius));
+                WindowResized();
             };
 
             MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
@@ -30,7 +27,29 @@ namespace BattleBoats.Wpf.ViewModels
             CloseCommand = new RelayCommand(() => _window.Close());
             MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePosition()));
 
+            // Fix window resize issue
+            var resizer = new WindowResizer(_window);
+
+            // Listen out for dock changes
+            resizer.WindowDockChanged += (dock) =>
+            {
+                // Store last position
+                _dockPosition = dock;
+
+                // Fire off resize events
+                WindowResized();
+            };
         }
+
+        private void WindowResized()
+        {
+            OnPropertyChanged(nameof(ResizeBorderThickness));
+            OnPropertyChanged(nameof(OuterMarginSize));
+            OnPropertyChanged(nameof(OuterMarginSizeThickness));
+            OnPropertyChanged(nameof(WindowRadius));
+            OnPropertyChanged(nameof(WindowCornerRadius));
+        }
+
         private Window _window;
 
         public ICommand MinimizeCommand { get; set; }
@@ -40,7 +59,7 @@ namespace BattleBoats.Wpf.ViewModels
 
 
         // Thickness that user can resize the window
-        public int ResizeBorder { get; set; } = 3;
+        public int ResizeBorder { get; set; } = 6;
         public Thickness ResizeBorderThickness => new Thickness(ResizeBorder + OuterMarginSize);
 
         // Outer margin(transparent, for drop shadow)
@@ -50,7 +69,7 @@ namespace BattleBoats.Wpf.ViewModels
             get
             {
                 // if window is maximized we dont want outer margin(for drop shadow)
-                return _window.WindowState == WindowState.Maximized ? 0 : _outerMarginSize;
+                return Borderless ? 0 : _outerMarginSize;
             }
             set { _outerMarginSize = value; }
         }
@@ -63,20 +82,23 @@ namespace BattleBoats.Wpf.ViewModels
             get
             {
                 // if window is maximized we dont want radius
-                return _window.WindowState == WindowState.Maximized ? 0 : _windowRadius;
+                return Borderless ? 0 : _windowRadius;
             }
             set { _windowRadius = value; }
         }
         public CornerRadius WindowCornerRadius => new CornerRadius(WindowRadius);
 
+        public bool Borderless { get { return (_window.WindowState == WindowState.Maximized || _dockPosition != WindowDockPosition.Undocked); } }
+
         // Height of title bar
         public int TitleHeight { get; set; } = 50;
         public GridLength TitleHeightGridLength => new GridLength(TitleHeight + ResizeBorder);
-
+        private WindowDockPosition _dockPosition = WindowDockPosition.Undocked;
         private Point GetMousePosition()
         {
             Point position = Mouse.GetPosition(_window);
             return new Point(position.X + _window.Left, position.Y + _window.Top);
         }
+
     }
 }
