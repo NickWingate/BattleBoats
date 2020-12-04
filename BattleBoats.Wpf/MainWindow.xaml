@@ -22,8 +22,8 @@
                         <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
                             <!--Main Window-->
                             <Grid>
-        
-                              
+
+
                                 <!--Window border and dropshadow-->
                                 <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
                                     Background="{DynamicResource MaterialDesignPaper}">
@@ -46,14 +46,14 @@
                                     <Grid Grid.Column="0" Panel.ZIndex="1">
 
                                         <Grid.ColumnDefinitions>
-                                        <!--Icon-->
-                                        <ColumnDefinition Width="auto"/>
-                                        <!--Title-->
-                                        <ColumnDefinition Width="*"/>
-                                        <!--Buttons-->
-                                        <ColumnDefinition Width="auto"/>
+                                            <!--Icon-->
+                                            <ColumnDefinition Width="auto"/>
+                                            <!--Title-->
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Buttons-->
+                                            <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        
+
                                         <!--Icon-->
                                         <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
                                                 Foreground="{StaticResource MaterialDesignDarkForeground}"
@@ -65,15 +65,15 @@
                                                                      Height="25"
                                                                      VerticalAlignment="Center"/>
                                         </Button>
-                                        
+
                                         <!--Title-->
-                                        <Viewbox Grid.Column="1" VerticalAlignment="Center">
+                                        <Viewbox Grid.ColumnSpan="3" VerticalAlignment="Center">
                                             <TextBlock Style="{StaticResource TitleTextBoxLight}"
                                                        Opacity=".9"
                                                        Foreground="{StaticResource MaterialDesignDarkForeground}"
                                                        Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title}"/>
                                         </Viewbox>
-                                        
+
                                         <!--Window Buttons-->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal">
                                             <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
@@ -108,9 +108,9 @@
                                         </Border.BorderBrush>
                                     </Border>
 
-                                  <Border Grid.Row="2" Padding="10">
-                                    <ContentPresenter Content="{TemplateBinding Content}" />
-                                  </Border>
+                                    <Border Grid.Row="2" Padding="10">
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -121,14 +121,14 @@
     </Window.Resources>
 
     <WindowChrome.WindowChrome>
-      <WindowChrome
+        <WindowChrome
           ResizeBorderThickness="{Binding ResizeBorderThickness}"
           CaptionHeight="{Binding TitleHeight}"
           CornerRadius="0"
           GlassFrameThickness="0"
               />
     </WindowChrome.WindowChrome>
-  <Grid>
-    <Button Content="hi"/>
-  </Grid>
+    <Grid>
+        <Frame Source="Views/MenuView.xaml"/>
+    </Grid>
 </Window>

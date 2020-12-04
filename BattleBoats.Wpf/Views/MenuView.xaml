@@ -4,9 +4,51 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1280">
+             d:DesignHeight="720" d:DesignWidth="1280"
+             Background="{DynamicResource MaterialDesignDarkBackground}"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             FontFamily="Bahnschrift" FontSize="30">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="../Styles/MicrosoftButtonAnimationExample.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
     <Grid>
-        <Label Content="hi"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Main Menu" FontSize="100" Style="{StaticResource TitleTextBoxLight}"
+                   HorizontalAlignment="Center"/>
+        <Button Content="New Game" 
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Grid.Row="1" 
+                HorizontalAlignment="Center"
+                Height="100" Width="500"
+                FontSize="45" Foreground="White" FontWeight="UltraLight"
+                materialDesign:ButtonAssist.CornerRadius="50"
+                materialDesign:ShadowAssist.ShadowDepth="Depth5"
+                BorderThickness="0">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="Magenta" Offset="0.0"/>
+                    <GradientStop Color="Cyan" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button Content="New Game" 
+                Grid.Row="2" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"                
+                FontSize="45" Foreground="White" FontWeight="UltraLight"/>
     </Grid>
 </UserControl>
