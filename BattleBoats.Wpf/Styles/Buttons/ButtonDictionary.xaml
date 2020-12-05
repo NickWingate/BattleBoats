@@ -1,0 +1,143 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:gradientButton="clr-namespace:BattleBoats.Wpf.Styles.Buttons">
+
+    
+    <!-- Duration of animations-->
+    <Duration x:Key="AnimationTime">0:0:0.2</Duration>
+    
+    <!-- Button -->
+    <Style TargetType="gradientButton:GradientButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        <Setter Property="MinHeight" Value="100" />
+        <Setter Property="MinWidth" Value="500" />
+        
+        <!-- Template for animations-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border TextBlock.Foreground="{TemplateBinding Foreground}"
+                            x:Name="Border"
+                            CornerRadius="50"
+                            BorderThickness="0">
+                        
+                        <!-- Drop Shadow-->
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="DropShadowEffect" BlurRadius="50" Direction="255" ShadowDepth="10" Opacity=".7" />
+                        </Border.Effect>
+                        
+                        <!-- Gradient Background-->
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <!-- Initally hidden color-->
+                                <GradientStop x:Name="GradientColor0" 
+                                              Color="{Binding Path=GradientColor0, RelativeSource={RelativeSource TemplatedParent}}" Offset="0"/>
+                                <!-- Initial start color-->
+                                <GradientStop x:Name="GradientColor1" 
+                                              Color="{Binding Path=GradientColor1, RelativeSource={RelativeSource TemplatedParent}}" Offset="0"/>
+                                <!-- Initial last color-->
+                                <GradientStop Color="{Binding Path=GradientColor2, RelativeSource={RelativeSource TemplatedParent}}" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        
+                        <!-- Animation Triggers-->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <!-- Time in state to cause transition-->
+                                    <VisualTransition GeneratedDuration="0" />
+                                    
+                                    <!-- Changing state from MouseOver to Normal-->
+                                    <VisualTransition To="Normal">
+                                        <Storyboard>
+                                            <!-- Move Gradient -->
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="GradientColor1"
+                                                Storyboard.TargetProperty="Offset"
+                                                To="0" Duration="{StaticResource AnimationTime}"/>
+
+                                            <!-- Lighten Shadow-->
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="DropShadowEffect"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".7" Duration="{StaticResource AnimationTime}"/>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="DropShadowEffect"
+                                                Storyboard.TargetProperty="ShadowDepth"
+                                                To="10" Duration="{StaticResource AnimationTime}"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                    <VisualTransition From="Pressed" To="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation
+                                            Storyboard.TargetProperty="Color"
+                                            Storyboard.TargetName="GradientColor1"
+                                            From="LightGray"
+                                            To="{Binding Path=GradientColor1, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Duration="{StaticResource AnimationTime}"/>
+                                        </Storyboard>
+                                    </VisualTransition>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                
+                                <!-- Normal to MouseOver-->
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <!-- Move Gradient-->
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="GradientColor1"
+                                            Storyboard.TargetProperty="Offset"
+                                            To="1" Duration="{StaticResource AnimationTime}"/>
+                                        
+                                        <!-- Darken Shadow-->
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="DropShadowEffect"
+                                            Storyboard.TargetProperty="Opacity"
+                                            To="1" Duration="{StaticResource AnimationTime}"/>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="DropShadowEffect"
+                                            Storyboard.TargetProperty="ShadowDepth"
+                                            To="15" Duration="{StaticResource AnimationTime}"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <!-- Move Gradient--><!--
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="GradientColor1"
+                                            Storyboard.TargetProperty="Offset"
+                                            From="0" To="1" Duration="{StaticResource AnimationTime}"/>
+
+                                        --><!-- Darken Shadow--><!--
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="DropShadowEffect"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From=".7" To="1" Duration="{StaticResource AnimationTime}"/>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="DropShadowEffect"
+                                            Storyboard.TargetProperty="ShadowDepth"
+                                            From="10" To="15" Duration="{StaticResource AnimationTime}"/>-->
+
+                                        <ColorAnimation
+                                            Storyboard.TargetProperty="Color"
+                                            Storyboard.TargetName="GradientColor1"
+                                            From="{Binding Path=GradientColor1, RelativeSource={RelativeSource TemplatedParent}}"
+                                            To="LightGray" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Dissabled"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <!-- Allign Button Content-->
+                        <ContentPresenter Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

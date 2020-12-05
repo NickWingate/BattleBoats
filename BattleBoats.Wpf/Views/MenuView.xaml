@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:buttons="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280"
              Background="{DynamicResource MaterialDesignDarkBackground}"
@@ -13,8 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Buttons.xaml"/>
-                <ResourceDictionary Source="../Styles/MicrosoftButtonAnimationExample.xaml"/>
+                <ResourceDictionary Source="../Styles/Buttons/ButtonDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
@@ -28,27 +28,25 @@
 
         <TextBlock Text="Main Menu" FontSize="100" Style="{StaticResource TitleTextBoxLight}"
                    HorizontalAlignment="Center"/>
-        <Button Content="New Game" 
-                Style="{StaticResource MaterialDesignRaisedButton}"
+
+        <buttons:GradientButton Content="New Game" 
                 Grid.Row="1" 
                 HorizontalAlignment="Center"
-                Height="100" Width="500"
+                VerticalAlignment="Center"                
                 FontSize="45" Foreground="White" FontWeight="UltraLight"
-                materialDesign:ButtonAssist.CornerRadius="50"
-                materialDesign:ShadowAssist.ShadowDepth="Depth5"
-                BorderThickness="0">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="Magenta" Offset="0.0"/>
-                    <GradientStop Color="Cyan" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
+                GradientColor0="Cyan"
+                GradientColor1="Magenta"
+                GradientColor2="Tomato"/>
 
-        <Button Content="New Game" 
+        <buttons:GradientButton Content="Load Game" 
                 Grid.Row="2" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"                
-                FontSize="45" Foreground="White" FontWeight="UltraLight"/>
+                FontSize="45" Foreground="White" FontWeight="UltraLight"
+                GradientColor0="Magenta"
+                GradientColor1="Cyan"
+                GradientColor2="LightBlue"/>
+
+
     </Grid>
 </UserControl>
