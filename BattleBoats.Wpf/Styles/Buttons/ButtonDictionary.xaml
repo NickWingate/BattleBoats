@@ -1,11 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:gradientButton="clr-namespace:BattleBoats.Wpf.Styles.Buttons">
-
-    
+                    xmlns:gradientButton="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
+                    xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="MaterialDesignFlatButton" BasedOn="{StaticResource MaterialDesignFlatButton}"/>
     <!-- Duration of animations-->
     <Duration x:Key="AnimationTime">0:0:0.2</Duration>
-    
     <!-- Button -->
     <Style TargetType="gradientButton:GradientButton">
         <Setter Property="SnapsToDevicePixels" Value="true" />
@@ -103,22 +105,6 @@
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <!-- Move Gradient--><!--
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="GradientColor1"
-                                            Storyboard.TargetProperty="Offset"
-                                            From="0" To="1" Duration="{StaticResource AnimationTime}"/>
-
-                                        --><!-- Darken Shadow--><!--
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="DropShadowEffect"
-                                            Storyboard.TargetProperty="Opacity"
-                                            From=".7" To="1" Duration="{StaticResource AnimationTime}"/>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="DropShadowEffect"
-                                            Storyboard.TargetProperty="ShadowDepth"
-                                            From="10" To="15" Duration="{StaticResource AnimationTime}"/>-->
-
                                         <ColorAnimation
                                             Storyboard.TargetProperty="Color"
                                             Storyboard.TargetName="GradientColor1"
@@ -140,4 +126,53 @@
         </Setter>
     </Style>
 
+    <Style x:Key="MaterialDesignIconButtonExit" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Width" Value="48" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="wpf:PackIcon">
+                            <Setter Property="Width" Value="24"/>
+                            <Setter Property="Height" Value="24"/>
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <Grid>
+                        <Ellipse
+                            Fill="{TemplateBinding Background}"
+                            x:Name="border"
+                            RenderTransformOrigin="0.5, 0.5">
+                            <Ellipse.RenderTransform>
+                                <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.0" ScaleY="1.0" x:Name="CheckedEllipseScale"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                        <wpf:Ripple Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"
+                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Padding="{TemplateBinding Padding}"
+                                    Clip="{Binding ElementName=GeometryEllipse, Path=RenderedGeometry}" ClipToBounds="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <Ellipse x:Name="GeometryEllipse" Fill="Transparent" IsHitTestVisible="False" Focusable="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="border">
+                                <Setter.Value>
+                                    <!-- Red background on hover-->
+                                    <SolidColorBrush Color="Red" Opacity=".7"/>
+                                </Setter.Value>
+                            </Setter>
+
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.23"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

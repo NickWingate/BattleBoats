@@ -75,7 +75,7 @@
                                         </Viewbox>
 
                                         <!--Window Buttons-->
-                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0 0 4 0">
                                             <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
                                                     Foreground="{StaticResource MaterialDesignDarkForeground}"
                                                     Command="{Binding MinimizeCommand}"
@@ -90,9 +90,10 @@
                                                 <materialDesign:PackIcon Kind="WindowMaximize" />
                                             </Button>
 
-                                            <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                            <Button Style="{StaticResource MaterialDesignIconButtonExit}"
                                                     Foreground="{StaticResource MaterialDesignDarkForeground}"
                                                     Command="{Binding CloseCommand}"
+                                                    Background="{StaticResource MaterialDesignDarkBackground}"
                                                     WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <materialDesign:PackIcon Kind="WindowClose" />
                                             </Button>
