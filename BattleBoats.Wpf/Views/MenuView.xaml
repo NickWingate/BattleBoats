@@ -26,7 +26,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Main Menu" FontSize="100" Style="{StaticResource TitleTextBoxLight}"
+        <TextBlock Text="Main Menu" FontSize="100" Opacity=".8" Style="{StaticResource TitleTextBoxLight}"
                    HorizontalAlignment="Center"/>
 
         <buttons:GradientButton Content="New Game"
@@ -41,7 +41,7 @@
 
         <buttons:GradientButton Content="Load Game"
                                 Command="{Binding LoadGameCommand}"
-                                Grid.Row="2" 
+                                Grid.Row="1" Grid.RowSpan="2" 
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"                
                                 FontSize="45" Foreground="White" FontWeight="UltraLight"
@@ -49,6 +49,16 @@
                                 GradientColor1="Cyan"
                                 GradientColor2="LightBlue"/>
 
+        <buttons:GradientButton Content="Read Rules"
+                                Command="{Binding ReadRulesCommand}"
+                                FontSize="45" Foreground="White" FontWeight="UltraLight"
+                                Background="Black"
+                                HorizontalAlignment="Center"
+                                Width="200" Height="50"
+                                Grid.Row="2"
+                                GradientColor0="Gray"
+                                GradientColor1="DarkGray"
+                                GradientColor2="DarkGreen"/>
 
     </Grid>
 </UserControl>

@@ -108,8 +108,9 @@
                                             </LinearGradientBrush>
                                         </Border.BorderBrush>
                                     </Border>
-
-                                    <Border Grid.Row="2" Padding="10">
+                                    
+                                    <!-- Acctual Content-->
+                                    <Border Grid.Row="2" Padding="20">
                                         <ContentPresenter Content="{TemplateBinding Content}" />
                                     </Border>
                                 </Grid>
