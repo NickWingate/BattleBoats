@@ -29,23 +29,25 @@
         <TextBlock Text="Main Menu" FontSize="100" Style="{StaticResource TitleTextBoxLight}"
                    HorizontalAlignment="Center"/>
 
-        <buttons:GradientButton Content="New Game" 
-                Grid.Row="1" 
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"                
-                FontSize="45" Foreground="White" FontWeight="UltraLight"
-                GradientColor0="Cyan"
-                GradientColor1="Magenta"
-                GradientColor2="Tomato"/>
+        <buttons:GradientButton Content="New Game"
+                                Command="{Binding NewGameCommand}"
+                                Grid.Row="1" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"                
+                                FontSize="45" Foreground="White" FontWeight="UltraLight"
+                                GradientColor0="Cyan"
+                                GradientColor1="Magenta"
+                                GradientColor2="Tomato"/>
 
-        <buttons:GradientButton Content="Load Game" 
-                Grid.Row="2" 
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"                
-                FontSize="45" Foreground="White" FontWeight="UltraLight"
-                GradientColor0="Magenta"
-                GradientColor1="Cyan"
-                GradientColor2="LightBlue"/>
+        <buttons:GradientButton Content="Load Game"
+                                Command="{Binding LoadGameCommand}"
+                                Grid.Row="2" 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"                
+                                FontSize="45" Foreground="White" FontWeight="UltraLight"
+                                GradientColor0="Magenta"
+                                GradientColor1="Cyan"
+                                GradientColor2="LightBlue"/>
 
 
     </Grid>

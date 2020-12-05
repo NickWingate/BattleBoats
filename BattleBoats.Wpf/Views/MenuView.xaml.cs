@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleBoats.Wpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -22,6 +23,8 @@ namespace BattleBoats.Wpf.Views
         public MenuView()
         {
             InitializeComponent();
+            this.DataContext = new MenuViewModel();
+
         }
     }
 }
