@@ -12,7 +12,7 @@ namespace BattleBoats.Wpf
         {
             InitializeComponent();
 
-            this.DataContext = new MainWindowViewModel(this, new Navigator());
+            this.DataContext = new MainViewModel(this, new Navigator());
         }
     }
 }

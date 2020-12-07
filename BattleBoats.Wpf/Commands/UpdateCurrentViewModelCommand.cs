@@ -10,7 +10,7 @@ namespace BattleBoats.Wpf.Commands
     public class UpdateCurrentViewModelCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private INavigator _navigator;
+        private readonly INavigator _navigator;
 
         public UpdateCurrentViewModelCommand(INavigator navigator)
         {
@@ -32,7 +32,7 @@ namespace BattleBoats.Wpf.Commands
                         _navigator.CurrentViewModel = new MenuViewModel(_navigator);
                         break;
                     case ViewType.Rules:
-                        _navigator.CurrentViewModel = new RulesViewModel();
+                        _navigator.CurrentViewModel = new RulesViewModel(_navigator);
                         break;
                     default:
                         break;

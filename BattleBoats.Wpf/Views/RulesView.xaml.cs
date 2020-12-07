@@ -22,7 +22,6 @@ namespace BattleBoats.Wpf.Views
         public RulesView()
         {
             InitializeComponent();
-            this.DataContext = new RulesViewModel();
         }
     }
 }

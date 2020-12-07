@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace BattleBoats.Wpf.ViewModels
 
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainViewModel : BaseViewModel
     {
         public INavigator Navigator { get; set; }
         public ICommand MinimizeCommand { get; set; }
@@ -21,7 +21,7 @@ namespace BattleBoats.Wpf.ViewModels
         public ICommand MenuCommand { get; set; }
         public ICommand UpdateCurrentViewModelCommand { get; }
 
-        public MainWindowViewModel(Window window, INavigator navigator)
+        public MainViewModel(Window window, INavigator navigator)
         {
             _window = window;
             Navigator = navigator;
@@ -60,7 +60,7 @@ namespace BattleBoats.Wpf.ViewModels
             OnPropertyChanged(nameof(WindowCornerRadius));
         }
 
-        private Window _window;
+        private readonly Window _window;
 
 
 

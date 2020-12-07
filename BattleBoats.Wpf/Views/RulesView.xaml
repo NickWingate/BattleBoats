@@ -4,9 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
+             xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
+             xmlns:buttons="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TextBlock Text="rules" FontSize="200"/>
+        <buttons:GradientButton Content="Back" Foreground="White"
+                                Command="{Binding UpdateCurrentViewModelCommand}"
+                                CommandParameter="{x:Static nav:ViewType.Menu}"
+                                GradientColor0="Aqua"
+                                GradientColor1="teal"
+                                GradientColor2="Orange"
+                                VerticalAlignment="Bottom"/>
+
     </Grid>
 </UserControl>

@@ -7,7 +7,7 @@ namespace BattleBoats.Wpf.Commands
 {
     public class RelayCommand : ICommand
     {
-        private Action _action;
+        private readonly Action _action;
 
         public event EventHandler CanExecuteChanged = (sender, e) => { };
         public RelayCommand(Action action)
