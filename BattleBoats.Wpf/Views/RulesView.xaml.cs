@@ -12,18 +12,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
 namespace BattleBoats.Wpf.Views
 {
     /// <summary>
-    /// Interaction logic for MenuView.xaml
+    /// Interaction logic for RulesView.xaml
     /// </summary>
-    public partial class MenuView
+    public partial class RulesView : UserControl
     {
-        public MenuView()
+        public RulesView()
         {
             InitializeComponent();
-
+            this.DataContext = new RulesViewModel();
         }
     }
 }

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:buttons="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
+             xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280"
              Background="{DynamicResource MaterialDesignDarkBackground}"
@@ -50,7 +51,8 @@
                                 GradientColor2="LightBlue"/>
 
         <buttons:GradientButton Content="Read Rules"
-                                Command="{Binding ReadRulesCommand}"
+                                Command="{Binding UpdateCurrentViewModelCommand}"
+                                CommandParameter="{x:Static nav:ViewType.Rules}"
                                 FontSize="45" Foreground="White" FontWeight="UltraLight"
                                 Background="Black"
                                 HorizontalAlignment="Center"

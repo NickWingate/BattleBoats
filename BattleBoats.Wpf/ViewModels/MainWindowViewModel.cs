@@ -1,4 +1,5 @@
-﻿using BattleBoats.Wpf.ViewModels.Base;
+﻿using BattleBoats.Wpf.Commands;
+using BattleBoats.Wpf.Services.Navigation;
 using BattleBoats.Wpf.WindowHelpers;
 using System;
 using System.Collections.Generic;
@@ -13,19 +14,28 @@ namespace BattleBoats.Wpf.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        public MainWindowViewModel(Window window)
+        public INavigator Navigator { get; set; }
+        public ICommand MinimizeCommand { get; set; }
+        public ICommand MaximizeCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
+        public ICommand MenuCommand { get; set; }
+        public ICommand UpdateCurrentViewModelCommand { get; }
+
+        public MainWindowViewModel(Window window, INavigator navigator)
         {
             _window = window;
+            Navigator = navigator;
             window.StateChanged += (sender, e) =>
             {
                 WindowResized();
             };
 
             MinimizeCommand = new RelayCommand(() => _window.WindowState = WindowState.Minimized);
-            // ^= is xor, so either 0 or 2 which is normal or maximized
             MaximizeCommand = new RelayCommand(() => _window.WindowState ^= WindowState.Maximized);
             CloseCommand = new RelayCommand(() => _window.Close());
             MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_window, GetMousePosition()));
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
+            UpdateCurrentViewModelCommand.Execute(ViewType.Menu);
 
             // Fix window resize issue
             var resizer = new WindowResizer(_window);
@@ -52,10 +62,7 @@ namespace BattleBoats.Wpf.ViewModels
 
         private Window _window;
 
-        public ICommand MinimizeCommand { get; set; }
-        public ICommand MaximizeCommand { get; set; }
-        public ICommand CloseCommand { get; set; }
-        public ICommand MenuCommand { get; set; }
+
 
 
         // Thickness that user can resize the window

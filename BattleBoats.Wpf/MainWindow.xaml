@@ -131,6 +131,6 @@
               />
     </WindowChrome.WindowChrome>
     <Grid>
-        <Frame Source="Views/MenuView.xaml"/>
+        <ContentControl Content="{Binding Navigator.CurrentViewModel}" />
     </Grid>
 </Window>

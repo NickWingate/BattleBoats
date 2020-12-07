@@ -1,4 +1,5 @@
-﻿using BattleBoats.Wpf.ViewModels;
+﻿using BattleBoats.Wpf.Services.Navigation;
+using BattleBoats.Wpf.ViewModels;
 
 namespace BattleBoats.Wpf
 {
@@ -11,7 +12,7 @@ namespace BattleBoats.Wpf
         {
             InitializeComponent();
 
-            this.DataContext = new MainWindowViewModel(this);
+            this.DataContext = new MainWindowViewModel(this, new Navigator());
         }
     }
 }
