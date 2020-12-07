@@ -7,15 +7,18 @@
              xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
              xmlns:buttons="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
         <TextBlock Text="rules" FontSize="200"/>
-        <buttons:GradientButton Content="Back" Foreground="White"
+        <buttons:GradientButton Content="Back" Foreground="White" FontSize="30"
                                 Command="{Binding UpdateCurrentViewModelCommand}"
                                 CommandParameter="{x:Static nav:ViewType.Menu}"
-                                GradientColor0="Aqua"
+                                GradientColor0="Orange"
                                 GradientColor1="teal"
-                                GradientColor2="Orange"
+                                GradientColor2="Aqua"
+                                CornerRadius="25"
+                                Width="500"
+                                Height="50"
                                 VerticalAlignment="Bottom"/>
 
     </Grid>

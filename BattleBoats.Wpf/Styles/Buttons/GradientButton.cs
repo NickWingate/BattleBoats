@@ -10,6 +10,11 @@ namespace BattleBoats.Wpf.Styles.Buttons
 {
     public class GradientButton : Button
     {
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
         public Color GradientColor0
         {
             get { return (Color)GetValue(GradientColor0Property); }
@@ -26,6 +31,8 @@ namespace BattleBoats.Wpf.Styles.Buttons
             set { SetValue(GradientColor2Property, value); }
         }
 
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(GradientButton), new PropertyMetadata((sender, args) => {}));
         public static readonly DependencyProperty GradientColor0Property =
             DependencyProperty.Register("GradientColor0", typeof(Color), typeof(GradientButton), new PropertyMetadata((sender, args) => {
                 System.Diagnostics.Debug.WriteLine("Changed color 0");
@@ -41,6 +48,7 @@ namespace BattleBoats.Wpf.Styles.Buttons
 
         public GradientButton() : base()
         {
+            CornerRadius = new CornerRadius(50);
             this.DefaultStyleKey = typeof(GradientButton);
         }
     }

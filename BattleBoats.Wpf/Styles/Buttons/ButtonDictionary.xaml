@@ -12,8 +12,8 @@
     <Style TargetType="gradientButton:GradientButton">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
-        <Setter Property="MinHeight" Value="100" />
-        <Setter Property="MinWidth" Value="500" />
+        <Setter Property="Height" Value="100" />
+        <Setter Property="Width" Value="500" />
         
         <!-- Template for animations-->
         <Setter Property="Template">
@@ -21,8 +21,10 @@
                 <ControlTemplate TargetType="Button">
                     <Border TextBlock.Foreground="{TemplateBinding Foreground}"
                             x:Name="Border"
-                            CornerRadius="50"
-                            BorderThickness="0">
+                            CornerRadius="{Binding Path=CornerRadius, RelativeSource={RelativeSource TemplatedParent}, FallbackValue=50}"
+                            BorderThickness="0"
+                            Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding Width}">
                         
                         <!-- Drop Shadow-->
                         <Border.Effect>
@@ -117,9 +119,9 @@
                         </VisualStateManager.VisualStateGroups>
                         <!-- Allign Button Content-->
                         <ContentPresenter Margin="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RecognizesAccessKey="True" />
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

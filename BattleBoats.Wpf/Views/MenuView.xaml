@@ -56,11 +56,10 @@
                                 FontSize="45" Foreground="White" FontWeight="UltraLight"
                                 Background="Black"
                                 HorizontalAlignment="Center"
-                                Width="200" Height="50"
                                 Grid.Row="2"
-                                GradientColor0="Gray"
-                                GradientColor1="DarkGray"
-                                GradientColor2="DarkGreen"/>
+                                GradientColor0="Blue"
+                                GradientColor1="Green"
+                                GradientColor2="GreenYellow"/>
 
     </Grid>
 </UserControl>
