@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="BattleBoats.Wpf.Controls.GameBoard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BattleBoats.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="720"
+             Background="{StaticResource MaterialDesignDarkBackground}">
+    <UserControl.Resources>
+        <GridLength x:Key="TileSize">30</GridLength> 
+    </UserControl.Resources>
+    <Grid>
+        <!-- Doing manually for design, will switch to codebehind for dynamic generation-->
+    
+        <ListBox x:Name="Board">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource TileSize}"/>
+                            <ColumnDefinition Width="{StaticResource TileSize}"/>
+                            <ColumnDefinition Width="{StaticResource TileSize}"/>
+                            <ColumnDefinition Width="{StaticResource TileSize}"/>
+                            <ColumnDefinition Width="{StaticResource TileSize}"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="{StaticResource TileSize}"/>
+                            <RowDefinition Height="{StaticResource TileSize}"/>
+                            <RowDefinition Height="{StaticResource TileSize}"/>
+                            <RowDefinition Height="{StaticResource TileSize}"/>
+                            <RowDefinition Height="{StaticResource TileSize}"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBoxItem Grid.Row="0" Grid.Column="0">
+                <Rectangle Fill="White" Width="20" Height="20"/>
+            </ListBoxItem>
+            <ListBoxItem Grid.Row="1" Grid.Column="0">
+                <Rectangle Fill="White" Width="20" Height="20"/>
+            </ListBoxItem>
+        </ListBox>
+    </Grid>
+</UserControl>
