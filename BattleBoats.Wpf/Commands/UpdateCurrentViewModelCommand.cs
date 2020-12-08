@@ -31,8 +31,17 @@ namespace BattleBoats.Wpf.Commands
                     case ViewType.Menu:
                         _navigator.CurrentViewModel = new MenuViewModel(_navigator);
                         break;
+                    case ViewType.ShipPlacement:
+                        _navigator.CurrentViewModel = new ShipPlacementViewModel(_navigator);
+                        break;
                     case ViewType.Rules:
                         _navigator.CurrentViewModel = new RulesViewModel(_navigator);
+                        break;
+                    case ViewType.Game:
+                        _navigator.CurrentViewModel = new GameViewModel(_navigator);
+                        break;
+                    case ViewType.Winner:
+                        _navigator.CurrentViewModel = new WinnerViewModel(_navigator);
                         break;
                     default:
                         break;

@@ -9,7 +9,10 @@ namespace BattleBoats.Wpf.Services.Navigation
     public enum ViewType
     {
         Menu,
-        Rules
+        Rules,
+        ShipPlacement,
+        Game,
+        Winner
     }
     public interface INavigator
     {

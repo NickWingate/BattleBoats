@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="BattleBoats.Wpf.Views.ShipPlacementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:BattleBoats.Wpf.Controls"
+             xmlns:button="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
+             xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
+             xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+        <controls:GameBoard/>
+        <button:GradientButton Content="Back"
+                               Command="{Binding UpdateCurrentViewModelCommand}"
+                               CommandParameter="{x:Static nav:ViewType.Menu}"/>
+    </Grid>
+</UserControl>
