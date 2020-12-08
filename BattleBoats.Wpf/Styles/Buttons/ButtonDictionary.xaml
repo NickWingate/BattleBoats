@@ -14,7 +14,12 @@
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         <Setter Property="Height" Value="100" />
         <Setter Property="Width" Value="500" />
-        
+        <Setter Property="GradientColor0" Value="Red"/>
+        <Setter Property="GradientColor1" Value="Green"/>
+        <Setter Property="GradientColor2" Value="Blue"/>
+        <Setter Property="Foreground" Value="White"/>
+
+
         <!-- Template for animations-->
         <Setter Property="Template">
             <Setter.Value>
