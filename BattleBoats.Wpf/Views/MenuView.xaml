@@ -12,14 +12,7 @@
              Background="{DynamicResource MaterialDesignDarkBackground}"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              FontFamily="Bahnschrift" FontSize="30">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Buttons/ButtonDictionary.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
 
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

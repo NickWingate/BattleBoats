@@ -15,7 +15,20 @@ namespace BattleBoats.Wpf.ViewModels
         {
             _navigator = navigator;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
-
         }
+        public ShipPlacementViewModel()
+        {
+            _navigator = new Navigator();
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(_navigator);
+        }
+
+        private int _boatColumn;
+
+        public int BoatColumn
+        {
+            get { return _boatColumn; }
+            set { _boatColumn = value; }
+        }
+
     }
 }
