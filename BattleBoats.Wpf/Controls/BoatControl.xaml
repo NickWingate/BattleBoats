@@ -20,7 +20,12 @@
                        RadiusY="50"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Fill="White"/>
+                       Fill="White"
+                       >
+                <Rectangle.Effect>
+                    <DropShadowEffect BlurRadius="30" Direction="255" ShadowDepth="10" Opacity="1"/>
+                </Rectangle.Effect>
+            </Rectangle>
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>
