@@ -15,17 +15,17 @@ namespace BattleBoats.Wpf.Commands
         South,
         West,
     }
-    public class MoveShipCommand : ICommand 
+    public class MoveBoatCommand : ICommand 
     {
         public event EventHandler CanExecuteChanged;
         private Boat _boat;
-        private ShipPlacementViewModel _shipPlacementViewModel;
+        private BoatPlacementViewModel _shipPlacementViewModel;
 
-        public MoveShipCommand(ShipPlacementViewModel shipPlacementViewModel, string boatName)
+        public MoveBoatCommand(BoatPlacementViewModel shipPlacementViewModel, string boatName)
         {
             _shipPlacementViewModel = shipPlacementViewModel;
             // Get boat of the string that was placed in
-            _boat = (Boat)typeof(ShipPlacementViewModel).GetProperty(boatName).GetValue(shipPlacementViewModel);
+            _boat = (Boat)typeof(BoatPlacementViewModel).GetProperty(boatName).GetValue(shipPlacementViewModel);
         }
 
         public bool CanExecute(object parameter)

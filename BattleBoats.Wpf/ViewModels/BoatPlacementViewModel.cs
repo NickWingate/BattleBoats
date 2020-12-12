@@ -8,20 +8,23 @@ using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
-    public class ShipPlacementViewModel : BaseViewModel
+    public class BoatPlacementViewModel : BaseViewModel
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
-        public ICommand MoveShipCommand { get; }
+        public ICommand MoveBoatCommand { get; }
 
-        public ShipPlacementViewModel(INavigator navigator)
+        // need to define for each boat
+        public ICommand RotateBoatCommand { get; set; }
+
+        public BoatPlacementViewModel(INavigator navigator)
         {
-            Boat1 = new Boat(5, 6);
-
+            Boat1 = new Boat(5, 6, 8, 3);
 
             _navigator = navigator;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
-            MoveShipCommand = new MoveShipCommand(this, nameof(Boat1));
+            MoveBoatCommand = new MoveBoatCommand(this, nameof(Boat1));
+            RotateBoatCommand = new RelayCommand(Boat1.Rotate);
         }
 
         public Boat Boat1 { get; set; }

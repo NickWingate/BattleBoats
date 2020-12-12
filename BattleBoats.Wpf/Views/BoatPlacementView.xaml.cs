@@ -15,14 +15,16 @@ using System.Windows.Shapes;
 namespace BattleBoats.Wpf.Views
 {
     /// <summary>
-    /// Interaction logic for ShipPlacementView.xaml
+    /// Interaction logic for BoatPlacementView.xaml
     /// </summary>
 
-    public partial class ShipPlacementView : UserControl
+    public partial class BoatPlacementView : UserControl
     {
-        public ShipPlacementView()
+        public BoatPlacementView()
         {
             InitializeComponent();
+            Focusable = true;
+            Loaded += (s, e) => Keyboard.Focus(this);
         }
     }
 }

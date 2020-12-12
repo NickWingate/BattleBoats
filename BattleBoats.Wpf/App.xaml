@@ -39,8 +39,8 @@
             <DataTemplate DataType="{x:Type viewmodels:RulesViewModel}">
                 <views:RulesView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:ShipPlacementViewModel}">
-                <views:ShipPlacementView/>
+            <DataTemplate DataType="{x:Type viewmodels:BoatPlacementViewModel}">
+                <views:BoatPlacementView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:GameViewModel}">
                 <views:GameView/>

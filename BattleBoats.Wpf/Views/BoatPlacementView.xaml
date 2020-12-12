@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BattleBoats.Wpf.Views.ShipPlacementView"
+﻿<UserControl x:Class="BattleBoats.Wpf.Views.BoatPlacementView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,17 @@
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+    
+    <!-- Key Bindings-->
+    <UserControl.InputBindings>
+        <KeyBinding Key="Up" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>
+        <KeyBinding Key="Down" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
+        <KeyBinding Key="Left" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
+        <KeyBinding Key="Right" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
+        <KeyBinding Key="R" Command="{Binding RotateBoatCommand}"/>
 
+
+    </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -46,19 +56,22 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
-                <controls:BoatControl BoatHeight="3" BoatWidth="1" 
+                <controls:BoatControl BoatHeight="{Binding Boat1.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding Boat1.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Column="{Binding Boat1.Column, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Row="{Binding Boat1.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="1" Grid.RowSpan="3" 
+                                      Grid.ColumnSpan="{Binding Boat1.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding Boat1.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Panel.ZIndex="1"/>
             </Grid>
         </controls:GameBoardControl>
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <Button Content="Up" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.North}"/>
-            <Button Content="Down" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.South}"/>
-            <Button Content="Left" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.East}"/>
-            <Button Content="Right" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.West}"/>
 
+            <Button Content="Up (↑)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>
+            <Button Content="Down (↓)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
+            <Button Content="Left (←)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
+            <Button Content="Right (→)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
+            <Button Content="Rotate (R)" Command="{Binding RotateBoatCommand}"/>
         </StackPanel>
         <button:GradientButton Content="Back"
                                Command="{Binding UpdateCurrentViewModelCommand}"

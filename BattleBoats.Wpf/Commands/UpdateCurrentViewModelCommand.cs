@@ -32,7 +32,7 @@ namespace BattleBoats.Wpf.Commands
                         _navigator.CurrentViewModel = new MenuViewModel(_navigator);
                         break;
                     case ViewType.ShipPlacement:
-                        _navigator.CurrentViewModel = new ShipPlacementViewModel(_navigator);
+                        _navigator.CurrentViewModel = new BoatPlacementViewModel(_navigator);
                         break;
                     case ViewType.Rules:
                         _navigator.CurrentViewModel = new RulesViewModel(_navigator);
