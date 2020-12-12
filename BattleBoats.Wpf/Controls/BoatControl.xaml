@@ -8,6 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <!-- Convert tile length to pixels -->
         <converters:TileToPixelConverter x:Key="TileToPixelConverter"/>
     </UserControl.Resources>
     <UserControl.Template>
@@ -20,8 +21,9 @@
                        RadiusY="50"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Fill="White"
-                       >
+                       Fill="White">
+                
+                <!-- Drop Shadow -->
                 <Rectangle.Effect>
                     <DropShadowEffect BlurRadius="30" Direction="255" ShadowDepth="10" Opacity="1"/>
                 </Rectangle.Effect>

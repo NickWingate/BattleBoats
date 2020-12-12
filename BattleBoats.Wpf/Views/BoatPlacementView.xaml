@@ -18,8 +18,6 @@
         <KeyBinding Key="Left" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
         <KeyBinding Key="Right" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
         <KeyBinding Key="R" Command="{Binding RotateBoatCommand}"/>
-
-
     </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,6 +31,7 @@
         
         <!-- Board -->
         <controls:GameBoardControl x:Name="GameBoard" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+            <!-- Boats -->
             <Grid Panel.ZIndex="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"/>
@@ -56,6 +55,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
+                <!-- Boat 1 -->
                 <controls:BoatControl BoatHeight="{Binding Boat1.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       BoatWidth="{Binding Boat1.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Column="{Binding Boat1.Column, UpdateSourceTrigger=PropertyChanged}" 
@@ -65,14 +65,17 @@
                                       Panel.ZIndex="1"/>
             </Grid>
         </controls:GameBoardControl>
+        
+        <!-- Movement Buttons -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-
             <Button Content="Up (↑)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>
             <Button Content="Down (↓)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
             <Button Content="Left (←)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
             <Button Content="Right (→)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
             <Button Content="Rotate (R)" Command="{Binding RotateBoatCommand}"/>
         </StackPanel>
+        
+        <!-- Back Button-->
         <button:GradientButton Content="Back"
                                Command="{Binding UpdateCurrentViewModelCommand}"
                                CommandParameter="{x:Static nav:ViewType.Menu}"

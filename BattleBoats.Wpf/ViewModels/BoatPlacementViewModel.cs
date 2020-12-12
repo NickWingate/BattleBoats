@@ -13,13 +13,12 @@ namespace BattleBoats.Wpf.ViewModels
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand MoveBoatCommand { get; }
-
         // need to define for each boat
         public ICommand RotateBoatCommand { get; set; }
 
         public BoatPlacementViewModel(INavigator navigator)
         {
-            Boat1 = new Boat(5, 6, 8, 3);
+            Boat1 = new Boat(5, 6, 3, 9);
 
             _navigator = navigator;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
