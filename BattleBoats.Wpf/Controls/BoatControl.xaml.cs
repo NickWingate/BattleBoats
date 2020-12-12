@@ -41,17 +41,6 @@ namespace BattleBoats.Wpf.Controls
             typeof(BoatControl),
             new PropertyMetadata(0d));
 
-        //private static void OnBoatHeightPropertyChanged(DependencyObject dependencyObject,
-        //    DependencyPropertyChangedEventArgs e)
-        //{
-        //    BoatControl boatControl = dependencyObject as BoatControl;
-        //    boatControl.OnBoatHeightPropertyChanged(e);
-        //}
-        //private void OnBoatHeightPropertyChanged(DependencyPropertyChangedEventArgs e)
-        //{
-        //    this.boat
-        //}
-
         public BoatControl()
         {
             InitializeComponent();

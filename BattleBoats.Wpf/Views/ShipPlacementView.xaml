@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:BattleBoats.Wpf.Controls"
              xmlns:button="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
+             xmlns:command="clr-namespace:BattleBoats.Wpf.Commands"
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
@@ -21,10 +22,9 @@
         </Grid.RowDefinitions>
         
         <!-- Board -->
-        <controls:GameBoardControl x:Name="GameBoard" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Grid Panel.ZIndex="1" Margin="0">
+        <controls:GameBoardControl x:Name="GameBoard" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+            <Grid Panel.ZIndex="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition Width="50"/>
@@ -46,17 +46,27 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
-                <Rectangle Fill="Blue" Grid.Column="1" Grid.Row="1" Height="35" Grid.ColumnSpan="5" Width="240" Panel.ZIndex="1"/>
-                <controls:BoatControl BoatHeight="1" BoatWidth="3" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="3" Panel.ZIndex="1"/>
+                <controls:BoatControl BoatHeight="3" BoatWidth="1" 
+                                      Grid.Column="{Binding Boat1.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding Boat1.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="1" Grid.RowSpan="3" 
+                                      Panel.ZIndex="1"/>
             </Grid>
         </controls:GameBoardControl>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <Button Content="Up" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.North}"/>
+            <Button Content="Down" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.South}"/>
+            <Button Content="Left" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.East}"/>
+            <Button Content="Right" Command="{Binding MoveShipCommand}" CommandParameter="{x:Static command:Direction.West}"/>
 
+        </StackPanel>
         <button:GradientButton Content="Back"
                                Command="{Binding UpdateCurrentViewModelCommand}"
                                CommandParameter="{x:Static nav:ViewType.Menu}"
                                VerticalAlignment="Bottom"
                                Height="50"
                                CornerRadius="25"
+                               Grid.ColumnSpan="2"
                                Grid.Row="1"/>
     </Grid>
 </UserControl>

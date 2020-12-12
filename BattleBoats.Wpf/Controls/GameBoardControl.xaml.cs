@@ -26,8 +26,6 @@ namespace BattleBoats.Wpf.Controls
             InitializeComponent();
             CreateBoard(9);
             //CreateShip(5);
-
-            //Children = MainGrid.Children;
         }
         public Rectangle Boat { get; set; }
         //public Grid BoardGrid { get; set; }
@@ -43,6 +41,7 @@ namespace BattleBoats.Wpf.Controls
             {
                 for (int j = 0; j < boardDimention; j++)
                 {
+                    // Add square every other tile
                     if ((i + j) % 2 == 0)
                     {
                         Rectangle rectangle = new Rectangle
