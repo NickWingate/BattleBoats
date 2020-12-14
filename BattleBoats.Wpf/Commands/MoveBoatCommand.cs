@@ -14,18 +14,20 @@ namespace BattleBoats.Wpf.Commands
         East,
         South,
         West,
+        Rotate,
     }
     public class MoveBoatCommand : ICommand 
     {
         public event EventHandler CanExecuteChanged;
-        private Boat _boat;
-        private BoatPlacementViewModel _shipPlacementViewModel;
+        private IBoat _boat;
+        private IBoatViewModel _boatViewModel;
 
-        public MoveBoatCommand(BoatPlacementViewModel shipPlacementViewModel, string boatName)
+        public MoveBoatCommand(IBoatViewModel boatViewModel, string boatName)
         {
-            _shipPlacementViewModel = shipPlacementViewModel;
             // Get boat of the string that was placed in
-            _boat = (Boat)typeof(BoatPlacementViewModel).GetProperty(boatName).GetValue(shipPlacementViewModel);
+            //_boat = (Boat)typeof(BoatPlacementViewModel).GetProperty(boatName).GetValue(boatViewModel);
+            _boat = boatViewModel.SelectedBoat;
+            _boatViewModel = boatViewModel;
         }
 
         public bool CanExecute(object parameter)
@@ -35,6 +37,7 @@ namespace BattleBoats.Wpf.Commands
 
         public void Execute(object parameter)
         {
+            _boat = _boatViewModel.SelectedBoat;
             if (parameter is Direction direction)
             {
                 switch (direction)
@@ -50,6 +53,9 @@ namespace BattleBoats.Wpf.Commands
                         break;
                     case Direction.West:
                         _boat.Column++;
+                        break;
+                    case Direction.Rotate:
+                        _boat.Rotate();
                         break;
                     default:
                         break;

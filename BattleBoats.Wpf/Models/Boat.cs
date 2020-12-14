@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class Boat : ObservableObject
+    public class Boat : ObservableObject, IBoat
     {
         private int _maxGridDimention;
         private bool _rotated;
@@ -20,22 +20,23 @@ namespace BattleBoats.Wpf.Models
             _rotated = false;
             Column = column;
             Row = row;
-            _maxGridDimention = maxGridDimention;
             Length = length;
+            Health = length;
+            _maxGridDimention = maxGridDimention;
         }
 
         private int _column;
         public int Column
         {
             get { return _column; }
-            set 
+            set
             {
                 // If moving the boat will still be in the grid
                 if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
-                }   
+                }
             }
         }
 
@@ -43,10 +44,10 @@ namespace BattleBoats.Wpf.Models
         public int Row
         {
             get { return _row; }
-            set 
+            set
             {
                 // If moving the boat will still be in the grid
-                if (!(value + RowSpan  > _maxGridDimention) && value >= 0)
+                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
                 {
                     _row = value;
                     OnPropertyChanged(nameof(Row));
@@ -58,13 +59,14 @@ namespace BattleBoats.Wpf.Models
         public int ColumnSpan => _rotated ? Length : 1;
 
         public int Length { get; set; }
+        public int Health { get; set; }
 
         public void Rotate()
         {
             _rotated = !_rotated;
             OnPropertyChanged(nameof(RowSpan));
             OnPropertyChanged(nameof(ColumnSpan));
-            
+
             // Stop boat from rotating off board
             if (RowSpan + Row > _maxGridDimention)
             {

@@ -17,7 +17,8 @@
         <KeyBinding Key="Down" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
         <KeyBinding Key="Left" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
         <KeyBinding Key="Right" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
-        <KeyBinding Key="R" Command="{Binding RotateBoatCommand}"/>
+        <KeyBinding Key="R" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
+        <KeyBinding Key="N" Command="{Binding SwitchSelectedBoatCommand}"/>
     </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -56,13 +57,21 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <!-- Boat 1 -->
-                <controls:BoatControl BoatHeight="{Binding Boat1.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding Boat1.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding Boat1.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding Boat1.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding Boat1.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding Boat1.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                <controls:BoatControl BoatHeight="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Column="{Binding AircraftCarrier.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding AircraftCarrier.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Panel.ZIndex="1"/>
+                <controls:BoatControl BoatHeight="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Column="{Binding Destroyer.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding Destroyer.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Panel.ZIndex="1"/>
+
             </Grid>
         </controls:GameBoardControl>
         
@@ -72,7 +81,8 @@
             <Button Content="Down (↓)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
             <Button Content="Left (←)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
             <Button Content="Right (→)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
-            <Button Content="Rotate (R)" Command="{Binding RotateBoatCommand}"/>
+            <Button Content="Rotate (R)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
+            <Button Content="Next Boat (N)" Command="{Binding SwitchSelectedBoatCommand}"/>
         </StackPanel>
         
         <!-- Back Button-->
