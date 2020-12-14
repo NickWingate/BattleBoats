@@ -24,6 +24,7 @@ namespace BattleBoats.Wpf.ViewModels
 
             Boats.AddRange(new IBoat[] { AircraftCarrier, Destroyer });
             SelectedBoat = Boats[0];
+            SetSelectedBoatEnabled();
 
             SwitchSelectedBoatCommand = new RelayCommand(SwitchSelectedBoat);
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
@@ -60,6 +61,12 @@ namespace BattleBoats.Wpf.ViewModels
         private void SwitchSelectedBoat()
         {
             SelectedBoat = Boats[(Boats.IndexOf(SelectedBoat) + 1) % Boats.Count];
+            SetSelectedBoatEnabled();
+        }
+        private void SetSelectedBoatEnabled()
+        {
+            if(Boats.Find(x => x.IsSelected) != null) { Boats.Find(x => x.IsSelected).IsSelected = false; }
+            Boats.Find(x => x == SelectedBoat).IsSelected = true;
         }
     }
 }

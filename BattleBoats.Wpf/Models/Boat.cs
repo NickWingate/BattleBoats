@@ -23,7 +23,21 @@ namespace BattleBoats.Wpf.Models
             Length = length;
             Health = length;
             _maxGridDimention = maxGridDimention;
+            IsSelected = false;
         }
+
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set 
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
 
         private int _column;
         public int Column

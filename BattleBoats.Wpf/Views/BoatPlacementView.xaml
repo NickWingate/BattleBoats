@@ -62,7 +62,8 @@
                                       Grid.Column="{Binding AircraftCarrier.Column, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Row="{Binding AircraftCarrier.Row, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.ColumnSpan="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.RowSpan="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      IsSelected="{Binding AircraftCarrier.IsSelected}"
                                       Panel.ZIndex="1"/>
                 <controls:BoatControl BoatHeight="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       BoatWidth="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
@@ -70,6 +71,7 @@
                                       Grid.Row="{Binding Destroyer.Row, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.ColumnSpan="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
                                       Grid.RowSpan="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      IsSelected="{Binding Destroyer.IsSelected}"
                                       Panel.ZIndex="1"/>
 
             </Grid>

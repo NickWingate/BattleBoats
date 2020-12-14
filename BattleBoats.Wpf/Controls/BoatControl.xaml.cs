@@ -30,11 +30,24 @@ namespace BattleBoats.Wpf.Controls
         }
 
 
+        public bool IsSelected
+        {
+            get { return (bool)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
+            nameof(IsSelected),
+            typeof(bool),
+            typeof(BoatControl), 
+            new PropertyMetadata(false));
+
         public static readonly DependencyProperty BoatHeightProperty = DependencyProperty.Register(
             nameof(BoatHeight),
             typeof(double),
             typeof(BoatControl),
             new PropertyMetadata(0d));
+
         public static readonly DependencyProperty BoatWidthProperty = DependencyProperty.Register(
             nameof(BoatWidth),
             typeof(double),
