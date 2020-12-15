@@ -17,13 +17,13 @@ namespace BattleBoats.Wpf.Models
         /// <param name="maxGridDimention">Maximum x by x square grid(x is 1 based)</param>
         public Boat(int column, int row, int length, int maxGridDimention)
         {
+            _maxGridDimention = maxGridDimention;
             _rotated = false;
-            Column = column;
-            Row = row;
             Length = length;
             Health = length;
-            _maxGridDimention = maxGridDimention;
             IsSelected = false;
+            Column = column;
+            Row = row;
         }
 
         private bool _isSelected;
@@ -50,6 +50,7 @@ namespace BattleBoats.Wpf.Models
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
+                    UpdateCoords();
                 }
             }
         }
@@ -65,9 +66,14 @@ namespace BattleBoats.Wpf.Models
                 {
                     _row = value;
                     OnPropertyChanged(nameof(Row));
+                    UpdateCoords();
                 }
             }
         }
+
+        public Coordinate StartCoord => new Coordinate(Row, Column);
+        public Coordinate EndCoord => new Coordinate((Row + RowSpan) - 1, (Column + ColumnSpan) - 1);
+        public CoordinateRange CoordinateRange => new CoordinateRange(StartCoord, EndCoord);
 
         public int RowSpan => _rotated ? 1 : Length;
         public int ColumnSpan => _rotated ? Length : 1;
@@ -75,12 +81,18 @@ namespace BattleBoats.Wpf.Models
         public int Length { get; set; }
         public int Health { get; set; }
 
+        public void UpdateCoords()
+        {
+            OnPropertyChanged(nameof(StartCoord));
+            OnPropertyChanged(nameof(EndCoord));
+            OnPropertyChanged(nameof(CoordinateRange));
+        }
         public void Rotate()
         {
             _rotated = !_rotated;
             OnPropertyChanged(nameof(RowSpan));
             OnPropertyChanged(nameof(ColumnSpan));
-
+            UpdateCoords();
             // Stop boat from rotating off board
             if (RowSpan + Row > _maxGridDimention)
             {

@@ -3,6 +3,7 @@ using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 
@@ -43,6 +44,7 @@ namespace BattleBoats.Wpf.ViewModels
                 OnPropertyChanged(nameof(SelectedBoat));
             }
         }
+        public bool ValidBoatPlacement => CheckValidBoatPlacement();
 
         // Length 5
         public IBoat AircraftCarrier { get; set; }
@@ -67,6 +69,27 @@ namespace BattleBoats.Wpf.ViewModels
         {
             if(Boats.Find(x => x.IsSelected) != null) { Boats.Find(x => x.IsSelected).IsSelected = false; }
             Boats.Find(x => x == SelectedBoat).IsSelected = true;
+        }
+        private bool CheckValidBoatPlacement()
+        {
+            // using string/serialized coord because List.Contains 
+            // peforms refrence comparison not value comparison
+            List<String> occupiedSpaces = new List<String>();
+            foreach (IBoat boat in Boats)
+            {
+                foreach (Coordinate coord in boat.CoordinateRange.GetAllCoordinates())
+                {
+                    if (occupiedSpaces.Contains(coord.ToString()))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        occupiedSpaces.Add(coord.ToString());
+                    }
+                }
+            }
+            return true;
         }
     }
 }
