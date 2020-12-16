@@ -20,10 +20,14 @@ namespace BattleBoats.Wpf.ViewModels
         {
             _navigator = navigator;
 
-            AircraftCarrier = new Boat(0, 0, 5, 9);
-            Destroyer = new Boat(4, 4, 2, 9);
 
-            Boats.AddRange(new IBoat[] { AircraftCarrier, Destroyer });
+            AircraftCarrier = new Boat(0, 0, 5, BoardSize);
+            Battleship = new Boat(0, 0, 4, BoardSize);
+            Submarine = new Boat(0, 0, 3, BoardSize);
+            Cruiser = new Boat(0, 0, 3, BoardSize);
+            Destroyer = new Boat(0, 0, 2, BoardSize);
+
+            Boats.AddRange(new IBoat[] { Destroyer, Cruiser, Submarine, Battleship, AircraftCarrier });
             SelectedBoat = Boats[0];
             SetSelectedBoatEnabled();
 
@@ -45,6 +49,7 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
         public bool ValidBoatPlacement => CheckValidBoatPlacement();
+        public int BoardSize { get; } = 9;
 
         // Length 5
         public IBoat AircraftCarrier { get; set; }

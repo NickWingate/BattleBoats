@@ -56,7 +56,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
-                <!-- Boat 1 -->
+                <!-- Aircraft Carrier -->
                 <controls:BoatControl BoatHeight="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       BoatWidth="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Column="{Binding AircraftCarrier.Column, UpdateSourceTrigger=PropertyChanged}" 
@@ -65,6 +65,34 @@
                                       Grid.RowSpan="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}"
                                       IsSelected="{Binding AircraftCarrier.IsSelected}"
                                       Panel.ZIndex="1"/>
+                <!-- Battleship-->
+                <controls:BoatControl BoatHeight="{Binding Battleship.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding Battleship.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Column="{Binding Battleship.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding Battleship.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="{Binding Battleship.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding Battleship.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      IsSelected="{Binding Battleship.IsSelected}"
+                                      Panel.ZIndex="1"/>
+                <!-- Submarine -->
+                <controls:BoatControl BoatHeight="{Binding Submarine.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding Submarine.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Column="{Binding Submarine.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding Submarine.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="{Binding Submarine.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding Submarine.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      IsSelected="{Binding Submarine.IsSelected}"
+                                      Panel.ZIndex="1"/>
+                <!-- Cruiser -->
+                <controls:BoatControl BoatHeight="{Binding Cruiser.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      BoatWidth="{Binding Cruiser.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Column="{Binding Cruiser.Column, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.Row="{Binding Cruiser.Row, UpdateSourceTrigger=PropertyChanged}" 
+                                      Grid.ColumnSpan="{Binding Cruiser.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                                      Grid.RowSpan="{Binding Cruiser.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                                      IsSelected="{Binding Cruiser.IsSelected}"
+                                      Panel.ZIndex="1"/>
+                <!-- Destroyer -->
                 <controls:BoatControl BoatHeight="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       BoatWidth="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
                                       Grid.Column="{Binding Destroyer.Column, UpdateSourceTrigger=PropertyChanged}" 
