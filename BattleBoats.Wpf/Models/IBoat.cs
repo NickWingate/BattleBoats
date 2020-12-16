@@ -9,6 +9,7 @@
         int RowSpan { get; }
         int Health { get; set; }
         bool IsSelected { get; set; }
+        public bool Rotated { get; }
 
         Coordinate StartCoord { get; }
         Coordinate EndCoord { get; }

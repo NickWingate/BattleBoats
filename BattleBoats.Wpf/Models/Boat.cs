@@ -7,7 +7,6 @@ namespace BattleBoats.Wpf.Models
     public class Boat : ObservableObject, IBoat
     {
         private int _maxGridDimention;
-        private bool _rotated;
         /// <summary>
         /// Create a new boat object
         /// </summary>
@@ -18,7 +17,7 @@ namespace BattleBoats.Wpf.Models
         public Boat(int column, int row, int length, int maxGridDimention)
         {
             _maxGridDimention = maxGridDimention;
-            _rotated = false;
+            Rotated = false;
             Length = length;
             Health = length;
             IsSelected = false;
@@ -27,7 +26,6 @@ namespace BattleBoats.Wpf.Models
         }
 
         private bool _isSelected;
-
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -37,7 +35,6 @@ namespace BattleBoats.Wpf.Models
                 OnPropertyChanged(nameof(IsSelected));
             }
         }
-
 
         private int _column;
         public int Column
@@ -71,12 +68,25 @@ namespace BattleBoats.Wpf.Models
             }
         }
 
+        private bool _rotated;
+
+        public bool Rotated
+        {
+            get { return _rotated; }
+            private set 
+            {
+                _rotated = value;
+                OnPropertyChanged(nameof(Rotated));
+            }
+        }
+
+
         public Coordinate StartCoord => new Coordinate(Row, Column);
         public Coordinate EndCoord => new Coordinate((Row + RowSpan) - 1, (Column + ColumnSpan) - 1);
         public CoordinateRange CoordinateRange => new CoordinateRange(StartCoord, EndCoord);
 
-        public int RowSpan => _rotated ? 1 : Length;
-        public int ColumnSpan => _rotated ? Length : 1;
+        public int RowSpan => Rotated ? 1 : Length;
+        public int ColumnSpan => Rotated ? Length : 1;
 
         public int Length { get; set; }
         public int Health { get; set; }
@@ -89,7 +99,7 @@ namespace BattleBoats.Wpf.Models
         }
         public void Rotate()
         {
-            _rotated = !_rotated;
+            Rotated = !Rotated;
             OnPropertyChanged(nameof(RowSpan));
             OnPropertyChanged(nameof(ColumnSpan));
             UpdateCoords();

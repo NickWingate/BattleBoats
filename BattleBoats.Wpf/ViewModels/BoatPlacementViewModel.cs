@@ -17,6 +17,9 @@ namespace BattleBoats.Wpf.ViewModels
         public ICommand SwitchSelectedBoatCommand { get; set; }
         public ICommand PlayGameCommand { get; set; }
 
+        // Temporary / for testing commands:
+        public ICommand SetValidBoatPlacementCommand { get; set; }
+
         public BoatPlacementViewModel(INavigator navigator)
         {
             _navigator = navigator;
@@ -36,10 +39,14 @@ namespace BattleBoats.Wpf.ViewModels
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveBoatCommand = new MoveBoatCommand(this, nameof(SelectedBoat));
             PlayGameCommand = new RelayCommand(PlayGame);
+            SetValidBoatPlacementCommand = new RelayCommand(SetValidBoatPlacement);
         }
 
-        private List<IBoat> _boats;
+        public bool ValidBoatPlacement => CheckValidBoatPlacement();
 
+        public int BoardSize { get; } = 9;
+
+        private List<IBoat> _boats;
         public List<IBoat> Boats
         {
             get { return _boats; }
@@ -51,7 +58,6 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         private IBoat _selectedBoat;
-
         public IBoat SelectedBoat
         {
             get { return _selectedBoat; }
@@ -61,8 +67,6 @@ namespace BattleBoats.Wpf.ViewModels
                 OnPropertyChanged(nameof(SelectedBoat));
             }
         }
-        public bool ValidBoatPlacement => CheckValidBoatPlacement();
-        public int BoardSize { get; } = 9;
 
         // Length 5
         public IBoat AircraftCarrier { get; set; }
@@ -119,6 +123,17 @@ namespace BattleBoats.Wpf.ViewModels
             }
             return true;
         }
-
+        private void SetValidBoatPlacement()
+        {
+            for (int i = 0; i < Boats.Count; i++)
+            {
+                if (Boats[i].Rotated)
+                {
+                    Boats[i].Rotate();
+                }
+                Boats[i].Column = i;
+            }
+            UpdateValidBoatPlacement();
+        }
     }
 }

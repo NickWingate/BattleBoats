@@ -22,7 +22,7 @@
     </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -32,7 +32,6 @@
         
         <!-- Board -->
         <controls:GameBoardControl x:Name="GameBoard" 
-                                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20"
                                    Boats="{Binding Boats, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Movement Buttons -->
@@ -43,9 +42,9 @@
             <Button Content="Right (→)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
             <Button Content="Rotate (R)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
             <Button Content="Next Boat (N)" Command="{Binding SwitchSelectedBoatCommand}"/>
-        </StackPanel>
 
-        <Button Content="Play" Grid.Column="1" VerticalAlignment="Bottom" IsEnabled="{Binding ValidBoatPlacement, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Set Valid Boat Placement" Command="{Binding SetValidBoatPlacementCommand}"/>
+        </StackPanel>
 
         <!-- Back Button-->
         <button:GradientButton Content="Back"
@@ -54,7 +53,14 @@
                                VerticalAlignment="Bottom"
                                Height="50"
                                CornerRadius="25"
-                               Grid.ColumnSpan="2"
                                Grid.Row="1"/>
+        <button:GradientButton Content="Play" 
+                               Command="{Binding PlayGameCommand}"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Bottom"
+                               Height="50"
+                               CornerRadius="25" 
+                               IsEnabled="{Binding ValidBoatPlacement, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>
