@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,10 +27,22 @@ namespace BattleBoats.Wpf.Controls
         {
             InitializeComponent();
             CreateBoard(9);
-            //CreateShip(5);
         }
-        public Rectangle Boat { get; set; }
-        //public Grid BoardGrid { get; set; }
+
+        public List<IBoat> Boats
+        {
+            get { return (List<IBoat>)GetValue(BoatsProperty); }
+            set { SetValue(BoatsProperty, value); }
+        }
+        
+        // Using a DependencyProperty as the backing store for Boats.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BoatsProperty =
+            DependencyProperty.Register(nameof(Boats), typeof(List<IBoat>), typeof(GameBoardControl), new PropertyMetadata(OnBoatsPropertyChanged));
+
+        private static void OnBoatsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            List<IBoat> boats = ((GameBoardControl)d).Boats;
+        }
         private void CreateBoard(int boardDimention)
         {
             //BoardGrid = new Grid(); 
@@ -63,21 +77,47 @@ namespace BattleBoats.Wpf.Controls
             //MainGrid.Children.Add(BoardGrid);
 
         }
-        private void CreateShip(int tileLength)
+
+        // Try to create boats dynamically
+        private void CreateBoats(List<IBoat> boats)
         {
-            Rectangle boat = new Rectangle
+            foreach (IBoat boat in boats)
             {
-                Width = tileLength * 50 - 10,
-                Height = 35,
-                Fill = new SolidColorBrush(Colors.White),
-                RadiusX = 50,
-                RadiusY = 20,
-            };
-            Panel.SetZIndex(boat, 1);
-            Grid.SetColumnSpan(boat, tileLength);
-            Grid.SetRow(boat, 1);
-            Grid.SetColumn(boat, 1);
-            BoardGrid.Children.Add(boat);
+                BoatControl boatControl = new BoatControl();
+
+                Binding height = new Binding(nameof(BoatControl.BoatHeightProperty));
+                height.Source = boat.RowSpan;
+
+                Binding width = new Binding(nameof(BoatControl.BoatWidthProperty));
+                width.Source = boat.ColumnSpan;
+
+                Binding column = new Binding(nameof(ColumnProperty));
+                column.Source = boat.Column;
+
+                Binding row = new Binding(nameof(RowProperty));
+                row.Source = boat.Row;
+
+                Binding columnSpan = new Binding(nameof(ColumnSpanProperty));
+                columnSpan.Source = boat.ColumnSpan;
+
+                Binding rowSpan = new Binding(nameof(RowSpanProperty));
+                rowSpan.Source = boat.RowSpan;
+
+                Binding isSelected = new Binding(nameof(BoatControl.IsSelectedProperty));
+                isSelected.Source = boat.IsSelected;
+
+
+                boatControl.SetBinding(BoatControl.BoatHeightProperty, height);
+                boatControl.SetBinding(BoatControl.BoatWidthProperty, width);
+                boatControl.SetBinding(ColumnProperty, column);
+                boatControl.SetBinding(RowProperty, row);
+                boatControl.SetBinding(ColumnSpanProperty, columnSpan);
+                boatControl.SetBinding(RowSpanProperty, rowSpan);
+                boatControl.SetBinding(BoatControl.IsSelectedProperty, isSelected);
+
+                Panel.SetZIndex(boatControl, 1);
+                BoardGrid.Children.Add(boatControl);
+            }
         }
     }
 }

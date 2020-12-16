@@ -31,80 +31,10 @@
         </Grid.RowDefinitions>
         
         <!-- Board -->
-        <controls:GameBoardControl x:Name="GameBoard" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
-            <!-- Boats -->
-            <Grid Panel.ZIndex="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                </Grid.RowDefinitions>
-                <!-- Aircraft Carrier -->
-                <controls:BoatControl BoatHeight="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding AircraftCarrier.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding AircraftCarrier.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding AircraftCarrier.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding AircraftCarrier.RowSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      IsSelected="{Binding AircraftCarrier.IsSelected}"
-                                      Panel.ZIndex="1"/>
-                <!-- Battleship-->
-                <controls:BoatControl BoatHeight="{Binding Battleship.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding Battleship.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding Battleship.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding Battleship.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding Battleship.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding Battleship.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      IsSelected="{Binding Battleship.IsSelected}"
-                                      Panel.ZIndex="1"/>
-                <!-- Submarine -->
-                <controls:BoatControl BoatHeight="{Binding Submarine.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding Submarine.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding Submarine.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding Submarine.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding Submarine.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding Submarine.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      IsSelected="{Binding Submarine.IsSelected}"
-                                      Panel.ZIndex="1"/>
-                <!-- Cruiser -->
-                <controls:BoatControl BoatHeight="{Binding Cruiser.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding Cruiser.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding Cruiser.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding Cruiser.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding Cruiser.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding Cruiser.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      IsSelected="{Binding Cruiser.IsSelected}"
-                                      Panel.ZIndex="1"/>
-                <!-- Destroyer -->
-                <controls:BoatControl BoatHeight="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      BoatWidth="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Column="{Binding Destroyer.Column, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.Row="{Binding Destroyer.Row, UpdateSourceTrigger=PropertyChanged}" 
-                                      Grid.ColumnSpan="{Binding Destroyer.ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
-                                      Grid.RowSpan="{Binding Destroyer.RowSpan, UpdateSourceTrigger=PropertyChanged}" 
-                                      IsSelected="{Binding Destroyer.IsSelected}"
-                                      Panel.ZIndex="1"/>
+        <controls:GameBoardControl x:Name="GameBoard" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20"
+                                   Boats="{Binding Boats, UpdateSourceTrigger=PropertyChanged}"/>
 
-            </Grid>
-        </controls:GameBoardControl>
-        
         <!-- Movement Buttons -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
             <Button Content="Up (↑)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>

@@ -34,32 +34,46 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <ContentPresenter/>
-        <!--<Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <ContentPresenter/>
-        </Grid>-->
+        <controls:BoatControl BoatHeight="{Binding Boats[4].RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              BoatWidth="{Binding Boats[4].ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Column="{Binding Boats[4].Column, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Row="{Binding Boats[4].Row, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.ColumnSpan="{Binding Boats[4].ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                              Grid.RowSpan="{Binding Boats[4].RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                              IsSelected="{Binding Boats[4].IsSelected}"
+                              Panel.ZIndex="1"/>
+        <controls:BoatControl BoatHeight="{Binding Boats[3].RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              BoatWidth="{Binding Boats[3].ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Column="{Binding Boats[3].Column, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Row="{Binding Boats[3].Row, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.ColumnSpan="{Binding Boats[3].ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                              Grid.RowSpan="{Binding Boats[3].RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                              IsSelected="{Binding Boats[3].IsSelected}"
+                              Panel.ZIndex="1"/>
+        <controls:BoatControl BoatHeight="{Binding Boats[2].RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              BoatWidth="{Binding Boats[2].ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Column="{Binding Boats[2].Column, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Row="{Binding Boats[2].Row, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.ColumnSpan="{Binding Boats[2].ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                              Grid.RowSpan="{Binding Boats[2].RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                              IsSelected="{Binding Boats[2].IsSelected}"
+                              Panel.ZIndex="1"/>
+        <controls:BoatControl BoatHeight="{Binding Boats[1].RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              BoatWidth="{Binding Boats[1].ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Column="{Binding Boats[1].Column, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Row="{Binding Boats[1].Row, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.ColumnSpan="{Binding Boats[1].ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                              Grid.RowSpan="{Binding Boats[1].RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                              IsSelected="{Binding Boats[1].IsSelected}"
+                              Panel.ZIndex="1"/>
+        <controls:BoatControl BoatHeight="{Binding Boats[0].RowSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              BoatWidth="{Binding Boats[0].ColumnSpan, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Column="{Binding Boats[0].Column, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.Row="{Binding Boats[0].Row, UpdateSourceTrigger=PropertyChanged}" 
+                              Grid.ColumnSpan="{Binding Boats[0].ColumnSpan, UpdateSourceTrigger=PropertyChanged}"
+                              Grid.RowSpan="{Binding Boats[0].RowSpan, UpdateSourceTrigger=PropertyChanged}"
+                              IsSelected="{Binding Boats[0].IsSelected}"
+                              Panel.ZIndex="1"/>
     </Grid>
 
     <Rectangle Fill="{StaticResource MaterialDesignLightSeparatorBackground}" RadiusX="10" RadiusY="10" Margin="-20"/>
