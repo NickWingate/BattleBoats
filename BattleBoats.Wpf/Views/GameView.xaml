@@ -3,11 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
+             xmlns:controls="clr-namespace:BattleBoats.Wpf.Controls"
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              xmlns:button="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
-        <button:GradientButton Content="back"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <controls:GameBoardControl Boats="{Binding Boats}" 
+                                   Grid.Row="0"
+                                   Grid.Column="0"/>
+
+
+
+
+
+        <button:GradientButton Content="back"
+                               Command="{Binding UpdateCurrentViewModelCommand}"
+                               CommandParameter="{x:Static nav:ViewType.Menu}"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               Height="50"
+                               CornerRadius="25"/>
     </Grid>
 </UserControl>

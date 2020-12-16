@@ -38,7 +38,7 @@ namespace BattleBoats.Wpf.Commands
                         _navigator.Navigate(new RulesViewModel(_navigator));
                         break;
                     case ViewType.Game:
-                        _navigator.Navigate(new GameViewModel(_navigator));
+                        _navigator.Navigate(new GameViewModel(_navigator, null));
                         break;
                     case ViewType.Winner:
                         _navigator.Navigate(new WinnerViewModel(_navigator));
