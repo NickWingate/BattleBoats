@@ -16,7 +16,7 @@ namespace BattleBoats.Wpf.Commands
         West,
         Rotate,
     }
-    public class MoveBoatCommand : ICommand 
+    public class MoveBoatCommand : ObservableObject, ICommand 
     {
         public event EventHandler CanExecuteChanged;
         private IBoat _boat;
@@ -61,6 +61,7 @@ namespace BattleBoats.Wpf.Commands
                         break;
                 }
             }
+            _boatViewModel.UpdateValidBoatPlacement();
         }
     }
 }

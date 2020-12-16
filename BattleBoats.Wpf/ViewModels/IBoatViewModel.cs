@@ -13,5 +13,7 @@ namespace BattleBoats.Wpf.ViewModels
         public IBoat Cruiser { get; set; }
         public IBoat Destroyer { get; set; }
         public IBoat SelectedBoat { get; set; }
+        public void UpdateValidBoatPlacement();
+
     }
 }

@@ -57,6 +57,11 @@ namespace BattleBoats.Wpf.ViewModels
         // Length 2
         public IBoat Destroyer { get; set; }
 
+        public void UpdateValidBoatPlacement()
+        {
+            OnPropertyChanged(nameof(ValidBoatPlacement));
+        }
+
         /// <summary>
         /// Switches selected boat to the next in the list, is circular
         /// </summary>
@@ -64,6 +69,7 @@ namespace BattleBoats.Wpf.ViewModels
         {
             SelectedBoat = Boats[(Boats.IndexOf(SelectedBoat) + 1) % Boats.Count];
             SetSelectedBoatEnabled();
+            //OnPropertyChanged(nameof(ValidBoatPlacement));
         }
         private void SetSelectedBoatEnabled()
         {
@@ -91,5 +97,6 @@ namespace BattleBoats.Wpf.ViewModels
             }
             return true;
         }
+
     }
 }

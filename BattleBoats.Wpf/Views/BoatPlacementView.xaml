@@ -86,7 +86,9 @@
             <Button Content="Rotate (R)" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
             <Button Content="Next Boat (N)" Command="{Binding SwitchSelectedBoatCommand}"/>
         </StackPanel>
-        
+
+        <Button Content="Play" Grid.Column="1" VerticalAlignment="Bottom" IsEnabled="{Binding ValidBoatPlacement, UpdateSourceTrigger=PropertyChanged}"/>
+
         <!-- Back Button-->
         <button:GradientButton Content="Back"
                                Command="{Binding UpdateCurrentViewModelCommand}"
