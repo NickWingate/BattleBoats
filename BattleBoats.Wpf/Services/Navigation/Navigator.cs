@@ -12,7 +12,6 @@ namespace BattleBoats.Wpf.Services.Navigation
     public class Navigator : ObservableObject, INavigator
     {
         private BaseViewModel _currentViewModel;
-
         public BaseViewModel CurrentViewModel
         {
             get { return _currentViewModel; }
@@ -21,6 +20,11 @@ namespace BattleBoats.Wpf.Services.Navigation
                 _currentViewModel = value;
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
+        }
+
+        public void Navigate(BaseViewModel viewModel)
+        {
+            CurrentViewModel = viewModel;
         }
     }
 }

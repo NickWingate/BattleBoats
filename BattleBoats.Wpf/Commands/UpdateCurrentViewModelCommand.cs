@@ -29,19 +29,19 @@ namespace BattleBoats.Wpf.Commands
                 switch (viewType)
                 {
                     case ViewType.Menu:
-                        _navigator.CurrentViewModel = new MenuViewModel(_navigator);
+                        _navigator.Navigate(new MenuViewModel(_navigator));
                         break;
-                    case ViewType.ShipPlacement:
-                        _navigator.CurrentViewModel = new BoatPlacementViewModel(_navigator);
+                    case ViewType.BoatPlacement:
+                        _navigator.Navigate(new BoatPlacementViewModel(_navigator));
                         break;
                     case ViewType.Rules:
-                        _navigator.CurrentViewModel = new RulesViewModel(_navigator);
+                        _navigator.Navigate(new RulesViewModel(_navigator));
                         break;
                     case ViewType.Game:
-                        _navigator.CurrentViewModel = new GameViewModel(_navigator);
+                        _navigator.Navigate(new GameViewModel(_navigator));
                         break;
                     case ViewType.Winner:
-                        _navigator.CurrentViewModel = new WinnerViewModel(_navigator);
+                        _navigator.Navigate(new WinnerViewModel(_navigator));
                         break;
                     default:
                         break;

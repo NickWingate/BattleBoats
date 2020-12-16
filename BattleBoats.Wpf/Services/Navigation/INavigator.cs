@@ -10,12 +10,13 @@ namespace BattleBoats.Wpf.Services.Navigation
     {
         Menu,
         Rules,
-        ShipPlacement,
+        BoatPlacement,
         Game,
         Winner
     }
     public interface INavigator
     {
         BaseViewModel CurrentViewModel { get; set; }
+        void Navigate(BaseViewModel viewModel);
     }
 }
