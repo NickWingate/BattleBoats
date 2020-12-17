@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class Boat : ObservableObject, IBoat
+    public class Boat : ObservableObject, IGameItem
     {
         private int _maxGridDimention;
         /// <summary>
@@ -23,7 +23,7 @@ namespace BattleBoats.Wpf.Models
             IsSelected = false;
             Column = column;
             Row = row;
-            ShowBoat = true;
+            ShowItem = true;
         }
 
         private bool _isSelected;
@@ -84,13 +84,13 @@ namespace BattleBoats.Wpf.Models
 
         private bool _showBoat;
 
-        public bool ShowBoat
+        public bool ShowItem
         {
             get { return _showBoat; }
             set 
             {
                 _showBoat = value;
-                OnPropertyChanged(nameof(ShowBoat));
+                OnPropertyChanged(nameof(ShowItem));
             }
         }
 

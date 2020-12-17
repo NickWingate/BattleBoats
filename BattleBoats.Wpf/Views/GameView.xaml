@@ -5,10 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:nav="clr-namespace:BattleBoats.Wpf.Services.Navigation"
              xmlns:controls="clr-namespace:BattleBoats.Wpf.Controls"
+             xmlns:command="clr-namespace:BattleBoats.Wpf.Commands"
              xmlns:local="clr-namespace:BattleBoats.Wpf.Views"
              xmlns:button="clr-namespace:BattleBoats.Wpf.Styles.Buttons"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Up" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>
+        <KeyBinding Key="Down" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
+        <KeyBinding Key="Left" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
+        <KeyBinding Key="Right" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
+        <KeyBinding Key="R" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
+    </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -23,7 +31,8 @@
                                    Grid.Row="0"
                                    Grid.Column="0"/>
 
-        <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}"  
+        <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}" 
+                                   Target="{Binding Target}"
                                    Grid.Row="0"
                                    Grid.Column="1"/>
 

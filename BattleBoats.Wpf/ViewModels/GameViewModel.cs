@@ -8,41 +8,49 @@ using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
-    public class GameViewModel : BaseViewModel
+    public class GameViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
+        public ICommand MoveBoatCommand { get; set; }
 
-        public GameViewModel(INavigator navigator, List<IBoat> boats)
+        public GameViewModel(INavigator navigator, List<IGameItem> boats)
         {
             _navigator = navigator;
             UserBoats = boats;
+            Target = new Target { Column = 0, Row = 0, ShowItem = true };
+            SelectedItem = Target;
+
             ComputerBoats = GenerateComputerBoats();
             DeselectBoats(UserBoats);
-            HideBoats(UserBoats);
+            HideBoats(ComputerBoats);
+
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
+            MoveBoatCommand = new MoveBoatCommand(this);
         }
 
-        public List<IBoat> UserBoats { get; set; }
-        public List<IBoat> ComputerBoats { get; set; }
-
-        private void DeselectBoats(List<IBoat> boats)
+        public IGameItem Target { get; set; }
+        public IGameItem SelectedItem { get; set; }
+        public List<IGameItem> UserBoats { get; set; }
+        public List<IGameItem> ComputerBoats { get; set; }
+       
+        private void DeselectBoats(List<IGameItem> boats)
         {
-            foreach (IBoat boat in boats)
+            foreach (IGameItem boat in boats)
             {
                 boat.IsSelected = false;
             }
         }
-        private void HideBoats(List<IBoat> boats)
+        private void HideBoats(List<IGameItem> boats)
         {
-            foreach (IBoat boat in boats)
+            foreach (IGameItem boat in boats)
             {
-                boat.ShowBoat = false;
+                boat.ShowItem = false;
             }
         }
-        private List<IBoat> GenerateComputerBoats()
+        private List<IGameItem> GenerateComputerBoats()
         {
-            return new List<IBoat>()
+            return new List<IGameItem>()
             {
                 new Boat(8, 0, 5, 9),
                 new Boat(7, 0, 4, 9),
@@ -51,5 +59,6 @@ namespace BattleBoats.Wpf.ViewModels
                 new Boat(4, 0, 2, 9),
             };
         }
+
     }
 }

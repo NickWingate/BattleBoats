@@ -1,16 +1,14 @@
 ﻿namespace BattleBoats.Wpf.Models
 {
-    public interface IBoat
+    public interface IGameItem
     {
         int Column { get; set; }
         int ColumnSpan { get; }
-        int Length { get; set; }
         int Row { get; set; }
         int RowSpan { get; }
-        int Health { get; set; }
         bool IsSelected { get; set; }
         public bool Rotated { get; }
-        public bool ShowBoat { get; set; }
+        public bool ShowItem { get; set; }
 
         Coordinate StartCoord { get; }
         Coordinate EndCoord { get; }

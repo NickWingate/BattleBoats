@@ -27,22 +27,34 @@ namespace BattleBoats.Wpf.Controls
         {
             InitializeComponent();
             CreateBoard(9);
+            Target = new Target { ShowItem = false };
         }
 
-        public List<IBoat> Boats
+        public List<IGameItem> Boats
         {
-            get { return (List<IBoat>)GetValue(BoatsProperty); }
+            get { return (List<IGameItem>)GetValue(BoatsProperty); }
             set { SetValue(BoatsProperty, value); }
         }
         // Using a DependencyProperty as the backing store for Boats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoatsProperty =
-            DependencyProperty.Register(nameof(Boats), typeof(List<IBoat>), typeof(GameBoardControl), new PropertyMetadata(OnBoatsPropertyChanged));
+            DependencyProperty.Register(nameof(Boats), typeof(List<IGameItem>), typeof(GameBoardControl), new PropertyMetadata(null));
 
 
-        private static void OnBoatsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public IGameItem Target
         {
-            List<IBoat> boats = ((GameBoardControl)d).Boats;
+            get { return (IGameItem)GetValue(TargetProperty); }
+            set { SetValue(TargetProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TargetProperty =
+            DependencyProperty.Register(nameof(Target), typeof(IGameItem), typeof(GameBoardControl), new PropertyMetadata(null));
+
+
+
+
+
+
         private void CreateBoard(int boardDimention)
         {
             //BoardGrid = new Grid(); 

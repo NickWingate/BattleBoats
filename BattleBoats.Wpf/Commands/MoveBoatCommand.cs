@@ -19,14 +19,12 @@ namespace BattleBoats.Wpf.Commands
     public class MoveBoatCommand : ObservableObject, ICommand 
     {
         public event EventHandler CanExecuteChanged;
-        private IBoat _boat;
+        private IGameItem _item;
         private IBoatViewModel _boatViewModel;
 
-        public MoveBoatCommand(IBoatViewModel boatViewModel, string boatName)
+        public MoveBoatCommand(IBoatViewModel boatViewModel)
         {
-            // Get boat of the string that was placed in
-            //_boat = (Boat)typeof(BoatPlacementViewModel).GetProperty(boatName).GetValue(boatViewModel);
-            _boat = boatViewModel.SelectedBoat;
+            _item = boatViewModel.SelectedItem;
             _boatViewModel = boatViewModel;
         }
 
@@ -37,31 +35,34 @@ namespace BattleBoats.Wpf.Commands
 
         public void Execute(object parameter)
         {
-            _boat = _boatViewModel.SelectedBoat;
+            _item = _boatViewModel.SelectedItem;
             if (parameter is Direction direction)
             {
                 switch (direction)
                 {
                     case Direction.North:
-                        _boat.Row--;
+                        _item.Row--;
                         break;
                     case Direction.East:
-                        _boat.Column--;
+                        _item.Column--;
                         break;
                     case Direction.South:
-                        _boat.Row++;
+                        _item.Row++;
                         break;
                     case Direction.West:
-                        _boat.Column++;
+                        _item.Column++;
                         break;
                     case Direction.Rotate:
-                        _boat.Rotate();
+                        _item.Rotate();
                         break;
                     default:
                         break;
                 }
             }
-            _boatViewModel.UpdateValidBoatPlacement();
+            if (_item.GetType() == typeof(BoatPlacementViewModel))
+            {
+                ((BoatPlacementViewModel)_boatViewModel).UpdateValidBoatPlacement();
+            }
         }
     }
 }
