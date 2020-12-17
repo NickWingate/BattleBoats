@@ -23,6 +23,7 @@ namespace BattleBoats.Wpf.Models
             IsSelected = false;
             Column = column;
             Row = row;
+            ShowBoat = true;
         }
 
         private bool _isSelected;
@@ -77,6 +78,19 @@ namespace BattleBoats.Wpf.Models
             {
                 _rotated = value;
                 OnPropertyChanged(nameof(Rotated));
+            }
+        }
+
+
+        private bool _showBoat;
+
+        public bool ShowBoat
+        {
+            get { return _showBoat; }
+            set 
+            {
+                _showBoat = value;
+                OnPropertyChanged(nameof(ShowBoat));
             }
         }
 

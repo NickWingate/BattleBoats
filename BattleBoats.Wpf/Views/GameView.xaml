@@ -19,10 +19,13 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <controls:GameBoardControl Boats="{Binding Boats}" 
+        <controls:GameBoardControl Boats="{Binding UserBoats, UpdateSourceTrigger=PropertyChanged}" 
                                    Grid.Row="0"
                                    Grid.Column="0"/>
 
+        <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}"  
+                                   Grid.Row="0"
+                                   Grid.Column="1"/>
 
 
 

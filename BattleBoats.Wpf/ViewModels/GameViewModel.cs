@@ -16,12 +16,15 @@ namespace BattleBoats.Wpf.ViewModels
         public GameViewModel(INavigator navigator, List<IBoat> boats)
         {
             _navigator = navigator;
-            Boats = boats;
-            DeselectBoats(Boats);
+            UserBoats = boats;
+            ComputerBoats = GenerateComputerBoats();
+            DeselectBoats(UserBoats);
+            HideBoats(UserBoats);
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
         }
 
-        public List<IBoat> Boats { get; set; }
+        public List<IBoat> UserBoats { get; set; }
+        public List<IBoat> ComputerBoats { get; set; }
 
         private void DeselectBoats(List<IBoat> boats)
         {
@@ -29,6 +32,24 @@ namespace BattleBoats.Wpf.ViewModels
             {
                 boat.IsSelected = false;
             }
+        }
+        private void HideBoats(List<IBoat> boats)
+        {
+            foreach (IBoat boat in boats)
+            {
+                boat.ShowBoat = false;
+            }
+        }
+        private List<IBoat> GenerateComputerBoats()
+        {
+            return new List<IBoat>()
+            {
+                new Boat(8, 0, 5, 9),
+                new Boat(7, 0, 4, 9),
+                new Boat(6, 0, 3, 9),
+                new Boat(5, 0, 3, 9),
+                new Boat(4, 0, 2, 9),
+            };
         }
     }
 }

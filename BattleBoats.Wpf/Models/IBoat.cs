@@ -10,6 +10,7 @@
         int Health { get; set; }
         bool IsSelected { get; set; }
         public bool Rotated { get; }
+        public bool ShowBoat { get; set; }
 
         Coordinate StartCoord { get; }
         Coordinate EndCoord { get; }

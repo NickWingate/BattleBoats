@@ -34,10 +34,10 @@ namespace BattleBoats.Wpf.Controls
             get { return (List<IBoat>)GetValue(BoatsProperty); }
             set { SetValue(BoatsProperty, value); }
         }
-        
         // Using a DependencyProperty as the backing store for Boats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoatsProperty =
             DependencyProperty.Register(nameof(Boats), typeof(List<IBoat>), typeof(GameBoardControl), new PropertyMetadata(OnBoatsPropertyChanged));
+
 
         private static void OnBoatsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -79,45 +79,45 @@ namespace BattleBoats.Wpf.Controls
         }
 
         // Try to create boats dynamically
-        private void CreateBoats(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                BoatControl boatControl = new BoatControl();
+        //private void CreateBoats()
+        //{
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        BoatControl boatControl = new BoatControl();
 
-                Binding height = new Binding(nameof(BoatControl.BoatHeightProperty));
-                height.Source = boat.RowSpan;
+        //        Binding height = new Binding(nameof(BoatControl.BoatHeightProperty));
+        //        height.Source = Boats[i].RowSpan;
 
-                Binding width = new Binding(nameof(BoatControl.BoatWidthProperty));
-                width.Source = boat.ColumnSpan;
+        //        Binding width = new Binding(nameof(BoatControl.BoatWidthProperty));
+        //        width.Source = boat.ColumnSpan;
 
-                Binding column = new Binding(nameof(ColumnProperty));
-                column.Source = boat.Column;
+        //        Binding column = new Binding(nameof(ColumnProperty));
+        //        column.Source = boat.Column;
 
-                Binding row = new Binding(nameof(RowProperty));
-                row.Source = boat.Row;
+        //        Binding row = new Binding(nameof(RowProperty));
+        //        row.Source = boat.Row;
 
-                Binding columnSpan = new Binding(nameof(ColumnSpanProperty));
-                columnSpan.Source = boat.ColumnSpan;
+        //        Binding columnSpan = new Binding(nameof(ColumnSpanProperty));
+        //        columnSpan.Source = boat.ColumnSpan;
 
-                Binding rowSpan = new Binding(nameof(RowSpanProperty));
-                rowSpan.Source = boat.RowSpan;
+        //        Binding rowSpan = new Binding(nameof(RowSpanProperty));
+        //        rowSpan.Source = boat.RowSpan;
 
-                Binding isSelected = new Binding(nameof(BoatControl.IsSelectedProperty));
-                isSelected.Source = boat.IsSelected;
+        //        Binding isSelected = new Binding(nameof(BoatControl.IsSelectedProperty));
+        //        isSelected.Source = boat.IsSelected;
 
 
-                boatControl.SetBinding(BoatControl.BoatHeightProperty, height);
-                boatControl.SetBinding(BoatControl.BoatWidthProperty, width);
-                boatControl.SetBinding(ColumnProperty, column);
-                boatControl.SetBinding(RowProperty, row);
-                boatControl.SetBinding(ColumnSpanProperty, columnSpan);
-                boatControl.SetBinding(RowSpanProperty, rowSpan);
-                boatControl.SetBinding(BoatControl.IsSelectedProperty, isSelected);
+        //        boatControl.SetBinding(BoatControl.BoatHeightProperty, height);
+        //        boatControl.SetBinding(BoatControl.BoatWidthProperty, width);
+        //        boatControl.SetBinding(ColumnProperty, column);
+        //        boatControl.SetBinding(RowProperty, row);
+        //        boatControl.SetBinding(ColumnSpanProperty, columnSpan);
+        //        boatControl.SetBinding(RowSpanProperty, rowSpan);
+        //        boatControl.SetBinding(BoatControl.IsSelectedProperty, isSelected);
 
-                Panel.SetZIndex(boatControl, 1);
-                BoardGrid.Children.Add(boatControl);
-            }
-        }
+        //        Panel.SetZIndex(boatControl, 1);
+        //        BoardGrid.Children.Add(boatControl);
+        //    }
+        //}
     }
 }

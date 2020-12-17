@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BattleBoats.Wpf.Controls"
+             xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
              xmlns:converters="clr-namespace:BattleBoats.Wpf.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -11,6 +12,7 @@
         <!-- Convert tile length to pixels -->
         <converters:TileToPixelConverter x:Key="TileToPixelConverter"/>
         <converters:BooleanToOpacityConverter x:Key="BooleanToOpacityConverter"/>
+        <sysControls:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate>
@@ -23,7 +25,10 @@
                        StrokeThickness="2"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Fill="White">
+                       Fill="White"
+                       Visibility="{Binding Path=ShowBoat, 
+                        RelativeSource={RelativeSource AncestorType={x:Type local:BoatControl}},
+                        Converter={StaticResource BoolToVisibilityConverter}}">
                 <Rectangle.Stroke>
                     <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1" Opacity="{Binding Path=IsSelected, 
                         RelativeSource={RelativeSource AncestorType={x:Type local:BoatControl}},
