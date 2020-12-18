@@ -13,6 +13,7 @@ namespace BattleBoats.Wpf.ViewModels
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand MoveBoatCommand { get; set; }
+        public ICommand ToggleCPUBoatViewCommand { get; set; }
 
         public GameViewModel(INavigator navigator, List<IGameItem> boats)
         {
@@ -27,6 +28,7 @@ namespace BattleBoats.Wpf.ViewModels
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveBoatCommand = new MoveBoatCommand(this);
+            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleCPUBoatView(ComputerBoats));
         }
 
         public IGameItem Target { get; set; }
@@ -59,6 +61,12 @@ namespace BattleBoats.Wpf.ViewModels
                 new Boat(4, 0, 2, 9),
             };
         }
-
+        private void ToggleCPUBoatView(List<IGameItem> boats)
+        {
+            foreach (IGameItem boat in boats)
+            {
+                boat.ShowItem = !boat.ShowItem;
+            }
+        }
     }
 }

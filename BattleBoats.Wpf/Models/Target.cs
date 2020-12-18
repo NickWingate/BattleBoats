@@ -6,15 +6,20 @@ namespace BattleBoats.Wpf.Models
 {
     public class Target : ObservableObject, IGameItem
     {
+        private int _maxGridDimention = 9;
+
         private int _row;
 
         public int Row
         {
             get { return _row; }
             set 
-            { 
-                _row = value;
-                OnPropertyChanged(nameof(Row));
+            {
+                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
+                {
+                    _row = value;
+                    OnPropertyChanged(nameof(Row));
+                }
             }
         }
 
@@ -26,8 +31,11 @@ namespace BattleBoats.Wpf.Models
             get { return _column; }
             set 
             {
-                _column = value;
-                OnPropertyChanged(nameof(Column));
+                if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
+                {
+                    _column = value;
+                    OnPropertyChanged(nameof(Column));
+                }
             }
         }
 
