@@ -19,7 +19,7 @@ namespace BattleBoats.Wpf.ViewModels
         {
             _navigator = navigator;
             UserBoats = boats;
-            Target = new Target { Column = 0, Row = 0, ShowItem = true };
+            Target = new Target { Location = new Coordinate(0, 0), ShowItem = true };
             SelectedItem = Target;
 
             ComputerBoats = GenerateComputerBoats();

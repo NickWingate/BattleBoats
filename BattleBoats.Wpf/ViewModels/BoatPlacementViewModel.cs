@@ -131,7 +131,7 @@ namespace BattleBoats.Wpf.ViewModels
                 {
                     Boats[i].Rotate();
                 }
-                Boats[i].Column = i;
+                Boats[i].Location.XCoord = i;
             }
             UpdateValidBoatPlacement();
         }
