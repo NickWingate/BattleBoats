@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleBoats.Wpf.Validators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,14 +7,20 @@ namespace BattleBoats.Wpf.Models
 {
     public class Coordinate : ObservableObject
     {
+        private readonly int _length;
+        private readonly IValidator<int> _validator;
+
         private int _xCoord;
         public int XCoord
         {
             get { return _xCoord; }
             set 
-            { 
-                _xCoord = value;
-                OnPropertyChanged(nameof(XCoord));
+            {
+                if (_validator.Validate(value, _length))
+                {
+                    _xCoord = value;
+                    OnPropertyChanged(nameof(XCoord));
+                }
             }
         }
 
@@ -23,15 +30,26 @@ namespace BattleBoats.Wpf.Models
             get { return _yCoord; }
             set 
             {
-                _yCoord = value;
-                OnPropertyChanged(nameof(YCoord));
+                if (_validator.Validate(value, _length))
+                {
+                    _yCoord = value;
+                    OnPropertyChanged(nameof(YCoord));
+                }
             }
         }
 
 
 
+        public Coordinate(int xCoord, int yCoord, IValidator<int> validator, int length)
+        {
+            _length = length;
+            _validator = validator;
+            XCoord = xCoord;
+            YCoord = yCoord;
+        }
         public Coordinate(int xCoord, int yCoord)
         {
+            _validator = new EmptyValidator<int>();
             XCoord = xCoord;
             YCoord = yCoord;
         }

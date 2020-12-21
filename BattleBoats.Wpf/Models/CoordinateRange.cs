@@ -10,6 +10,7 @@ namespace BattleBoats.Wpf.Models
         {
             StartCoord = startCoord;
             EndCoord = endCoord;
+            
         }
 
         public Coordinate StartCoord { get; set; }

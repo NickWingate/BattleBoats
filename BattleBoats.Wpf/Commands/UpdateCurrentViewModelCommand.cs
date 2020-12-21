@@ -1,4 +1,5 @@
 ﻿using BattleBoats.Wpf.Services.Navigation;
+using BattleBoats.Wpf.Validators;
 using BattleBoats.Wpf.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,13 @@ namespace BattleBoats.Wpf.Commands
                         _navigator.Navigate(new MenuViewModel(_navigator));
                         break;
                     case ViewType.BoatPlacement:
-                        _navigator.Navigate(new BoatPlacementViewModel(_navigator));
+                        _navigator.Navigate(new BoatPlacementViewModel(_navigator, new CoordinateValidator(8)));
                         break;
                     case ViewType.Rules:
                         _navigator.Navigate(new RulesViewModel(_navigator));
                         break;
                     case ViewType.Game:
-                        _navigator.Navigate(new GameViewModel(_navigator, null));
+                        _navigator.Navigate(new GameViewModel(_navigator, null, new CoordinateValidator(8)));
                         break;
                     case ViewType.Winner:
                         _navigator.Navigate(new WinnerViewModel(_navigator));

@@ -1,6 +1,7 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
+using BattleBoats.Wpf.Validators;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace BattleBoats.Wpf.ViewModels
 {
     public class BoatPlacementViewModel : BaseViewModel, IBoatViewModel
     {
+        private readonly IValidator<int> _validator;
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand MoveBoatCommand { get; set; }
@@ -20,16 +22,17 @@ namespace BattleBoats.Wpf.ViewModels
         // Temporary / for testing commands:
         public ICommand SetValidBoatPlacementCommand { get; set; }
 
-        public BoatPlacementViewModel(INavigator navigator)
+        public BoatPlacementViewModel(INavigator navigator, IValidator<int> validator)
         {
+            _validator = validator;
             _navigator = navigator;
             Boats = new List<IGameItem>();
 
-            AircraftCarrier = new Boat(0, 0, 5, BoardSize);
-            Battleship = new Boat(0, 0, 4, BoardSize);
-            Submarine = new Boat(0, 0, 3, BoardSize);
-            Cruiser = new Boat(0, 0, 3, BoardSize);
-            Destroyer = new Boat(0, 0, 2, BoardSize);
+            AircraftCarrier = new Boat(0, 0, 5, BoardSize, validator);
+            Battleship = new Boat(0, 0, 4, BoardSize, validator);
+            Submarine = new Boat(0, 0, 3, BoardSize, validator);
+            Cruiser = new Boat(0, 0, 3, BoardSize, validator);
+            Destroyer = new Boat(0, 0, 2, BoardSize, validator);
 
             Boats.AddRange(new IGameItem[] { Destroyer, Cruiser, Submarine, Battleship, AircraftCarrier });
             SelectedItem = Boats[0];
@@ -85,7 +88,7 @@ namespace BattleBoats.Wpf.ViewModels
         }
         public void PlayGame()
         {
-            _navigator.Navigate(new GameViewModel(_navigator, Boats));
+            _navigator.Navigate(new GameViewModel(_navigator, Boats, _validator));
         }
 
         /// <summary>

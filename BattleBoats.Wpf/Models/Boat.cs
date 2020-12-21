@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleBoats.Wpf.Validators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace BattleBoats.Wpf.Models
 {
     public class Boat : ObservableObject, IGameItem
     {
+        private readonly IValidator<int> _validator;
         private int _maxGridDimention;
         /// <summary>
         /// Create a new boat object
@@ -14,8 +16,22 @@ namespace BattleBoats.Wpf.Models
         /// <param name="row">Row where boat is located (0 based)</param>
         /// <param name="length">Length of boat (1 based)</param>
         /// <param name="maxGridDimention">Maximum x by x square grid(x is 1 based)</param>
+        public Boat(int column, int row, int length, int maxGridDimention, IValidator<int> validator)
+        {
+            _validator = validator;
+
+            _maxGridDimention = maxGridDimention;
+            Rotated = false;
+            Length = length;
+            Health = length;
+            IsSelected = false;
+            Location = new Coordinate(column, row, validator, length);
+            ShowItem = true;
+        }
         public Boat(int column, int row, int length, int maxGridDimention)
         {
+            _validator = new EmptyValidator<int>();
+
             _maxGridDimention = maxGridDimention;
             Rotated = false;
             Length = length;
@@ -75,9 +91,8 @@ namespace BattleBoats.Wpf.Models
             }
         }
 
-
-        public Coordinate EndCoord => new Coordinate((Location.XCoord + ColumnSpan) - 1, (Location.YCoord + RowSpan) - 1);
-        public CoordinateRange CoordinateRange => new CoordinateRange(Location, EndCoord);
+        public CoordinateRange CoordinateRange => 
+            new CoordinateRange(Location, new Coordinate((Location.XCoord + ColumnSpan) - 1, (Location.YCoord + RowSpan) - 1));
 
         public int RowSpan => Rotated ? 1 : Length;
         public int ColumnSpan => Rotated ? Length : 1;
@@ -87,7 +102,6 @@ namespace BattleBoats.Wpf.Models
 
         public void UpdateCoords()
         {
-            OnPropertyChanged(nameof(EndCoord));
             OnPropertyChanged(nameof(CoordinateRange));
         }
         public void Rotate()

@@ -1,6 +1,7 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
+using BattleBoats.Wpf.Validators;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,13 +11,15 @@ namespace BattleBoats.Wpf.ViewModels
 {
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
+        private readonly IValidator<int> _validator; 
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand MoveBoatCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
 
-        public GameViewModel(INavigator navigator, List<IGameItem> boats)
+        public GameViewModel(INavigator navigator, List<IGameItem> boats, IValidator<int> validator)
         {
+            _validator = validator;
             _navigator = navigator;
             UserBoats = boats;
             Target = new Target { Location = new Coordinate(0, 0), ShowItem = true };

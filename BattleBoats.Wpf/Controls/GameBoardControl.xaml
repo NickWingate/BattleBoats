@@ -15,30 +15,30 @@
 
     <Grid.Resources>
         <sysControls:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <GridLength x:Key="TileSize">50</GridLength>
     </Grid.Resources>
     <Grid x:Name="BoardGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
+            <ColumnDefinition Width="{StaticResource TileSize}"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
+            <RowDefinition Height="{StaticResource TileSize}"/>
         </Grid.RowDefinitions>
         <ContentPresenter/>
         <controls:BoatControl BoatHeight="{Binding Path=Boats[4].RowSpan, 

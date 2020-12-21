@@ -9,7 +9,6 @@
         public bool Rotated { get; }
         public bool ShowItem { get; set; }
 
-        Coordinate EndCoord { get; }
         CoordinateRange CoordinateRange { get; }
 
         void Rotate();
