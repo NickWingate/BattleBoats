@@ -5,6 +5,11 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
+    public enum Coord
+    {
+        XCoord,
+        YCoord,
+    }
     public class Coordinate : ObservableObject
     {
         private readonly int _length;

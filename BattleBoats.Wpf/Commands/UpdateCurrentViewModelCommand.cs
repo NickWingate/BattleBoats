@@ -33,13 +33,13 @@ namespace BattleBoats.Wpf.Commands
                         _navigator.Navigate(new MenuViewModel(_navigator));
                         break;
                     case ViewType.BoatPlacement:
-                        _navigator.Navigate(new BoatPlacementViewModel(_navigator, new CoordinateValidator(8)));
+                        _navigator.Navigate(new BoatPlacementViewModel(_navigator, new IntegerCoordinateValidator(8)));
                         break;
                     case ViewType.Rules:
                         _navigator.Navigate(new RulesViewModel(_navigator));
                         break;
                     case ViewType.Game:
-                        _navigator.Navigate(new GameViewModel(_navigator, null, new CoordinateValidator(8)));
+                        _navigator.Navigate(new GameViewModel(_navigator, null, new IntegerCoordinateValidator(8)));
                         break;
                     case ViewType.Winner:
                         _navigator.Navigate(new WinnerViewModel(_navigator));

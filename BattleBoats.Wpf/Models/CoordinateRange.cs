@@ -1,20 +1,45 @@
-﻿using System;
+﻿using BattleBoats.Wpf.Validators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class CoordinateRange
+    public class CoordinateRange : ObservableObject
     {
-        public CoordinateRange(Coordinate startCoord, Coordinate endCoord)
+        private readonly IValidator<Coordinate> _validator;
+
+
+        public CoordinateRange(Coordinate startCoord, Coordinate endCoord, IValidator<Coordinate> validator)
         {
             StartCoord = startCoord;
             EndCoord = endCoord;
-            
+            _validator = validator;
         }
 
-        public Coordinate StartCoord { get; set; }
-        public Coordinate EndCoord { get; set; }
+        private Coordinate _startCoord;
+        public Coordinate StartCoord 
+        {
+            get { return _startCoord; }
+            set
+            {
+                if(_validator.Validate(StartCoord, new object[] { }))
+                _startCoord = value;
+                OnPropertyChanged(nameof(StartCoord));
+            } 
+        }
+
+        private Coordinate _endCoord;
+
+        public Coordinate EndCoord 
+        {
+            get { return _endCoord; }
+            set
+            {
+                _endCoord = value;
+                OnPropertyChanged(nameof(EndCoord));
+            } 
+        }
 
         /// <summary>
         /// Get all the coordinates that the boat occupies
