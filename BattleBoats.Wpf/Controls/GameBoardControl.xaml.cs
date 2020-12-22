@@ -30,14 +30,14 @@ namespace BattleBoats.Wpf.Controls
             Target = new Target { ShowItem = false };
         }
 
-        public List<IGameItem> Boats
+        public List<IBoat> Boats
         {
-            get { return (List<IGameItem>)GetValue(BoatsProperty); }
+            get { return (List<IBoat>)GetValue(BoatsProperty); }
             set { SetValue(BoatsProperty, value); }
         }
         // Using a DependencyProperty as the backing store for Boats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoatsProperty =
-            DependencyProperty.Register(nameof(Boats), typeof(List<IGameItem>), typeof(GameBoardControl), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Boats), typeof(List<IBoat>), typeof(GameBoardControl), new PropertyMetadata(null));
 
 
         public IGameItem Target

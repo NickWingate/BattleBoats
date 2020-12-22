@@ -15,7 +15,8 @@ namespace BattleBoats.Wpf.Models
             get { return _row; }
             set 
             {
-                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
+                // + 1 is for the length of the target
+                if (!(value + 1 > _maxGridDimention) && value >= 0)
                 {
                     _row = value;
                     OnPropertyChanged(nameof(Row));
@@ -31,7 +32,8 @@ namespace BattleBoats.Wpf.Models
             get { return _column; }
             set 
             {
-                if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
+                // + 1 is for the length of the target
+                if (!(value + 1 > _maxGridDimention) && value >= 0)
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
@@ -51,24 +53,6 @@ namespace BattleBoats.Wpf.Models
             }
         }
 
-
-        public int ColumnSpan => 1;
-
-        public int RowSpan => 1;
-
-        public bool IsSelected { get; set; } = true;
-
-        public bool Rotated => false;
-
-        public Coordinate StartCoord { get; }
-
-        public Coordinate EndCoord => StartCoord;
-
-        public CoordinateRange CoordinateRange { get; }
-
-        public void Rotate()
-        {
-            
-        }
+        public Coordinate Location { get; }
     }
 }

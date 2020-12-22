@@ -53,13 +53,13 @@ namespace BattleBoats.Wpf.Commands
                         _item.Column++;
                         break;
                     case Direction.Rotate:
-                        _item.Rotate();
+                        ((IBoat)_item).Rotate();
                         break;
                     default:
                         break;
                 }
             }
-            if (_item.GetType() == typeof(BoatPlacementViewModel))
+            if (_boatViewModel.GetType() == typeof(BoatPlacementViewModel))
             {
                 ((BoatPlacementViewModel)_boatViewModel).UpdateValidBoatPlacement();
             }

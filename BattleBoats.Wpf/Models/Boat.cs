@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class Boat : ObservableObject, IGameItem
+    public class Boat : ObservableObject, IBoat
     {
         private int _maxGridDimention;
         /// <summary>
@@ -95,9 +95,9 @@ namespace BattleBoats.Wpf.Models
         }
 
 
-        public Coordinate StartCoord => new Coordinate(Row, Column);
+        public Coordinate Location => new Coordinate(Row, Column);
         public Coordinate EndCoord => new Coordinate((Row + RowSpan) - 1, (Column + ColumnSpan) - 1);
-        public CoordinateRange CoordinateRange => new CoordinateRange(StartCoord, EndCoord);
+        public CoordinateRange CoordinateRange => new CoordinateRange(Location, EndCoord);
 
         public int RowSpan => Rotated ? 1 : Length;
         public int ColumnSpan => Rotated ? Length : 1;
@@ -107,7 +107,7 @@ namespace BattleBoats.Wpf.Models
 
         public void UpdateCoords()
         {
-            OnPropertyChanged(nameof(StartCoord));
+            OnPropertyChanged(nameof(Location));
             OnPropertyChanged(nameof(EndCoord));
             OnPropertyChanged(nameof(CoordinateRange));
         }
