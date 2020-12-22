@@ -8,18 +8,36 @@ namespace BattleBoats.Wpf.Models
     {
         private int _maxGridDimention = 9;
 
-        private Coordinate _location;
+        private int _row;
 
-        public Coordinate Location
+        public int Row
         {
-            get { return _location; }
-            set
+            get { return _row; }
+            set 
             {
-                _location = value;
-                OnPropertyChanged(nameof(Location));
+                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
+                {
+                    _row = value;
+                    OnPropertyChanged(nameof(Row));
+                }
             }
         }
-        
+
+
+        private int _column;
+
+        public int Column
+        {
+            get { return _column; }
+            set 
+            {
+                if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
+                {
+                    _column = value;
+                    OnPropertyChanged(nameof(Column));
+                }
+            }
+        }
 
         private bool _showItem;
 

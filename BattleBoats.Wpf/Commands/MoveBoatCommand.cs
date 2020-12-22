@@ -41,16 +41,16 @@ namespace BattleBoats.Wpf.Commands
                 switch (direction)
                 {
                     case Direction.North:
-                        _item.Location.YCoord--;
+                        _item.Row--;
                         break;
                     case Direction.East:
-                        _item.Location.XCoord--;
+                        _item.Column--;
                         break;
                     case Direction.South:
-                        _item.Location.YCoord++;
+                        _item.Row++;
                         break;
                     case Direction.West:
-                        _item.Location.XCoord++;
+                        _item.Column++;
                         break;
                     case Direction.Rotate:
                         _item.Rotate();
@@ -59,7 +59,7 @@ namespace BattleBoats.Wpf.Commands
                         break;
                 }
             }
-            if (_boatViewModel.GetType() == typeof(BoatPlacementViewModel))
+            if (_item.GetType() == typeof(BoatPlacementViewModel))
             {
                 ((BoatPlacementViewModel)_boatViewModel).UpdateValidBoatPlacement();
             }

@@ -21,23 +21,10 @@ namespace BattleBoats.Wpf.Models
             Length = length;
             Health = length;
             IsSelected = false;
-            Location = new Coordinate(column, row);
+            Column = column;
+            Row = row;
             ShowItem = true;
         }
-
-        private Coordinate _location;
-
-        public Coordinate Location
-        {
-            get { return _location; }
-            set 
-            {
-                _location = value;
-                OnPropertyChanged(nameof(Location));
-                UpdateCoords();
-            }
-        }
-
 
         private bool _isSelected;
         public bool IsSelected
@@ -47,6 +34,38 @@ namespace BattleBoats.Wpf.Models
             {
                 _isSelected = value;
                 OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
+        private int _column;
+        public int Column
+        {
+            get { return _column; }
+            set
+            {
+                // If moving the boat will still be in the grid
+                if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
+                {
+                    _column = value;
+                    OnPropertyChanged(nameof(Column));
+                    UpdateCoords();
+                }
+            }
+        }
+
+        private int _row;
+        public int Row
+        {
+            get { return _row; }
+            set
+            {
+                // If moving the boat will still be in the grid
+                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
+                {
+                    _row = value;
+                    OnPropertyChanged(nameof(Row));
+                    UpdateCoords();
+                }
             }
         }
 
@@ -76,8 +95,9 @@ namespace BattleBoats.Wpf.Models
         }
 
 
-        public Coordinate EndCoord => new Coordinate((Location.XCoord + ColumnSpan) - 1, (Location.YCoord + RowSpan) - 1);
-        public CoordinateRange CoordinateRange => new CoordinateRange(Location, EndCoord);
+        public Coordinate StartCoord => new Coordinate(Row, Column);
+        public Coordinate EndCoord => new Coordinate((Row + RowSpan) - 1, (Column + ColumnSpan) - 1);
+        public CoordinateRange CoordinateRange => new CoordinateRange(StartCoord, EndCoord);
 
         public int RowSpan => Rotated ? 1 : Length;
         public int ColumnSpan => Rotated ? Length : 1;
@@ -87,6 +107,7 @@ namespace BattleBoats.Wpf.Models
 
         public void UpdateCoords()
         {
+            OnPropertyChanged(nameof(StartCoord));
             OnPropertyChanged(nameof(EndCoord));
             OnPropertyChanged(nameof(CoordinateRange));
         }
@@ -97,15 +118,15 @@ namespace BattleBoats.Wpf.Models
             OnPropertyChanged(nameof(ColumnSpan));
             UpdateCoords();
             // Stop boat from rotating off board
-            if (RowSpan + Location.YCoord > _maxGridDimention)
+            if (RowSpan + Row > _maxGridDimention)
             {
                 // -1 as row is zero based, but length is 1 based
-                Location.YCoord -= Length - 1;
+                Row -= Length - 1;
             }
-            else if (ColumnSpan + Location.XCoord > _maxGridDimention)
+            else if (ColumnSpan + Column > _maxGridDimention)
             {
                 // -1 as column is zero based, but length is 1 based
-                Location.XCoord -= Length - 1;
+                Column -= Length - 1;
             }
         }
     }

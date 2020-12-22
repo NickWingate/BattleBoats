@@ -4,32 +4,10 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class Coordinate : ObservableObject
+    public class Coordinate
     {
-        private int _xCoord;
-        public int XCoord
-        {
-            get { return _xCoord; }
-            set 
-            { 
-                _xCoord = value;
-                OnPropertyChanged(nameof(XCoord));
-            }
-        }
-
-        private int _yCoord;
-        public int YCoord
-        {
-            get { return _yCoord; }
-            set 
-            {
-                _yCoord = value;
-                OnPropertyChanged(nameof(YCoord));
-            }
-        }
-
-
-
+        public int XCoord { get; set; }
+        public int YCoord { get; set; }
         public Coordinate(int xCoord, int yCoord)
         {
             XCoord = xCoord;

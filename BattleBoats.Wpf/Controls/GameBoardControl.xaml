@@ -47,10 +47,10 @@
                               BoatWidth="{Binding Path=Boats[4].ColumnSpan, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[4].Location.XCoord, 
+                              Grid.Column="{Binding Path=Boats[4].Column, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[4].Location.YCoord, 
+                              Grid.Row="{Binding Path=Boats[4].Row, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
                               Grid.ColumnSpan="{Binding Path=Boats[4].ColumnSpan, 
@@ -71,10 +71,10 @@
                               BoatWidth="{Binding Path=Boats[3].ColumnSpan, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[3].Location.XCoord, 
+                              Grid.Column="{Binding Path=Boats[3].Column, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[3].Location.YCoord, 
+                              Grid.Row="{Binding Path=Boats[3].Row, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
                               Grid.ColumnSpan="{Binding Path=Boats[3].ColumnSpan, 
@@ -95,10 +95,10 @@
                               BoatWidth="{Binding Path=Boats[2].ColumnSpan, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[2].Location.XCoord, 
+                              Grid.Column="{Binding Path=Boats[2].Column, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[2].Location.YCoord, 
+                              Grid.Row="{Binding Path=Boats[2].Row, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
                               Grid.ColumnSpan="{Binding Path=Boats[2].ColumnSpan, 
@@ -119,10 +119,10 @@
                               BoatWidth="{Binding Path=Boats[1].ColumnSpan, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[1].Location.XCoord, 
+                              Grid.Column="{Binding Path=Boats[1].Column, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[1].Location.YCoord, 
+                              Grid.Row="{Binding Path=Boats[1].Row, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
                               Grid.ColumnSpan="{Binding Path=Boats[1].ColumnSpan, 
@@ -143,10 +143,10 @@
                               BoatWidth="{Binding Path=Boats[0].ColumnSpan, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[0].Location.XCoord, 
+                              Grid.Column="{Binding Path=Boats[0].Column, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[0].Location.YCoord, 
+                              Grid.Row="{Binding Path=Boats[0].Row, 
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
                                     UpdateSourceTrigger=PropertyChanged}" 
                               Grid.ColumnSpan="{Binding Path=Boats[0].ColumnSpan, 
@@ -162,10 +162,10 @@
                               Panel.ZIndex="1"/>
 
         <Rectangle Fill="Red" Height="50" Width="50" RadiusX="20" RadiusY="20"
-                    Grid.Row="{Binding Path=Target.Location.YCoord,     
+                    Grid.Row="{Binding Path=Target.Row,     
                                 UpdateSourceTrigger=PropertyChanged,
                                 RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                    Grid.Column="{Binding Path=Target.Location.XCoord,          
+                    Grid.Column="{Binding Path=Target.Column,          
                                 UpdateSourceTrigger=PropertyChanged,
                                 RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
                     Visibility="{Binding Path=Target.ShowItem,          
