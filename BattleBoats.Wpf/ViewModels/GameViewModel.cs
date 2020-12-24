@@ -8,6 +8,13 @@ using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
+    public enum TileState
+    {
+        Boat,
+        Empty,
+        Hit,
+        Miss,
+    }
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
@@ -30,7 +37,7 @@ namespace BattleBoats.Wpf.ViewModels
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveBoatCommand = new MoveBoatCommand(this);
-            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleCPUBoatView(ComputerBoats));
+            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             //UserShootCommand = 
         }
 
@@ -39,6 +46,10 @@ namespace BattleBoats.Wpf.ViewModels
         public List<IBoat> UserBoats { get; set; }
         public List<IBoat> ComputerBoats { get; set; }
        
+        /// <summary>
+        /// Deselects every boat in the list
+        /// </summary>
+        /// <param name="boats"></param>
         private void DeselectBoats(List<IBoat> boats)
         {
             foreach (IBoat boat in boats)
@@ -46,6 +57,12 @@ namespace BattleBoats.Wpf.ViewModels
                 boat.IsSelected = false;
             }
         }
+
+        /// <summary>
+        /// Sets all the boats in the list to hidden <br/>
+        /// Similar to <see cref="ToggleBoatView(List{IBoat})"/>
+        /// </summary>
+        /// <param name="boats"></param>
         private void HideBoats(List<IBoat> boats)
         {
             foreach (IBoat boat in boats)
@@ -53,6 +70,12 @@ namespace BattleBoats.Wpf.ViewModels
                 boat.ShowItem = false;
             }
         }
+
+        /// <summary>
+        /// Create a list of boats and their location for the computer
+        /// currently this is constant but will be random in the future
+        /// </summary>
+        /// <returns> List of IBoats for the computers boats</returns>
         private List<IBoat> GenerateComputerBoats()
         {
             return new List<IBoat>()
@@ -64,13 +87,22 @@ namespace BattleBoats.Wpf.ViewModels
                 new Boat(4, 0, 2, 9),
             };
         }
-        private void ToggleCPUBoatView(List<IBoat> boats)
+
+        /// <summary>
+        /// Toggles the visibility of all the boats in the list
+        /// </summary>
+        /// <param name="boats"> the list of boats to effect </param>
+        private void ToggleBoatView(List<IBoat> boats)
         {
             foreach (IBoat boat in boats)
             {
                 boat.ShowItem = !boat.ShowItem;
             }
         }
+
+        /// <summary>
+        /// Shoot a missile at targets location
+        /// </summary>
         private void UserShoot()
         {
             // get target location
@@ -79,9 +111,43 @@ namespace BattleBoats.Wpf.ViewModels
             // if ship: display red 'x' on grid
             // if empty: display green 'o' on grid
         }
-        //private bool CheckForBoat(List<IGameItem> boats, Coordinate location)
-        //{
-        //    
-        //}
+
+        /// <summary>
+        /// Transforms list of boats, with their locations into a 2D array of boats, empty, and hit/miss tiles
+        /// </summary>
+        /// <param name="boats"> The list of boats </param>
+        /// <param name="gridSize"> Size of the 2D array (1 based and square)</param>
+        /// <returns> 2D array of TileState[,] type </returns>
+        private TileState[,] TransformLocationToGrid(List<IBoat> boats, int gridSize)
+        {
+            TileState[,] gameGrid = new TileState[gridSize, gridSize];
+            Populate2DArray(ref gameGrid, TileState.Empty);
+            foreach (IBoat boat in boats)
+            {
+                foreach (Coordinate coordinate in boat.CoordinateRange.GetAllCoordinates())
+                {
+                    gameGrid[coordinate.XCoord, coordinate.YCoord] = TileState.Boat;
+                }
+            }
+            return gameGrid;
+        }
+
+        /// <summary>
+        /// Fills 2D array with one value of type T
+        /// </summary>
+        /// <typeparam name="T"> Type of array </typeparam>
+        /// <param name="array"> 2D array to fill </param>
+        /// <param name="value"> Value to fill array as </param>
+        /// <returns></returns>
+        private void Populate2DArray<T>(ref T[,] array, T value)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] = value;
+                }
+            }
+        }
     }
 }

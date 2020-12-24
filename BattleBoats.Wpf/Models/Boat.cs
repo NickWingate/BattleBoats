@@ -95,8 +95,8 @@ namespace BattleBoats.Wpf.Models
         }
 
 
-        public Coordinate Location => new Coordinate(Row, Column);
-        public Coordinate EndCoord => new Coordinate((Row + RowSpan) - 1, (Column + ColumnSpan) - 1);
+        public Coordinate Location => new Coordinate(Column, Row);
+        public Coordinate EndCoord => new Coordinate((Column + ColumnSpan) - 1, (Row + RowSpan) - 1);
         public CoordinateRange CoordinateRange => new CoordinateRange(Location, EndCoord);
 
         public int RowSpan => Rotated ? 1 : Length;

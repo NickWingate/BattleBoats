@@ -17,13 +17,13 @@ namespace BattleBoats.Wpf.Models.Tests
             // Arrange
             CoordinateRange coordinateRange = new CoordinateRange(
                 new Coordinate(0, 0),
-                new Coordinate(3, 0));
+                new Coordinate(0, 3));
             List<Coordinate> expected = new List<Coordinate>() 
             {
                 new Coordinate(0, 0),
-                new Coordinate(1, 0),
-                new Coordinate(2, 0),
-                new Coordinate(3, 0),
+                new Coordinate(0, 1),
+                new Coordinate(0, 2),
+                new Coordinate(0, 3),
             };
 
             // Act
