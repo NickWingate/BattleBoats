@@ -1,4 +1,5 @@
 ﻿using BattleBoats.Wpf.Commands;
+using BattleBoats.Wpf.Controls;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
@@ -26,11 +27,18 @@ namespace BattleBoats.Wpf.ViewModels
         public GameViewModel(INavigator navigator, List<IBoat> boats)
         {
             _navigator = navigator;
+
             UserBoats = boats;
+            ComputerBoats = GenerateComputerBoats();
+
+            UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
+            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
+
             Target = new Target { Column = 0, Row = 0, ShowItem = true };
             SelectedItem = Target;
 
-            ComputerBoats = GenerateComputerBoats();
+
+
             DeselectBoats(UserBoats);
             HideBoats(ComputerBoats);
             // transform list of locations to 2d array/map of boats
@@ -39,13 +47,16 @@ namespace BattleBoats.Wpf.ViewModels
             MoveBoatCommand = new MoveBoatCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             //UserShootCommand = 
+
         }
 
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
         public List<IBoat> UserBoats { get; set; }
         public List<IBoat> ComputerBoats { get; set; }
-       
+        public TileState[,] UserGameBoard { get; set; }
+        public TileState[,] ComputerGameBoard { get; set; }
+
         /// <summary>
         /// Deselects every boat in the list
         /// </summary>
@@ -130,6 +141,11 @@ namespace BattleBoats.Wpf.ViewModels
                 }
             }
             return gameGrid;
+        }
+
+        private bool HitShip(TileState[,] gameBoard, Coordinate coordinate)
+        {
+            return gameBoard[coordinate.YCoord, coordinate.XCoord] == TileState.Boat;
         }
 
         /// <summary>

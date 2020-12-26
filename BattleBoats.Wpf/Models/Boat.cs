@@ -6,7 +6,7 @@ namespace BattleBoats.Wpf.Models
 {
     public class Boat : ObservableObject, IBoat
     {
-        private int _maxGridDimention;
+        public int MaxGridDimention { get; set; }
         /// <summary>
         /// Create a new boat object
         /// </summary>
@@ -16,7 +16,7 @@ namespace BattleBoats.Wpf.Models
         /// <param name="maxGridDimention">Maximum x by x square grid(x is 1 based)</param>
         public Boat(int column, int row, int length, int maxGridDimention)
         {
-            _maxGridDimention = maxGridDimention;
+            MaxGridDimention = maxGridDimention;
             Rotated = false;
             Length = length;
             Health = length;
@@ -44,7 +44,7 @@ namespace BattleBoats.Wpf.Models
             set
             {
                 // If moving the boat will still be in the grid
-                if (!(value + ColumnSpan > _maxGridDimention) && value >= 0)
+                if (!(value + ColumnSpan > MaxGridDimention) && value >= 0)
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
@@ -60,7 +60,7 @@ namespace BattleBoats.Wpf.Models
             set
             {
                 // If moving the boat will still be in the grid
-                if (!(value + RowSpan > _maxGridDimention) && value >= 0)
+                if (!(value + RowSpan > MaxGridDimention) && value >= 0)
                 {
                     _row = value;
                     OnPropertyChanged(nameof(Row));
@@ -82,14 +82,14 @@ namespace BattleBoats.Wpf.Models
         }
 
 
-        private bool _showBoat;
+        private bool _showItem;
 
         public bool ShowItem
         {
-            get { return _showBoat; }
+            get { return _showItem; }
             set 
             {
-                _showBoat = value;
+                _showItem = value;
                 OnPropertyChanged(nameof(ShowItem));
             }
         }
@@ -118,12 +118,12 @@ namespace BattleBoats.Wpf.Models
             OnPropertyChanged(nameof(ColumnSpan));
             UpdateCoords();
             // Stop boat from rotating off board
-            if (RowSpan + Row > _maxGridDimention)
+            if (RowSpan + Row > MaxGridDimention)
             {
                 // -1 as row is zero based, but length is 1 based
                 Row -= Length - 1;
             }
-            else if (ColumnSpan + Column > _maxGridDimention)
+            else if (ColumnSpan + Column > MaxGridDimention)
             {
                 // -1 as column is zero based, but length is 1 based
                 Column -= Length - 1;

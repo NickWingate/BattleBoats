@@ -6,7 +6,7 @@ namespace BattleBoats.Wpf.Models
 {
     public class Target : ObservableObject, IGameItem
     {
-        private int _maxGridDimention = 9;
+        public int MaxGridDimention { get; set; } = 9;
 
         private int _row;
 
@@ -16,7 +16,7 @@ namespace BattleBoats.Wpf.Models
             set 
             {
                 // + 1 is for the length of the target
-                if (!(value + 1 > _maxGridDimention) && value >= 0)
+                if (!(value + 1 > MaxGridDimention) && value >= 0)
                 {
                     _row = value;
                     OnPropertyChanged(nameof(Row));
@@ -33,7 +33,7 @@ namespace BattleBoats.Wpf.Models
             set 
             {
                 // + 1 is for the length of the target
-                if (!(value + 1 > _maxGridDimention) && value >= 0)
+                if (!(value + 1 > MaxGridDimention) && value >= 0)
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
