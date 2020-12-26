@@ -6,7 +6,15 @@ namespace BattleBoats.Wpf.Models
 {
     public class Target : ObservableObject, IGameItem
     {
-        public int MaxGridDimention { get; set; } = 9;
+
+        public Target(int column, int row, int maxGridDimention)
+        {
+            Column = column;
+            Row = row;
+            MaxGridDimention = maxGridDimention;
+        }
+
+        public int MaxGridDimention { get; set; }
 
         private int _row;
 

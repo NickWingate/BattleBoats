@@ -34,7 +34,7 @@ namespace BattleBoats.Wpf.ViewModels
             UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
             ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
 
-            Target = new Target { Column = 0, Row = 0, ShowItem = true };
+            Target = new Target(0, 0, BoardDimention);
             SelectedItem = Target;
 
 
@@ -49,7 +49,7 @@ namespace BattleBoats.Wpf.ViewModels
             //UserShootCommand = 
 
         }
-
+        public int BoardDimention => Settings.BoardDimention;
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
         public List<IBoat> UserBoats { get; set; }

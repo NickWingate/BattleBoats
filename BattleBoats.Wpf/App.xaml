@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewmodels="clr-namespace:BattleBoats.Wpf.ViewModels"
              xmlns:views="clr-namespace:BattleBoats.Wpf.Views"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:BattleBoats.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -12,7 +13,6 @@
                 <ResourceDictionary Source="Styles/Fonts.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons/ButtonDictionary.xaml"/>
                 
-
                 <materialDesign:CustomColorTheme BaseTheme="Dark" PrimaryColor="Pink" SecondaryColor="Teal"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
                 <ResourceDictionary>
@@ -34,7 +34,7 @@
 
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
-                <views:MenuView/>
+            <views:MenuView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:RulesViewModel}">
                 <views:RulesView/>

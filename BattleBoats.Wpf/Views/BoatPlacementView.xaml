@@ -32,7 +32,8 @@
         
         <!-- Board -->
         <controls:GameBoardControl x:Name="GameBoard" 
-                                   Boats="{Binding Boats, UpdateSourceTrigger=PropertyChanged}"/>
+                                   Boats="{Binding Boats, UpdateSourceTrigger=PropertyChanged}"
+                                   BoardDimention="{Binding BoardDimention}"/>
 
         <!-- Movement Buttons -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">

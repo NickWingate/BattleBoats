@@ -9,6 +9,6 @@ namespace BattleBoats.Wpf.ViewModels
     {
 
         public IGameItem SelectedItem { get; set; }
-
+        public int BoardDimention { get; }
     }
 }
