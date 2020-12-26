@@ -27,7 +27,6 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -41,125 +40,6 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <ContentPresenter/>
-        <controls:BoatControl BoatHeight="{Binding Path=Boats[4].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              BoatWidth="{Binding Path=Boats[4].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[4].Column, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[4].Row, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.ColumnSpan="{Binding Path=Boats[4].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.RowSpan="{Binding Path=Boats[4].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              IsSelected="{Binding Path=Boats[4].IsSelected, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              ShowBoat="{Binding Path=Boats[4].ShowItem,          
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              Panel.ZIndex="1"/>
-
-        <controls:BoatControl BoatHeight="{Binding Path=Boats[3].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              BoatWidth="{Binding Path=Boats[3].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[3].Column, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[3].Row, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.ColumnSpan="{Binding Path=Boats[3].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.RowSpan="{Binding Path=Boats[3].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              IsSelected="{Binding Path=Boats[3].IsSelected, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              ShowBoat="{Binding Path=Boats[3].ShowItem,          
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              Panel.ZIndex="1"/>
-
-        <controls:BoatControl BoatHeight="{Binding Path=Boats[2].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              BoatWidth="{Binding Path=Boats[2].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[2].Column, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[2].Row, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.ColumnSpan="{Binding Path=Boats[2].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.RowSpan="{Binding Path=Boats[2].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              IsSelected="{Binding Path=Boats[2].IsSelected, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              ShowBoat="{Binding Path=Boats[2].ShowItem,          
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              Panel.ZIndex="1"/>
-
-        <controls:BoatControl BoatHeight="{Binding Path=Boats[1].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              BoatWidth="{Binding Path=Boats[1].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[1].Column, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[1].Row, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.ColumnSpan="{Binding Path=Boats[1].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.RowSpan="{Binding Path=Boats[1].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              IsSelected="{Binding Path=Boats[1].IsSelected, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              ShowBoat="{Binding Path=Boats[1].ShowItem,          
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              Panel.ZIndex="1"/>
-
-        <controls:BoatControl BoatHeight="{Binding Path=Boats[0].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              BoatWidth="{Binding Path=Boats[0].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Column="{Binding Path=Boats[0].Column, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.Row="{Binding Path=Boats[0].Row, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.ColumnSpan="{Binding Path=Boats[0].ColumnSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              Grid.RowSpan="{Binding Path=Boats[0].RowSpan, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}, 
-                                    UpdateSourceTrigger=PropertyChanged}" 
-                              IsSelected="{Binding Path=Boats[0].IsSelected, 
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              ShowBoat="{Binding Path=Boats[0].ShowItem,          
-                                    RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
-                              Panel.ZIndex="1"/>
 
         <Rectangle Fill="Red" Height="50" Width="50" RadiusX="20" RadiusY="20"
                     Grid.Row="{Binding Path=Target.Row,     
