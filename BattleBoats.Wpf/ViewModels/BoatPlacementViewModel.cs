@@ -13,7 +13,7 @@ namespace BattleBoats.Wpf.ViewModels
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
-        public ICommand MoveBoatCommand { get; set; }
+        public ICommand MoveGameItemCommand { get; set; }
         public ICommand SwitchSelectedBoatCommand { get; set; }
         public ICommand PlayGameCommand { get; set; }
 
@@ -37,7 +37,7 @@ namespace BattleBoats.Wpf.ViewModels
 
             SwitchSelectedBoatCommand = new RelayCommand(SwitchSelectedBoat);
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
-            MoveBoatCommand = new MoveBoatCommand(this);
+            MoveGameItemCommand = new MoveGameItemCommand(this);
             PlayGameCommand = new RelayCommand(PlayGame);
             SetValidBoatPlacementCommand = new RelayCommand(SetValidBoatPlacement);
         }

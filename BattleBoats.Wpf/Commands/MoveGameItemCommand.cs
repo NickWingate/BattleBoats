@@ -16,13 +16,13 @@ namespace BattleBoats.Wpf.Commands
         West,
         Rotate,
     }
-    public class MoveBoatCommand : ObservableObject, ICommand 
+    public class MoveGameItemCommand : ObservableObject, ICommand 
     {
         public event EventHandler CanExecuteChanged;
         private IGameItem _item;
         private IBoatViewModel _boatViewModel;
 
-        public MoveBoatCommand(IBoatViewModel boatViewModel)
+        public MoveGameItemCommand(IBoatViewModel boatViewModel)
         {
             _item = boatViewModel.SelectedItem;
             _boatViewModel = boatViewModel;

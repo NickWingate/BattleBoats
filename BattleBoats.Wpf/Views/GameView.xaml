@@ -11,11 +11,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <UserControl.InputBindings>
-        <KeyBinding Key="Up" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.North}"/>
-        <KeyBinding Key="Down" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.South}"/>
-        <KeyBinding Key="Left" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.East}"/>
-        <KeyBinding Key="Right" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.West}"/>
-        <KeyBinding Key="R" Command="{Binding MoveBoatCommand}" CommandParameter="{x:Static command:Direction.Rotate}"/>
+        <KeyBinding Key="Up" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.North}"/>
+        <KeyBinding Key="Down" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.South}"/>
+        <KeyBinding Key="Left" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.East}"/>
+        <KeyBinding Key="Right" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.West}"/>
     </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,7 +43,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <Button Content="Shoot" Command="{Binding TestHitMarkerCommand}"/>
+            <Button Content="Shoot" Command="{Binding }"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
         </StackPanel>
 

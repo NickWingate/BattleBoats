@@ -9,9 +9,10 @@ namespace BattleBoats.Wpf.Models
 
         public Target(int column, int row, int maxGridDimention)
         {
+            MaxGridDimention = maxGridDimention;
             Column = column;
             Row = row;
-            MaxGridDimention = maxGridDimention;
+            ShowItem = true;
         }
 
         public int MaxGridDimention { get; set; }

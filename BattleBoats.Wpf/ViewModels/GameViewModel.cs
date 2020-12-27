@@ -14,10 +14,9 @@ namespace BattleBoats.Wpf.ViewModels
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get; }
-        public ICommand MoveBoatCommand { get; set; }
+        public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
-        public ICommand TestHitMarkerCommand { get; set; }
 
         public GameViewModel(INavigator navigator, List<IBoat> boats)
         {
@@ -37,10 +36,9 @@ namespace BattleBoats.Wpf.ViewModels
             // transform list of locations to 2d array/map of boats
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
-            MoveBoatCommand = new MoveBoatCommand(this);
+            MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             //UserShootCommand = 
-            TestHitMarkerCommand = new RelayCommand(TestComputerHitMarkers);
 
         }
 
@@ -135,7 +133,7 @@ namespace BattleBoats.Wpf.ViewModels
         {
             // get target location
             Coordinate targetLocation = Target.Location;
-            // x and o can be IGameItems?
+            // check if can shoot here
             // if ship: display red 'x' on grid
             // if empty: display green 'o' on grid
         }
