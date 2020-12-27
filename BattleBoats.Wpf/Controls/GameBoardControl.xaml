@@ -6,7 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:controls="clr-namespace:BattleBoats.Wpf.Controls"
       xmlns:sysControls="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-      xmlns:local="clr-namespace:BattleBoats.Wpf.Controls"
+      xmlns:local="clr-namespace:BattleBoats.Wpf.Controls" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="720"
       Background="{StaticResource MaterialDesignDarkBackground}"
@@ -19,7 +19,7 @@
     <Grid x:Name="BoardGrid">
         <ContentPresenter/>
 
-        <Rectangle Fill="Red" Height="50" Width="50" RadiusX="20" RadiusY="20"
+        <materialDesign:PackIcon Kind="Target" Foreground="DimGray" Height="50" Width="50"
                     Grid.Row="{Binding Path=Target.Row,     
                                 UpdateSourceTrigger=PropertyChanged,
                                 RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}}}"
@@ -30,7 +30,7 @@
                                     RelativeSource={RelativeSource AncestorType={x:Type local:GameBoardControl}},
                                     Converter={StaticResource BooleanToVisibilityConverter},
                                     FallbackValue=Hidden}"
-                    Panel.ZIndex="2"/>
+                    Panel.ZIndex="101"/>
     </Grid>
 
     <Rectangle Fill="{StaticResource MaterialDesignLightSeparatorBackground}" RadiusX="10" RadiusY="10" Margin="-20"/>

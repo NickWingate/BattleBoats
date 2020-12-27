@@ -17,6 +17,7 @@ namespace BattleBoats.Wpf.ViewModels
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
+        public ICommand AddSampleHitMarkersCommand { get; set; }
 
         public GameViewModel(INavigator navigator, List<IBoat> boats)
         {
@@ -38,6 +39,7 @@ namespace BattleBoats.Wpf.ViewModels
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
+            AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
             //UserShootCommand = 
 
         }
@@ -65,6 +67,7 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         public int BoardDimention => Settings.BoardDimention;
+        public bool ValidTargetLocation { get; private set; } = true;
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
         public List<IBoat> UserBoats { get; set; }
@@ -127,6 +130,16 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         /// <summary>
+        /// Checks if the target is in a valid tile i.e. not a tile already shot
+        /// </summary>
+        public void UpdateValidPlacement()
+        {
+            TileState targetOverTileState = ComputerGameBoard[Target.Row, Target.Column];
+            ValidTargetLocation = (targetOverTileState == TileState.Boat || targetOverTileState == TileState.Empty);
+            OnPropertyChanged(nameof(ValidTargetLocation));
+        }
+
+        /// <summary>
         /// Shoot a missile at targets location
         /// </summary>
         private void UserShoot()
@@ -138,10 +151,11 @@ namespace BattleBoats.Wpf.ViewModels
             // if empty: display green 'o' on grid
         }
 
-        private void TestComputerHitMarkers()
+        private void AddSampleHitMarkers()
         {
             ComputerHitMarkers.Add(new HitMarker(1, 1, TileState.Hit));
             ComputerHitMarkers.Add(new HitMarker(1, 2, TileState.Miss));
+            UpdateGrid(ComputerGameBoard, ComputerHitMarkers);
             OnPropertyChanged(nameof(ComputerHitMarkers));
         }
 
@@ -163,6 +177,15 @@ namespace BattleBoats.Wpf.ViewModels
                 }
             }
             return gameGrid;
+        }
+
+        private void UpdateGrid(TileState[,] targetGrid, ObservableCollection<IGameItem> boardHitMarkers)
+        {
+            foreach (IGameItem marker in boardHitMarkers)
+            {
+                targetGrid[marker.Row, marker.Column] = ((HitMarker)marker).TileState;
+            }
+            //OnPropertyChanged(nameof(targetGrid));
         }
 
         private bool HitShip(TileState[,] gameBoard, Coordinate coordinate)

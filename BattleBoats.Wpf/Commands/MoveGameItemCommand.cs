@@ -59,10 +59,8 @@ namespace BattleBoats.Wpf.Commands
                         break;
                 }
             }
-            if (_boatViewModel.GetType() == typeof(BoatPlacementViewModel))
-            {
-                ((BoatPlacementViewModel)_boatViewModel).UpdateValidBoatPlacement();
-            }
+            _boatViewModel.UpdateValidPlacement();
+
         }
     }
 }

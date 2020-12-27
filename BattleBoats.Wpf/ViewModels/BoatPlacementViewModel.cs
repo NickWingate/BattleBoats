@@ -79,7 +79,7 @@ namespace BattleBoats.Wpf.ViewModels
         // Length 2
         public IBoat Destroyer { get; set; }
 
-        public void UpdateValidBoatPlacement()
+        public void UpdateValidPlacement()
         {
             OnPropertyChanged(nameof(ValidBoatPlacement));
         }
@@ -133,7 +133,7 @@ namespace BattleBoats.Wpf.ViewModels
                 }
                 Boats[i].Column = i;
             }
-            UpdateValidBoatPlacement();
+            UpdateValidPlacement();
         }
     }
 }

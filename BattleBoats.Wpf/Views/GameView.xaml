@@ -43,8 +43,9 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <Button Content="Shoot" Command="{Binding }"/>
+            <Button Content="Shoot" Command="{Binding }" IsEnabled="{Binding ValidTargetLocation, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
+            <Button Content="Add sample hit markers" Command="{Binding AddSampleHitMarkersCommand}"/>
         </StackPanel>
 
         <button:GradientButton Content="back"
