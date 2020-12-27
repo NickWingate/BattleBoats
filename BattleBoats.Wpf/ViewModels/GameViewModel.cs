@@ -4,18 +4,12 @@ using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
-    public enum TileState
-    {
-        Boat,
-        Empty,
-        Hit,
-        Miss,
-    }
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
@@ -23,6 +17,7 @@ namespace BattleBoats.Wpf.ViewModels
         public ICommand MoveBoatCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
+        public ICommand TestHitMarkerCommand { get; set; }
 
         public GameViewModel(INavigator navigator, List<IBoat> boats)
         {
@@ -37,8 +32,6 @@ namespace BattleBoats.Wpf.ViewModels
             Target = new Target(0, 0, BoardDimention);
             SelectedItem = Target;
 
-
-
             DeselectBoats(UserBoats);
             HideBoats(ComputerBoats);
             // transform list of locations to 2d array/map of boats
@@ -47,8 +40,32 @@ namespace BattleBoats.Wpf.ViewModels
             MoveBoatCommand = new MoveBoatCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             //UserShootCommand = 
+            TestHitMarkerCommand = new RelayCommand(TestComputerHitMarkers);
 
         }
+
+        private ObservableCollection<IGameItem> _computerHitMarkers = new ObservableCollection<IGameItem>();
+        public ObservableCollection<IGameItem> ComputerHitMarkers
+        {
+            get { return _computerHitMarkers; }
+            set
+            {
+                _computerHitMarkers = value;
+                OnPropertyChanged(nameof(ComputerHitMarkers));
+            }
+        }
+
+        private ObservableCollection<IGameItem> _userHitMarkers = new ObservableCollection<IGameItem>();
+        public ObservableCollection<IGameItem> UserHitMarkers
+        {
+            get { return _userHitMarkers; }
+            set
+            {
+                _userHitMarkers = value;
+                OnPropertyChanged(nameof(UserHitMarkers));
+            }
+        }
+
         public int BoardDimention => Settings.BoardDimention;
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
@@ -121,6 +138,13 @@ namespace BattleBoats.Wpf.ViewModels
             // x and o can be IGameItems?
             // if ship: display red 'x' on grid
             // if empty: display green 'o' on grid
+        }
+
+        private void TestComputerHitMarkers()
+        {
+            ComputerHitMarkers.Add(new HitMarker(1, 1, TileState.Hit));
+            ComputerHitMarkers.Add(new HitMarker(1, 2, TileState.Miss));
+            OnPropertyChanged(nameof(ComputerHitMarkers));
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using BattleBoats.Wpf.Models;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,16 @@ namespace BattleBoats.Wpf.Controls
             Target = new Target(0, 0, BoardDimention) { ShowItem = false };
         }
 
+        public ObservableCollection<IGameItem> HitMarkers
+        {
+            get { return (ObservableCollection<IGameItem>)GetValue(HitMarkersProperty); }
+            set { SetValue(HitMarkersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HitMarkers.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HitMarkersProperty =
+            DependencyProperty.Register(nameof(HitMarkers), typeof(ObservableCollection<IGameItem>), typeof(GameBoardControl), 
+                new PropertyMetadata(null, (dependencyObject, e) => ((GameBoardControl)dependencyObject).OnPropertyChanged(nameof(HitMarkers))));
 
 
         public int BoardDimention
@@ -34,12 +46,6 @@ namespace BattleBoats.Wpf.Controls
             DependencyProperty.Register(nameof(BoardDimention), typeof(int), typeof(GameBoardControl), 
                 new PropertyMetadata(9, OnBoardDimentionPropertyChanged));
 
-        private static void OnBoardDimentionPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-        {
-            GameBoardControl gameBoardControl = dependencyObject as GameBoardControl;
-            gameBoardControl.OnPropertyChanged(nameof(BoardDimention));
-            gameBoardControl.CreateBoard();
-        }
 
 
         public List<IBoat> Boats
@@ -68,6 +74,12 @@ namespace BattleBoats.Wpf.Controls
             GameBoardControl gameBoardControl = dependencyObject as GameBoardControl;
             gameBoardControl.OnPropertyChanged(nameof(Boats));
             gameBoardControl.CreateBoats();
+        }
+        private static void OnBoardDimentionPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            GameBoardControl gameBoardControl = dependencyObject as GameBoardControl;
+            gameBoardControl.OnPropertyChanged(nameof(BoardDimention));
+            gameBoardControl.CreateBoard();
         }
 
         private void CreateBoard()
@@ -177,13 +189,47 @@ namespace BattleBoats.Wpf.Controls
             }
         }
 
-
+        private void DrawHitMarkers()
+        {
+            if (HitMarkers == null)
+            {
+                return;
+            }
+            foreach (IGameItem hitMarker in HitMarkers)
+            {
+                Ellipse marker = new Ellipse()
+                {
+                    Width = 20,
+                    Height = 20,
+                    Fill = ((HitMarker)hitMarker).TileState == TileState.Hit ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.White),
+                    Visibility = hitMarker.ShowItem ? Visibility.Visible : Visibility.Hidden
+                };
+                //temp
+                Panel.SetZIndex(marker, 100);
+                Grid.SetRow(marker, hitMarker.Row);
+                Grid.SetColumn(marker, hitMarker.Column);
+                BoardGrid.Children.Add(marker);
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (propertyName == HitMarkersProperty.Name)
+            {
+                if (HitMarkers != null && HitMarkers is INotifyCollectionChanged collection)
+                {
+                    collection.CollectionChanged -= Collection_CollectionChanged;
+                    collection.CollectionChanged += Collection_CollectionChanged;
+                }
+
+            }
+        }
+        private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DrawHitMarkers();
         }
     }
 }

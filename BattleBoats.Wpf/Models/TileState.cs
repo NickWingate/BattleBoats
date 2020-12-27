@@ -9,6 +9,6 @@ namespace BattleBoats.Wpf.Models
         Hit,
         Miss,
         Empty,
-        Ship,
+        Boat,
     }
 }

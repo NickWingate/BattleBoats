@@ -37,13 +37,14 @@
                                    Target="{Binding Target}"
                                    Grid.Row="0"
                                    Grid.Column="2"
-                                   BoardDimention="{Binding BoardDimention}"/>
+                                   BoardDimention="{Binding BoardDimention}"
+                                   HitMarkers="{Binding ComputerHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="0"
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <Button Content="Shoot"/>
+            <Button Content="Shoot" Command="{Binding TestHitMarkerCommand}"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
         </StackPanel>
 
