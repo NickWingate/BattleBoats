@@ -46,6 +46,7 @@ namespace BattleBoats.Wpf.Models
                 {
                     _column = value;
                     OnPropertyChanged(nameof(Column));
+                    OnPropertyChanged(nameof(Location));
                 }
             }
         }
@@ -59,9 +60,10 @@ namespace BattleBoats.Wpf.Models
             {
                 _showItem = value;
                 OnPropertyChanged(nameof(ShowItem));
+                OnPropertyChanged(nameof(Location));
             }
         }
 
-        public Coordinate Location { get; }
+        public Coordinate Location => new Coordinate(Column, Row);
     }
 }

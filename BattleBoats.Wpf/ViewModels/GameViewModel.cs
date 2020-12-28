@@ -1,11 +1,9 @@
 ﻿using BattleBoats.Wpf.Commands;
-using BattleBoats.Wpf.Controls;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
@@ -40,11 +38,11 @@ namespace BattleBoats.Wpf.ViewModels
             MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
-            //UserShootCommand = 
-
+            UserShootCommand = new RelayCommand(() => UserShoot());
         }
 
         private ObservableCollection<IGameItem> _computerHitMarkers = new ObservableCollection<IGameItem>();
+
         public ObservableCollection<IGameItem> ComputerHitMarkers
         {
             get { return _computerHitMarkers; }
@@ -56,6 +54,7 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         private ObservableCollection<IGameItem> _userHitMarkers = new ObservableCollection<IGameItem>();
+
         public ObservableCollection<IGameItem> UserHitMarkers
         {
             get { return _userHitMarkers; }
@@ -144,19 +143,62 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void UserShoot()
         {
+            if (!ValidTargetLocation)
+            {
+                return;
+            }
             // get target location
-            Coordinate targetLocation = Target.Location;
-            // check if can shoot here
-            // if ship: display red 'x' on grid
+            TileState targetOverTileState = ComputerGameBoard[Target.Row, Target.Column];
+            // if boat: display red 'x' on grid
+            if (targetOverTileState == TileState.Boat)
+            {
+                AddHitMarker(Target.Location, ComputerHitMarkers, TileState.Hit);
+            }
             // if empty: display green 'o' on grid
+            else if (targetOverTileState == TileState.Empty)
+            {
+                AddHitMarker(Target.Location, ComputerHitMarkers, TileState.Miss);
+            }
+            UpdateValidPlacement();
         }
 
+        /// <summary>
+        /// Adds a hit marker to (visual)board and collection of hitMarkers
+        /// </summary>
+        /// <param name="location"> location of hit marker </param>
+        /// <param name="hitMarkers"> ObservableCollection of the hit markers </param>
+        /// <param name="tileState"> If tile is hit or miss </param>
+        private void AddHitMarker(Coordinate location, ObservableCollection<IGameItem> hitMarkers, TileState tileState)
+        {
+            hitMarkers.Add(new HitMarker(location, tileState));
+            UpdateGrid(hitMarkers);
+        }
+
+        private void AddHitMarker(HitMarker hitMarker, ObservableCollection<IGameItem> hitMarkers)
+        {
+            hitMarkers.Add(hitMarker);
+            UpdateGrid(hitMarkers);
+        }
+
+        /// <summary>
+        /// Returns the GameBoard/2d array of the provided collection of hitmarkers
+        /// </summary>
+        /// <param name="hitMarkers"> Collection of hitmarkers </param>
+        /// <returns></returns>
+        private TileState[,] GetAssociated2DArray(ObservableCollection<IGameItem> hitMarkers)
+        {
+            if (Object.ReferenceEquals(hitMarkers, ComputerHitMarkers)) { return ComputerGameBoard; }
+            else if (Object.ReferenceEquals(hitMarkers, UserHitMarkers)) { return UserGameBoard; }
+            else { throw new ArgumentException($"Unrecognised collection: {hitMarkers}"); }
+        }
+
+        /// <summary>
+        /// Adds test/sample hit markers to computer board
+        /// </summary>
         private void AddSampleHitMarkers()
         {
-            ComputerHitMarkers.Add(new HitMarker(1, 1, TileState.Hit));
-            ComputerHitMarkers.Add(new HitMarker(1, 2, TileState.Miss));
-            UpdateGrid(ComputerGameBoard, ComputerHitMarkers);
-            OnPropertyChanged(nameof(ComputerHitMarkers));
+            AddHitMarker(new HitMarker(1, 1, TileState.Hit), ComputerHitMarkers);
+            AddHitMarker(new HitMarker(1, 2, TileState.Miss), ComputerHitMarkers);
         }
 
         /// <summary>
@@ -173,24 +215,23 @@ namespace BattleBoats.Wpf.ViewModels
             {
                 foreach (Coordinate coordinate in boat.CoordinateRange.GetAllCoordinates())
                 {
-                    gameGrid[coordinate.XCoord, coordinate.YCoord] = TileState.Boat;
+                    gameGrid[coordinate.YCoord, coordinate.XCoord] = TileState.Boat;
                 }
             }
             return gameGrid;
         }
 
-        private void UpdateGrid(TileState[,] targetGrid, ObservableCollection<IGameItem> boardHitMarkers)
+        /// <summary>
+        /// Adds all hitmarkers to the visual board
+        /// </summary>
+        /// <param name="boardHitMarkers"></param>
+        private void UpdateGrid(ObservableCollection<IGameItem> boardHitMarkers)
         {
+            TileState[,] targetGrid = GetAssociated2DArray(boardHitMarkers);
             foreach (IGameItem marker in boardHitMarkers)
             {
                 targetGrid[marker.Row, marker.Column] = ((HitMarker)marker).TileState;
             }
-            //OnPropertyChanged(nameof(targetGrid));
-        }
-
-        private bool HitShip(TileState[,] gameBoard, Coordinate coordinate)
-        {
-            return gameBoard[coordinate.YCoord, coordinate.XCoord] == TileState.Boat;
         }
 
         /// <summary>

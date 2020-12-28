@@ -15,6 +15,8 @@
         <KeyBinding Key="Down" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.South}"/>
         <KeyBinding Key="Left" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.East}"/>
         <KeyBinding Key="Right" Command="{Binding MoveGameItemCommand}" CommandParameter="{x:Static command:Direction.West}"/>
+        <KeyBinding Key="S" Command="{Binding UserShootCommand}"/>
+
     </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -43,7 +45,8 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <Button Content="Shoot" Command="{Binding }" IsEnabled="{Binding ValidTargetLocation, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Shoot (S)" Command="{Binding UserShootCommand}" 
+                    IsEnabled="{Binding ValidTargetLocation, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
             <Button Content="Add sample hit markers" Command="{Binding AddSampleHitMarkersCommand}"/>
         </StackPanel>

@@ -13,6 +13,13 @@ namespace BattleBoats.Wpf.Models
             TileState = tileState;
             ShowItem = true;
         }
+        public HitMarker(Coordinate location, TileState tileState)
+        {
+            Column = location.XCoord;
+            Row = location.YCoord;
+            TileState = tileState;
+            ShowItem = true;
+        }
 
         public int MaxGridDimention { get; set; }
         public int Column { get; set; }
