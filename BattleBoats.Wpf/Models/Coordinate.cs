@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace BattleBoats.Wpf.Models
@@ -12,6 +13,11 @@ namespace BattleBoats.Wpf.Models
         {
             XCoord = xCoord;
             YCoord = yCoord;
+        }
+        public Coordinate()
+        {
+            XCoord = 0;
+            YCoord = 0;
         }
         public override string ToString()
         {
