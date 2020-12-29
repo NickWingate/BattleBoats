@@ -7,8 +7,6 @@ namespace BattleBoats.Wpf.Services.ComputerAlgorithm
 {
     public interface IComputerAlgorithmService
     {
-
         public Coordinate NextShot(TileState[,] gameBoard);
-
     }
 }

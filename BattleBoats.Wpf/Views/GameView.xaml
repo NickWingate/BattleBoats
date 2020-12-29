@@ -32,7 +32,8 @@
         <controls:GameBoardControl Boats="{Binding UserBoats, UpdateSourceTrigger=PropertyChanged}" 
                                    Grid.Row="0"
                                    Grid.Column="0"
-                                   BoardDimention="{Binding BoardDimention}"/>
+                                   BoardDimention="{Binding BoardDimention}"
+                                   HitMarkers="{Binding UserHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}" 
                                    Target="{Binding Target}"
@@ -46,7 +47,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
             <Button Content="Shoot (S)" Command="{Binding UserShootCommand}" 
-                    IsEnabled="{Binding ValidTargetLocation, UpdateSourceTrigger=PropertyChanged}"/>
+                    IsEnabled="{Binding CanUserShoot, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
             <Button Content="Add sample hit markers" Command="{Binding AddSampleHitMarkersCommand}"/>
         </StackPanel>

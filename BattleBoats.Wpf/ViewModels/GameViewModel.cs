@@ -1,29 +1,45 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
+using BattleBoats.Wpf.Services.ComputerAlgorithm;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
+        enum Player
+        {
+            User,
+            Computer,
+        }
+
         private readonly INavigator _navigator;
+        private readonly IComputerAlgorithmService _computerAlgorithm;
+        private Player _currentPlayersTurn;
+        private CancellationTokenSource _userShootTokenSource;
+
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
         public ICommand AddSampleHitMarkersCommand { get; set; }
 
-        public GameViewModel(INavigator navigator, List<IBoat> boats)
+        public GameViewModel(INavigator navigator, IComputerAlgorithmService computerAlgorithm, List<IBoat> boats)
         {
             _navigator = navigator;
+            _computerAlgorithm = computerAlgorithm;
+            _currentPlayersTurn = Player.User;
 
             UserBoats = boats;
             ComputerBoats = GenerateComputerBoats();
 
+            // transform list of locations to 2d array/map of boats
             UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
             ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
 
@@ -32,17 +48,28 @@ namespace BattleBoats.Wpf.ViewModels
 
             DeselectBoats(UserBoats);
             HideBoats(ComputerBoats);
-            // transform list of locations to 2d array/map of boats
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
             AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
             UserShootCommand = new RelayCommand(() => UserShoot());
+
+            BeginGameplay();
+        }
+
+        private bool _canUserShoot = true;
+        public bool CanUserShoot
+        {
+            get { return _canUserShoot && ValidTargetLocation; }
+            set 
+            {
+                _canUserShoot = value;
+                OnPropertyChanged(nameof(CanUserShoot));
+            }
         }
 
         private ObservableCollection<IGameItem> _computerHitMarkers = new ObservableCollection<IGameItem>();
-
         public ObservableCollection<IGameItem> ComputerHitMarkers
         {
             get { return _computerHitMarkers; }
@@ -54,7 +81,6 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         private ObservableCollection<IGameItem> _userHitMarkers = new ObservableCollection<IGameItem>();
-
         public ObservableCollection<IGameItem> UserHitMarkers
         {
             get { return _userHitMarkers; }
@@ -73,6 +99,31 @@ namespace BattleBoats.Wpf.ViewModels
         public List<IBoat> ComputerBoats { get; set; }
         public TileState[,] UserGameBoard { get; set; }
         public TileState[,] ComputerGameBoard { get; set; }
+
+        private async void BeginGameplay()
+        {
+            // TEMPORARY need to implement system to check if game is over
+            bool gameIsFinshed = false;
+            while (!gameIsFinshed)
+            {
+                if (_currentPlayersTurn == Player.Computer)
+                {
+                    Shoot(_computerAlgorithm.NextShot(UserGameBoard), UserHitMarkers);
+                    _currentPlayersTurn = Player.User;
+                }
+                try
+                {
+                    await WaitForUserPlay();
+                }
+                catch (TaskCanceledException) { }
+            }
+        }
+
+        private Task WaitForUserPlay()
+        {
+            _userShootTokenSource = new CancellationTokenSource();
+            return Task.Delay(-1, _userShootTokenSource.Token);
+        }
 
         /// <summary>
         /// Deselects every boat in the list
@@ -135,31 +186,44 @@ namespace BattleBoats.Wpf.ViewModels
         {
             TileState targetOverTileState = ComputerGameBoard[Target.Row, Target.Column];
             ValidTargetLocation = (targetOverTileState == TileState.Boat || targetOverTileState == TileState.Empty);
-            OnPropertyChanged(nameof(ValidTargetLocation));
+            OnPropertyChanged(nameof(CanUserShoot));
         }
 
         /// <summary>
-        /// Shoot a missile at targets location
+        /// Shoot a missile at the user's target location
         /// </summary>
         private void UserShoot()
         {
-            if (!ValidTargetLocation)
+            if (!CanUserShoot)
             {
                 return;
             }
-            // get target location
-            TileState targetOverTileState = ComputerGameBoard[Target.Row, Target.Column];
+            Shoot(Target.Location, ComputerHitMarkers);
+            UpdateValidPlacement();
+            _currentPlayersTurn = Player.Computer;
+            _userShootTokenSource.Cancel();
+        }
+
+        /// <summary>
+        /// Shoots a missile at location
+        /// </summary>
+        /// <param name="location"> location to shoot </param>
+        /// <param name="hitMarkers"> Collection of hitmarkers to add shot to</param>
+        private void Shoot(Coordinate location, ObservableCollection<IGameItem> hitMarkers)
+        {
+            // get tile state
+            TileState tileState = GetAssociated2DArray(hitMarkers)[location.YCoord, location.XCoord];
+
             // if boat: display red 'x' on grid
-            if (targetOverTileState == TileState.Boat)
+            if (tileState == TileState.Boat)
             {
-                AddHitMarker(Target.Location, ComputerHitMarkers, TileState.Hit);
+                AddHitMarker(location, hitMarkers, TileState.Hit);
             }
             // if empty: display green 'o' on grid
-            else if (targetOverTileState == TileState.Empty)
+            else if (tileState == TileState.Empty)
             {
-                AddHitMarker(Target.Location, ComputerHitMarkers, TileState.Miss);
+                AddHitMarker(location, hitMarkers, TileState.Miss);
             }
-            UpdateValidPlacement();
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
+using BattleBoats.Wpf.Services.ComputerAlgorithm;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -85,7 +86,8 @@ namespace BattleBoats.Wpf.ViewModels
         }
         public void PlayGame()
         {
-            _navigator.Navigate(new GameViewModel(_navigator, Boats));
+            // TEMPORARY need to choose difficulty of computer algorithm
+            _navigator.Navigate(new GameViewModel(_navigator, new RandomShootingAlgorithm(BoardDimention), Boats));
         }
 
         /// <summary>
