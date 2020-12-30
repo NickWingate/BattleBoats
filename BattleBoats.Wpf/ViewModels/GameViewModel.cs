@@ -24,50 +24,33 @@ namespace BattleBoats.Wpf.ViewModels
         private Player _currentPlayersTurn;
         private CancellationTokenSource _userShootTokenSource;
 
-        public ICommand UpdateCurrentViewModelCommand { get; }
+        public ICommand UpdateCurrentViewModelCommand { get; set; }
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
         public ICommand AddSampleHitMarkersCommand { get; set; }
 
+
         public GameViewModel(INavigator navigator, IComputerAlgorithmService computerAlgorithm, List<IBoat> boats)
         {
+            // Dependency Injection
             _navigator = navigator;
             _computerAlgorithm = computerAlgorithm;
+
+            // Assign fields and properties
             _currentPlayersTurn = Player.User;
+            AssignBoats(boats);
+            AssignCommands(navigator);
+            AssignTarget();
 
-            UserBoats = boats;
-            ComputerBoats = GenerateComputerBoats();
+            // Prep data
+            TransformBoatsToBoard();
+            PrepBoats();
 
-            // transform list of locations to 2d array/map of boats
-            UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
-            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
-
-            Target = new Target(0, 0, BoardDimention);
-            SelectedItem = Target;
-
-            DeselectBoats(UserBoats);
-            HideBoats(ComputerBoats);
-
-            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
-            MoveGameItemCommand = new MoveGameItemCommand(this);
-            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
-            AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
-            UserShootCommand = new RelayCommand(() => UserShoot());
-
+            // Start Game
             BeginGameplay();
         }
 
-        private bool _canUserShoot = true;
-        public bool CanUserShoot
-        {
-            get { return _canUserShoot && ValidTargetLocation; }
-            set 
-            {
-                _canUserShoot = value;
-                OnPropertyChanged(nameof(CanUserShoot));
-            }
-        }
 
         private ObservableCollection<IGameItem> _computerHitMarkers = new ObservableCollection<IGameItem>();
         public ObservableCollection<IGameItem> ComputerHitMarkers
@@ -91,6 +74,17 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
+        private bool _canUserShoot = true;
+        public bool CanUserShoot
+        {
+            get { return _canUserShoot && ValidTargetLocation; }
+            set 
+            {
+                _canUserShoot = value;
+                OnPropertyChanged(nameof(CanUserShoot));
+            }
+        }
+
         public int BoardDimention => Settings.BoardDimention;
         public bool ValidTargetLocation { get; private set; } = true;
         public IGameItem Target { get; set; }
@@ -100,6 +94,60 @@ namespace BattleBoats.Wpf.ViewModels
         public TileState[,] UserGameBoard { get; set; }
         public TileState[,] ComputerGameBoard { get; set; }
 
+
+        /// <summary>
+        /// Assign User and Computer IBoat lists
+        /// </summary>
+        /// <param name="userBoats"> User's boat list </param>
+        private void AssignBoats(List<IBoat> userBoats)
+        {
+            UserBoats = userBoats;
+            ComputerBoats = GenerateComputerBoats();
+        }
+
+        /// <summary>
+        /// Transforms List of IBoats to 2D array of TileStates, which functions as a grid/board
+        /// </summary>
+        private void TransformBoatsToBoard()
+        {
+            UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
+            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
+        }
+
+        /// <summary>
+        /// Creates target and sets it as SelectedItem
+        /// </summary>
+        private void AssignTarget()
+        {
+            Target = new Target(0, 0, BoardDimention);
+            SelectedItem = Target;
+        }
+
+        /// <summary>
+        /// Deselects user boats and hides CPU boats
+        /// </summary>
+        private void PrepBoats()
+        {
+            DeselectBoats(UserBoats);
+            HideBoats(ComputerBoats);
+        }
+
+        /// <summary>
+        /// Assings all <see cref="ICommand"/>s
+        /// </summary>
+        /// <param name="navigator"> navigator needed for <see cref="UpdateCurrentViewModelCommand"/></param>
+        private void AssignCommands(INavigator navigator)
+        {
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
+            MoveGameItemCommand = new MoveGameItemCommand(this);
+            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
+            AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
+            UserShootCommand = new RelayCommand(() => UserShoot());
+        }
+
+        /// <summary>
+        /// Begins the game
+        /// </summary>
         private async void BeginGameplay()
         {
             // TEMPORARY need to implement system to check if game is over
@@ -119,6 +167,10 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="CancellationTokenSource"/> to be canceled when user completes their turn
+        /// </summary>
+        /// <returns></returns>
         private Task WaitForUserPlay()
         {
             _userShootTokenSource = new CancellationTokenSource();
@@ -238,6 +290,11 @@ namespace BattleBoats.Wpf.ViewModels
             UpdateGrid(hitMarkers);
         }
 
+        /// <summary>
+        /// Adds a hit marker to (visual)board and collection of hitMarkers
+        /// </summary>
+        /// <param name="hitMarker"> New hitmarker to add to list </param>
+        /// <param name="hitMarkers"> ObservableCollection of the hit markers </param>
         private void AddHitMarker(HitMarker hitMarker, ObservableCollection<IGameItem> hitMarkers)
         {
             hitMarkers.Add(hitMarker);
