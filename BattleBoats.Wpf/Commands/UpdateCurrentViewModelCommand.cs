@@ -42,8 +42,9 @@ namespace BattleBoats.Wpf.Commands
                         //_navigator.Navigate(new GameViewModel(_navigator, null, null));
                         //break;
                     case ViewType.Winner:
-                        _navigator.Navigate(new WinnerViewModel(_navigator));
-                        break;
+                        throw new ArgumentException("WinnerVM should only be navigated to using Navigate method");
+                        //_navigator.Navigate(new WinnerViewModel(_navigator));
+                        //break;
                     default:
                         break;
                 }

@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="100" Foreground="White">
+            <Run Text="Winner:"/>
+            <Run Text="{Binding Winner, Mode=OneWay}"/>
+        </TextBlock>
     </Grid>
 </UserControl>

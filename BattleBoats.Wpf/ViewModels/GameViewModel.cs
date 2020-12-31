@@ -12,14 +12,13 @@ using System.Windows.Input;
 
 namespace BattleBoats.Wpf.ViewModels
 {
+    public enum Player
+    {
+        User,
+        Computer,
+    }
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
-        enum Player
-        {
-            User,
-            Computer,
-        }
-
         private readonly INavigator _navigator;
         private readonly IComputerAlgorithmService _computerAlgorithm;
         private Player _currentPlayersTurn;
@@ -197,8 +196,10 @@ namespace BattleBoats.Wpf.ViewModels
                     }
                     catch (TaskCanceledException) { }
                 }
-
+                //SaveGameState();
             }
+            Player winner = UserHealth == 0 ? Player.Computer : Player.User;
+            _navigator.Navigate(new WinnerViewModel(_navigator, winner));
         }
 
         /// <summary>
