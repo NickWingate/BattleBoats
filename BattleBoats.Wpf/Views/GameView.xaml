@@ -27,20 +27,37 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
+        <!-- User Board -->
         <controls:GameBoardControl Boats="{Binding UserBoats, UpdateSourceTrigger=PropertyChanged}" 
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    BoardDimention="{Binding BoardDimention}"
                                    HitMarkers="{Binding UserHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <TextBlock Grid.Row="1" Grid.Column="0" 
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
+                   Foreground="White" FontSize="30">
+            <Run Text="User Health: "/>
+            <Run Text="{Binding UserHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        </TextBlock>
+
+        <!-- Computer Board-->
         <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}" 
                                    Target="{Binding Target}"
                                    Grid.Row="0"
                                    Grid.Column="2"
                                    BoardDimention="{Binding BoardDimention}"
                                    HitMarkers="{Binding ComputerHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="2" 
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
+                   Foreground="White" FontSize="30">
+            <Run Text="Computer Health: "/>
+            <Run Text="{Binding ComputerHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+        </TextBlock>
 
         <StackPanel Grid.Row="0"
                     Grid.Column="1"
@@ -49,14 +66,14 @@
             <Button Content="Shoot (S)" Command="{Binding UserShootCommand}" 
                     IsEnabled="{Binding CanUserShoot, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Show CPU Boats" Command="{Binding ToggleCPUBoatViewCommand}"/>
-            <Button Content="Add sample hit markers" Command="{Binding AddSampleHitMarkersCommand}"/>
+            <!--<Button Content="Add sample hit markers" Command="{Binding AddSampleHitMarkersCommand}"/>-->
         </StackPanel>
 
         <button:GradientButton Content="back"
                                Command="{Binding UpdateCurrentViewModelCommand}"
                                CommandParameter="{x:Static nav:ViewType.Menu}"
                                Grid.Column="0"
-                               Grid.Row="1"
+                               Grid.Row="2"
                                Height="50"
                                CornerRadius="25"/>
     </Grid>
