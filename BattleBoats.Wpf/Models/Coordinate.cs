@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BattleBoats.Wpf.Models
 {
-    public class Coordinate
+    public class Coordinate : IEquatable<Coordinate>
     {
         public int XCoord { get; set; }
         public int YCoord { get; set; }
@@ -22,6 +22,11 @@ namespace BattleBoats.Wpf.Models
         public override string ToString()
         {
             return $"{XCoord}, {YCoord}";
+        }
+
+        public bool Equals([AllowNull] Coordinate other)
+        {
+            return this.ToString() == other.ToString();
         }
     }
 }

@@ -5,6 +5,7 @@ using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -129,7 +130,7 @@ namespace BattleBoats.Wpf.ViewModels
         private void AssignBoats(List<IBoat> userBoats)
         {
             UserBoats = userBoats;
-            ComputerBoats = GenerateComputerBoats();
+            ComputerBoats = GenerateComputerBoats(5);
         }
 
         /// <summary>
@@ -238,20 +239,44 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         /// <summary>
-        /// Create a list of boats and their location for the computer
-        /// currently this is constant but will be random in the future
+        /// Create a random list of boats and their location for the computer
         /// </summary>
+        /// <param name="quantity"> Quantitiy of boats to produce </param>
         /// <returns> List of IBoats for the computers boats</returns>
-        private List<IBoat> GenerateComputerBoats()
+        private List<IBoat> GenerateComputerBoats(int quantity)
         {
-            return new List<IBoat>()
+            int[] lengths = { 5, 4, 3, 3, 2 };
+            List<IBoat> computerBoats = new List<IBoat>();
+            List<Coordinate> invalidCoordinates = new List<Coordinate>();
+            Random rnd = new Random();
+            for (int i = 0; i < quantity; i++)
             {
-                new Boat(8, 0, 5, 9),
-                new Boat(7, 0, 4, 9),
-                new Boat(6, 0, 3, 9),
-                new Boat(5, 0, 3, 9),
-                new Boat(4, 0, 2, 9),
-            };
+                IBoat newBoat;
+                bool validBoat;
+                do
+                {
+                    validBoat = true;
+                    int row = rnd.Next(BoardDimention + lengths[i] - 1);
+                    int column = rnd.Next(BoardDimention);
+
+                    newBoat = new Boat(column, row, lengths[i], BoardDimention);
+                    if (rnd.NextDouble() >= 0.5) newBoat.Rotate();
+                    foreach (Coordinate coordinate in newBoat.CoordinateRange.GetAllCoordinates())
+                    {
+                        foreach (Coordinate invalidCoordinate in invalidCoordinates)
+                        {
+                            if (coordinate.Equals(invalidCoordinate))
+                            {
+                                validBoat = false;
+                                break;
+                            }
+                        }
+                    }
+                } while (!validBoat);
+                computerBoats.Add(newBoat);
+                invalidCoordinates.AddRange(newBoat.CoordinateRange.GetAllCoordinates());
+            }
+            return computerBoats;
         }
 
         /// <summary>
@@ -315,13 +340,32 @@ namespace BattleBoats.Wpf.ViewModels
                                     where coord.ToString() == location.ToString()
                                     select boat).ElementAt(0);
                 boatToHit.Health--;
+
+                // TODO: better way of doing this
                 OnPropertyChanged(nameof(UserHealth));
                 OnPropertyChanged(nameof(ComputerHealth));
+
+                CheckForSunkBoats(boats);
             }
             // if empty: display green 'o' on grid
             else if (tileState == TileState.Empty)
             {
                 AddHitMarker(location, hitMarkers, TileState.Miss);
+            }
+        }
+
+        /// <summary>
+        /// Checks if boat collection has any sunk boats and makes them visible
+        /// </summary>
+        /// <param name="boats"> Boat colletion </param>
+        private void CheckForSunkBoats(IEnumerable<IBoat> boats)
+        {
+            foreach (IBoat boat in boats)
+            {
+                if (boat.Health == 0)
+                {
+                    boat.ShowItem = true;
+                }
             }
         }
 
