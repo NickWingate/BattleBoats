@@ -1,6 +1,7 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.BoatPlacement;
+using BattleBoats.Wpf.Services.BoatApearanceManager;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
 using BattleBoats.Wpf.Services.ListToGridTransformer;
 using BattleBoats.Wpf.Services.Navigation;
@@ -95,6 +96,7 @@ namespace BattleBoats.Wpf.ViewModels
                     new RandomShootingAlgorithm(BoardDimention),
                     new BoatPlacementGenerator(),
                     new ListToGridTransformer(),
+                    new BoatApearanceManager(),
                     Boats)
                 );
             //_navigator.Navigate(new GameViewModel(_navigator, new SuspiciouslyGoodAlgorithm(Boats), Boats));

@@ -1,6 +1,7 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.BoatPlacement;
+using BattleBoats.Wpf.Services.BoatApearanceManager;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
 using BattleBoats.Wpf.Services.ListToGridTransformer;
 using BattleBoats.Wpf.Services.Navigation;
@@ -26,6 +27,8 @@ namespace BattleBoats.Wpf.ViewModels
         private readonly IComputerAlgorithmService _computerAlgorithm;
         private readonly IBoatPlacementGenerationService _boatPlacementGenerator;
         private readonly IListToGridTransformer _listToGridTransformer;
+        private readonly IBoatApearanceManager _boatApearanceManager;
+
         private Player _currentPlayersTurn;
         private CancellationTokenSource _userShootTokenSource;
 
@@ -39,6 +42,7 @@ namespace BattleBoats.Wpf.ViewModels
                              IComputerAlgorithmService computerAlgorithm, 
                              IBoatPlacementGenerationService boatPlacementGenerator,
                              IListToGridTransformer listToGridTransformer,
+                             IBoatApearanceManager boatApearanceManager,
                              List<IBoat> boats)
         {
             // Dependency Injection
@@ -46,6 +50,7 @@ namespace BattleBoats.Wpf.ViewModels
             _computerAlgorithm = computerAlgorithm;
             _boatPlacementGenerator = boatPlacementGenerator;
             _listToGridTransformer = listToGridTransformer;
+            _boatApearanceManager = boatApearanceManager;
 
             // Assign fields and properties
             _currentPlayersTurn = Player.User;
@@ -165,8 +170,8 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void PrepBoats()
         {
-            DeselectBoats(UserBoats);
-            HideBoats(ComputerBoats);
+            _boatApearanceManager.DeselectBoats(UserBoats);
+            _boatApearanceManager.HideBoats(ComputerBoats);
         }
 
         /// <summary>
@@ -177,7 +182,7 @@ namespace BattleBoats.Wpf.ViewModels
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
-            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
+            ToggleCPUBoatViewCommand = new RelayCommand(() => _boatApearanceManager.ToggleBoatView(ComputerBoats));
             UserShootCommand = new RelayCommand(() => UserShoot());
         }
 
@@ -219,44 +224,6 @@ namespace BattleBoats.Wpf.ViewModels
         {
             _userShootTokenSource = new CancellationTokenSource();
             return Task.Delay(-1, _userShootTokenSource.Token);
-        }
-
-        /// <summary>
-        /// Deselects every boat in the list
-        /// </summary>
-        /// <param name="boats"></param>
-        private void DeselectBoats(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.IsSelected = false;
-            }
-        }
-
-        /// <summary>
-        /// Sets all the boats in the list to hidden <br/>
-        /// Similar to <see cref="ToggleBoatView(List{IBoat})"/>
-        /// </summary>
-        /// <param name="boats"></param>
-        private void HideBoats(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.ShowItem = false;
-            }
-        }
-
-
-        /// <summary>
-        /// Toggles the visibility of all the boats in the list
-        /// </summary>
-        /// <param name="boats"> the list of boats to effect </param>
-        private void ToggleBoatView(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.ShowItem = !boat.ShowItem;
-            }
         }
 
         /// <summary>
@@ -346,17 +313,6 @@ namespace BattleBoats.Wpf.ViewModels
         private void AddHitMarker(Coordinate location, ObservableCollection<IGameItem> hitMarkers, TileState tileState)
         {
             hitMarkers.Add(new HitMarker(location, tileState));
-            UpdateGrid(hitMarkers);
-        }
-
-        /// <summary>
-        /// Adds a hit marker to (visual)board and collection of hitMarkers
-        /// </summary>
-        /// <param name="hitMarker"> New hitmarker to add to list </param>
-        /// <param name="hitMarkers"> ObservableCollection of the hit markers </param>
-        private void AddHitMarker(HitMarker hitMarker, ObservableCollection<IGameItem> hitMarkers)
-        {
-            hitMarkers.Add(hitMarker);
             UpdateGrid(hitMarkers);
         }
 
