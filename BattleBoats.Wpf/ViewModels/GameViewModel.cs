@@ -1,5 +1,6 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
+using BattleBoats.Wpf.Services.BoatPlacement;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
@@ -22,6 +23,7 @@ namespace BattleBoats.Wpf.ViewModels
     {
         private readonly INavigator _navigator;
         private readonly IComputerAlgorithmService _computerAlgorithm;
+        private readonly IBoatPlacementGenerationService _boatPlacementGenerator;
         private Player _currentPlayersTurn;
         private CancellationTokenSource _userShootTokenSource;
 
@@ -29,14 +31,17 @@ namespace BattleBoats.Wpf.ViewModels
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
-        public ICommand AddSampleHitMarkersCommand { get; set; }
 
 
-        public GameViewModel(INavigator navigator, IComputerAlgorithmService computerAlgorithm, List<IBoat> boats)
+        public GameViewModel(INavigator navigator, 
+                             IComputerAlgorithmService computerAlgorithm, 
+                             IBoatPlacementGenerationService boatPlacementGenerator,
+                             List<IBoat> boats)
         {
             // Dependency Injection
             _navigator = navigator;
             _computerAlgorithm = computerAlgorithm;
+            _boatPlacementGenerator = boatPlacementGenerator;
 
             // Assign fields and properties
             _currentPlayersTurn = Player.User;
@@ -130,7 +135,7 @@ namespace BattleBoats.Wpf.ViewModels
         private void AssignBoats(List<IBoat> userBoats)
         {
             UserBoats = userBoats;
-            ComputerBoats = GenerateComputerBoats(5);
+            ComputerBoats = _boatPlacementGenerator.GenerateBoats(5, BoardDimention);
         }
 
         /// <summary>
@@ -138,8 +143,8 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void TransformBoatsToBoard()
         {
-            UserGameBoard = TransformLocationToGrid(UserBoats, UserBoats[0].MaxGridDimention);
-            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, ComputerBoats[0].MaxGridDimention);
+            UserGameBoard = TransformLocationToGrid(UserBoats, BoardDimention);
+            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, BoardDimention);
         }
 
         /// <summary>
@@ -169,7 +174,6 @@ namespace BattleBoats.Wpf.ViewModels
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
-            AddSampleHitMarkersCommand = new RelayCommand(() => AddSampleHitMarkers());
             UserShootCommand = new RelayCommand(() => UserShoot());
         }
 
@@ -432,15 +436,6 @@ namespace BattleBoats.Wpf.ViewModels
             {
                 throw new ArgumentException($"Unrecognised board: {gameBoard}");
             }
-        }
-
-        /// <summary>
-        /// Adds test/sample hit markers to computer board
-        /// </summary>
-        private void AddSampleHitMarkers()
-        {
-            AddHitMarker(new HitMarker(1, 1, TileState.Hit), ComputerHitMarkers);
-            AddHitMarker(new HitMarker(1, 2, TileState.Miss), ComputerHitMarkers);
         }
 
         /// <summary>

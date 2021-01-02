@@ -87,7 +87,7 @@ namespace BattleBoats.Wpf.ViewModels
         public void PlayGame()
         {
             // TEMPORARY need to choose difficulty of computer algorithm
-            _navigator.Navigate(new GameViewModel(_navigator, new RandomShootingAlgorithm(BoardDimention), Boats));
+            ////_navigator.Navigate(new GameViewModel(_navigator, new RandomShootingAlgorithm(BoardDimention), Boats));
             //_navigator.Navigate(new GameViewModel(_navigator, new SuspiciouslyGoodAlgorithm(Boats), Boats));
         }
 
