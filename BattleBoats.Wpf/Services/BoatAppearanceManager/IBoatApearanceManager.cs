@@ -11,20 +11,20 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
         /// Deselects every boat in the list
         /// </summary>
         /// <param name="boats"></param>
-        void DeselectBoats(List<IBoat> boats);
+        void DeselectBoats(IEnumerable<IBoat> boats);
 
         /// <summary>
         /// Sets all the boats in the list to hidden <br/>
-        /// Similar to <see cref="ToggleBoatView(List{IBoat})"/>
+        /// Similar to <see cref="ToggleBoatView(IEnumerable{IBoat})"/>
         /// </summary>
         /// <param name="boats"></param>
-        void HideBoats(List<IBoat> boats);
+        void HideBoats(IEnumerable<IBoat> boats);
 
         /// <summary>
         /// Toggles the visibility of all the boats in the list
         /// </summary>
         /// <param name="boats"> the list of boats to effect </param>
-        public void ToggleBoatView(List<IBoat> boats);
+        public void ToggleBoatView(IEnumerable<IBoat> boats);
 
         /// <summary>
         /// Checks if boat collection has any sunk boats and makes them visible

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace BattleBoats.Wpf.ViewModels
 {
@@ -57,9 +58,10 @@ namespace BattleBoats.Wpf.ViewModels
             set 
             {
                 _boats = value;
-                OnPropertyChanged(nameof(Boats));
+                OnPropertyChanged(nameof(BoatsCollection));
             }
         }
+        public ObservableCollection<IBoat> BoatsCollection => new ObservableCollection<IBoat>(Boats);
 
         private IGameItem _selectedItem;
         public IGameItem SelectedItem
@@ -113,8 +115,17 @@ namespace BattleBoats.Wpf.ViewModels
         }
         private void SetSelectedBoatEnabled()
         {
-            if(Boats.Find(x => x.IsSelected) != null) { Boats.Find(x => x.IsSelected).IsSelected = false; }
-            Boats.Find(x => x == SelectedItem).IsSelected = true;
+            foreach (IBoat boat in Boats)
+            {
+                if (boat == SelectedItem)
+                {
+                    boat.IsSelected = true;
+                }
+                else
+                {
+                    boat.IsSelected = false;
+                }
+            }
         }
         private bool CheckValidBoatPlacement()
         {

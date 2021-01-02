@@ -7,6 +7,6 @@ namespace BattleBoats.Wpf.Services.ListToGridTransformer
 {
     public interface IListToGridTransformer
     {
-        TileState[,] TransformLocationToGrid(List<IBoat> boats, int gridSize);
+        TileState[,] TransformLocationToGrid(IEnumerable<IBoat> boats, int gridSize);
     }
 }

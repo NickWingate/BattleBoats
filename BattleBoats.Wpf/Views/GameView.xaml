@@ -31,32 +31,32 @@
         </Grid.RowDefinitions>
 
         <!-- User Board -->
-        <controls:GameBoardControl Boats="{Binding UserBoats, UpdateSourceTrigger=PropertyChanged}" 
+        <controls:GameBoardControl Boats="{Binding User.Boats, UpdateSourceTrigger=PropertyChanged}" 
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    BoardDimention="{Binding BoardDimention}"
-                                   HitMarkers="{Binding UserHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
+                                   HitMarkers="{Binding User.HitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" 
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
                    Foreground="White" FontSize="30">
             <Run Text="User Health: "/>
-            <Run Text="{Binding UserHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            <Run Text="{Binding User.Health, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </TextBlock>
 
         <!-- Computer Board-->
-        <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}" 
+        <controls:GameBoardControl Boats="{Binding Computer.Boats, UpdateSourceTrigger=PropertyChanged}" 
                                    Target="{Binding Target}"
                                    Grid.Row="0"
                                    Grid.Column="2"
                                    BoardDimention="{Binding BoardDimention}"
-                                   HitMarkers="{Binding ComputerHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
+                                   HitMarkers="{Binding Computer.HitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="2" 
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
                    Foreground="White" FontSize="30">
             <Run Text="Computer Health: "/>
-            <Run Text="{Binding ComputerHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            <Run Text="{Binding Computer.Health, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </TextBlock>
 
         <StackPanel Grid.Row="0"

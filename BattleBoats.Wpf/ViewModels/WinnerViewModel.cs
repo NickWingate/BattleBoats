@@ -11,9 +11,9 @@ namespace BattleBoats.Wpf.ViewModels
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get;}
-        public Player Winner { get; }
+        public string Winner { get; }
 
-        public WinnerViewModel(INavigator navigator, Player winner)
+        public WinnerViewModel(INavigator navigator, string winner)
         {
             _navigator = navigator;
             Winner = winner;

@@ -7,7 +7,7 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
 {
     public class BoatApearanceManager : IBoatApearanceManager
     {
-        public void DeselectBoats(List<IBoat> boats)
+        public void DeselectBoats(IEnumerable<IBoat> boats)
         {
             foreach (IBoat boat in boats)
             {
@@ -15,7 +15,7 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
             }
         }
 
-        public void HideBoats(List<IBoat> boats)
+        public void HideBoats(IEnumerable<IBoat> boats)
         {
             foreach (IBoat boat in boats)
             {
@@ -23,7 +23,7 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
             }
         }
 
-        public void ToggleBoatView(List<IBoat> boats)
+        public void ToggleBoatView(IEnumerable<IBoat> boats)
         {
             foreach (IBoat boat in boats)
             {

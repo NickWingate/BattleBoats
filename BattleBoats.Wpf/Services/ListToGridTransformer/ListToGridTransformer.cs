@@ -13,7 +13,7 @@ namespace BattleBoats.Wpf.Services.ListToGridTransformer
         /// <param name="boats"> The list of boats </param>
         /// <param name="gridSize"> Size of the 2D array (1 based and square)</param>
         /// <returns> 2D array of TileState[,] type </returns>
-        public TileState[,] TransformLocationToGrid(List<IBoat> boats, int gridSize)
+        public TileState[,] TransformLocationToGrid(IEnumerable<IBoat> boats, int gridSize)
         {
             TileState[,] gameGrid = new TileState[gridSize, gridSize];
             Populate2DArray(ref gameGrid, TileState.Empty);
