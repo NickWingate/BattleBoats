@@ -48,16 +48,16 @@ namespace BattleBoats.Wpf.Controls
 
 
 
-        public List<IBoat> Boats
+        public ObservableCollection<IBoat> Boats
         {
-            get { return (List<IBoat>)GetValue(BoatsProperty); }
+            get { return (ObservableCollection<IBoat>)GetValue(BoatsProperty); }
             set { SetValue(BoatsProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Boats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BoatsProperty =
-            DependencyProperty.Register(nameof(Boats), typeof(List<IBoat>), typeof(GameBoardControl),
-                new PropertyMetadata(new List<IBoat> { new Boat(0, 0, 0, 0) { ShowItem = false } }, OnBoatsPropertyChanged));
+            DependencyProperty.Register(nameof(Boats), typeof(ObservableCollection<IBoat>), typeof(GameBoardControl),
+                new PropertyMetadata(new ObservableCollection<IBoat> { new Boat(0, 0, 0, 0) { ShowItem = false } }, OnBoatsPropertyChanged));
 
         public IGameItem Target
         {
