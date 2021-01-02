@@ -30,5 +30,16 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
                 boat.ShowItem = !boat.ShowItem;
             }
         }
+
+        public void CheckForSunkBoats(IEnumerable<IBoat> boats)
+        {
+            foreach (IBoat boat in boats)
+            {
+                if (boat.Health == 0)
+                {
+                    boat.ShowItem = true;
+                }
+            }
+        }
     }
 }

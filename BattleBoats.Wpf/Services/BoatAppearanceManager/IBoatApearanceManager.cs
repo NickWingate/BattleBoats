@@ -25,5 +25,11 @@ namespace BattleBoats.Wpf.Services.BoatApearanceManager
         /// </summary>
         /// <param name="boats"> the list of boats to effect </param>
         public void ToggleBoatView(List<IBoat> boats);
+
+        /// <summary>
+        /// Checks if boat collection has any sunk boats and makes them visible
+        /// </summary>
+        /// <param name="boats"> Boat colletion </param>
+        public void CheckForSunkBoats(IEnumerable<IBoat> boats);
     }
 }

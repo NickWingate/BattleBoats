@@ -280,27 +280,12 @@ namespace BattleBoats.Wpf.ViewModels
                 OnPropertyChanged(nameof(UserHealth));
                 OnPropertyChanged(nameof(ComputerHealth));
 
-                CheckForSunkBoats(boats);
+                _boatApearanceManager.CheckForSunkBoats(boats);
             }
             // if empty: display green 'o' on grid
             else if (tileState == TileState.Empty)
             {
                 AddHitMarker(location, hitMarkers, TileState.Miss);
-            }
-        }
-
-        /// <summary>
-        /// Checks if boat collection has any sunk boats and makes them visible
-        /// </summary>
-        /// <param name="boats"> Boat colletion </param>
-        private void CheckForSunkBoats(IEnumerable<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                if (boat.Health == 0)
-                {
-                    boat.ShowItem = true;
-                }
             }
         }
 
