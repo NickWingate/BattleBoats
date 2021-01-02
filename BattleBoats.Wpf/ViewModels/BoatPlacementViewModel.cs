@@ -1,6 +1,8 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
+using BattleBoats.Wpf.Services.BoatPlacement;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
+using BattleBoats.Wpf.Services.ListToGridTransformer;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -86,8 +88,15 @@ namespace BattleBoats.Wpf.ViewModels
         }
         public void PlayGame()
         {
-            // TEMPORARY need to choose difficulty of computer algorithm
-            ////_navigator.Navigate(new GameViewModel(_navigator, new RandomShootingAlgorithm(BoardDimention), Boats));
+            // TEMPORARY need to choose difficulty of computer algorithm and do proper dependency injection with IoC container
+            _navigator.Navigate(
+                new GameViewModel(
+                    _navigator, 
+                    new RandomShootingAlgorithm(BoardDimention),
+                    new BoatPlacementGenerator(),
+                    new ListToGridTransformer(),
+                    Boats)
+                );
             //_navigator.Navigate(new GameViewModel(_navigator, new SuspiciouslyGoodAlgorithm(Boats), Boats));
         }
 

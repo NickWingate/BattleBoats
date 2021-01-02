@@ -2,6 +2,7 @@
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.BoatPlacement;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
+using BattleBoats.Wpf.Services.ListToGridTransformer;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace BattleBoats.Wpf.ViewModels
         private readonly INavigator _navigator;
         private readonly IComputerAlgorithmService _computerAlgorithm;
         private readonly IBoatPlacementGenerationService _boatPlacementGenerator;
+        private readonly IListToGridTransformer _listToGridTransformer;
         private Player _currentPlayersTurn;
         private CancellationTokenSource _userShootTokenSource;
 
@@ -36,12 +38,14 @@ namespace BattleBoats.Wpf.ViewModels
         public GameViewModel(INavigator navigator, 
                              IComputerAlgorithmService computerAlgorithm, 
                              IBoatPlacementGenerationService boatPlacementGenerator,
+                             IListToGridTransformer listToGridTransformer,
                              List<IBoat> boats)
         {
             // Dependency Injection
             _navigator = navigator;
             _computerAlgorithm = computerAlgorithm;
             _boatPlacementGenerator = boatPlacementGenerator;
+            _listToGridTransformer = listToGridTransformer;
 
             // Assign fields and properties
             _currentPlayersTurn = Player.User;
@@ -143,8 +147,8 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void TransformBoatsToBoard()
         {
-            UserGameBoard = TransformLocationToGrid(UserBoats, BoardDimention);
-            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, BoardDimention);
+            UserGameBoard = _listToGridTransformer.TransformLocationToGrid(UserBoats, BoardDimention);
+            ComputerGameBoard = _listToGridTransformer.TransformLocationToGrid(ComputerBoats, BoardDimention);
         }
 
         /// <summary>
@@ -242,46 +246,6 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
-        /// <summary>
-        /// Create a random list of boats and their location for the computer
-        /// </summary>
-        /// <param name="quantity"> Quantitiy of boats to produce </param>
-        /// <returns> List of IBoats for the computers boats</returns>
-        private List<IBoat> GenerateComputerBoats(int quantity)
-        {
-            int[] lengths = { 5, 4, 3, 3, 2 };
-            List<IBoat> computerBoats = new List<IBoat>();
-            List<Coordinate> invalidCoordinates = new List<Coordinate>();
-            Random rnd = new Random();
-            for (int i = 0; i < quantity; i++)
-            {
-                IBoat newBoat;
-                bool validBoat;
-                do
-                {
-                    validBoat = true;
-                    int row = rnd.Next(BoardDimention + lengths[i] - 1);
-                    int column = rnd.Next(BoardDimention);
-
-                    newBoat = new Boat(column, row, lengths[i], BoardDimention);
-                    if (rnd.NextDouble() >= 0.5) newBoat.Rotate();
-                    foreach (Coordinate coordinate in newBoat.CoordinateRange.GetAllCoordinates())
-                    {
-                        foreach (Coordinate invalidCoordinate in invalidCoordinates)
-                        {
-                            if (coordinate.Equals(invalidCoordinate))
-                            {
-                                validBoat = false;
-                                break;
-                            }
-                        }
-                    }
-                } while (!validBoat);
-                computerBoats.Add(newBoat);
-                invalidCoordinates.AddRange(newBoat.CoordinateRange.GetAllCoordinates());
-            }
-            return computerBoats;
-        }
 
         /// <summary>
         /// Toggles the visibility of all the boats in the list
@@ -439,26 +403,6 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         /// <summary>
-        /// Transforms list of boats, with their locations into a 2D array of boats, empty, and hit/miss tiles
-        /// </summary>
-        /// <param name="boats"> The list of boats </param>
-        /// <param name="gridSize"> Size of the 2D array (1 based and square)</param>
-        /// <returns> 2D array of TileState[,] type </returns>
-        private TileState[,] TransformLocationToGrid(List<IBoat> boats, int gridSize)
-        {
-            TileState[,] gameGrid = new TileState[gridSize, gridSize];
-            Populate2DArray(ref gameGrid, TileState.Empty);
-            foreach (IBoat boat in boats)
-            {
-                foreach (Coordinate coordinate in boat.CoordinateRange.GetAllCoordinates())
-                {
-                    gameGrid[coordinate.YCoord, coordinate.XCoord] = TileState.Boat;
-                }
-            }
-            return gameGrid;
-        }
-
-        /// <summary>
         /// Adds all hitmarkers to the visual board
         /// </summary>
         /// <param name="boardHitMarkers"></param>
@@ -471,22 +415,5 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
-        /// <summary>
-        /// Fills 2D array with one value of type T
-        /// </summary>
-        /// <typeparam name="T"> Type of array </typeparam>
-        /// <param name="array"> 2D array to fill </param>
-        /// <param name="value"> Value to fill array as </param>
-        /// <returns></returns>
-        private void Populate2DArray<T>(ref T[,] array, T value)
-        {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    array[i, j] = value;
-                }
-            }
-        }
     }
 }
