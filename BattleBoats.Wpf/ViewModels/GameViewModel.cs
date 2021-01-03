@@ -1,7 +1,9 @@
 ﻿using BattleBoats.Wpf.Commands;
 using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.BoatPlacement;
+using BattleBoats.Wpf.Services.BoatApearanceManager;
 using BattleBoats.Wpf.Services.ComputerAlgorithm;
+using BattleBoats.Wpf.Services.ListToGridTransformer;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -11,41 +13,58 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BattleBoats.Wpf.Services.SaveGame;
 
 namespace BattleBoats.Wpf.ViewModels
 {
-    public enum Player
-    {
-        User,
-        Computer,
-    }
+    //public enum Player
+    //{
+    //    User,
+    //    Computer,
+    //}
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
         private readonly IComputerAlgorithmService _computerAlgorithm;
         private readonly IBoatPlacementGenerationService _boatPlacementGenerator;
+        private readonly IListToGridTransformer _listToGridTransformer;
+        private readonly IBoatApearanceManager _boatApearanceManager;
+        private readonly ISaveGameService _saveGameService;
+
         private Player _currentPlayersTurn;
+        private Player _winner;
         private CancellationTokenSource _userShootTokenSource;
 
         public ICommand UpdateCurrentViewModelCommand { get; set; }
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
-
+        public ICommand NavigateToWinningViewCommand { get; set; }
 
         public GameViewModel(INavigator navigator, 
                              IComputerAlgorithmService computerAlgorithm, 
                              IBoatPlacementGenerationService boatPlacementGenerator,
-                             List<IBoat> boats)
+                             IListToGridTransformer listToGridTransformer,
+                             IBoatApearanceManager boatApearanceManager,
+                             ISaveGameService saveGameService,
+                             Player user)
         {
             // Dependency Injection
             _navigator = navigator;
             _computerAlgorithm = computerAlgorithm;
             _boatPlacementGenerator = boatPlacementGenerator;
+            _listToGridTransformer = listToGridTransformer;
+            _boatApearanceManager = boatApearanceManager;
+            _saveGameService = saveGameService;
 
             // Assign fields and properties
-            _currentPlayersTurn = Player.User;
-            AssignBoats(boats);
+            User = user;
+            Computer = new Player(nameof(Computer)) 
+            {
+                Boats = new ObservableCollection<IBoat>(_boatPlacementGenerator.GenerateBoats(5, BoardDimention))
+            };
+
+            _currentPlayersTurn = User;
             AssignCommands(navigator);
             AssignTarget();
 
@@ -57,27 +76,36 @@ namespace BattleBoats.Wpf.ViewModels
             BeginGameplay();
         }
 
-
-        private ObservableCollection<IGameItem> _computerHitMarkers = new ObservableCollection<IGameItem>();
-        public ObservableCollection<IGameItem> ComputerHitMarkers
+        public GameViewModel(INavigator navigator,
+                             IComputerAlgorithmService computerAlgorithm,
+                             IBoatPlacementGenerationService boatPlacementGenerator,
+                             IListToGridTransformer listToGridTransformer,
+                             IBoatApearanceManager boatApearanceManager,
+                             ISaveGameService saveGameService,
+                             GameModel game)
         {
-            get { return _computerHitMarkers; }
-            set
-            {
-                _computerHitMarkers = value;
-                OnPropertyChanged(nameof(ComputerHitMarkers));
-            }
-        }
+            // Dependency Injection
+            _navigator = navigator;
+            _computerAlgorithm = computerAlgorithm;
+            _boatPlacementGenerator = boatPlacementGenerator;
+            _listToGridTransformer = listToGridTransformer;
+            _boatApearanceManager = boatApearanceManager;
+            _saveGameService = saveGameService;
 
-        private ObservableCollection<IGameItem> _userHitMarkers = new ObservableCollection<IGameItem>();
-        public ObservableCollection<IGameItem> UserHitMarkers
-        {
-            get { return _userHitMarkers; }
-            set
-            {
-                _userHitMarkers = value;
-                OnPropertyChanged(nameof(UserHitMarkers));
-            }
+            // Assign fields and properties
+            User = game.User;
+            Computer = game.Computer;
+
+            _currentPlayersTurn = User;
+            AssignCommands(navigator);
+            AssignTarget();
+
+            // Prep data
+            TransformBoatsToBoard();
+            User.HitMarkers.CollectionChanged
+
+            // Start Game
+            BeginGameplay();
         }
 
         private bool _canUserShoot = true;
@@ -91,60 +119,26 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
+
+        public Player User { get; set; }
+        public Player Computer { get; set; }
+        public int UserHealth => User.Health;
+        public int ComputerHealth => Computer.Health;
         public bool GameCompleted { get; set; } = false;
         public int BoardDimention => Settings.BoardDimention;
         public bool ValidTargetLocation { get; private set; } = true;
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
-        public List<IBoat> UserBoats { get; set; }
-        public List<IBoat> ComputerBoats { get; set; }
-        public TileState[,] UserGameBoard { get; set; }
-        public TileState[,] ComputerGameBoard { get; set; }
-        public int UserHealth 
-        {
-            get
-            {
-                int total = 0;
-                foreach (IBoat boat in UserBoats)
-                {
-                    total += boat.Health;
-                }
-                return total;
-            }
+        public string DestinationFilePath { get; set; }
 
-        }
-        public int ComputerHealth
-        {
-            get
-            {
-                int total = 0;
-                foreach (IBoat boat in ComputerBoats)
-                {
-                    total += boat.Health;
-                }
-                return total;
-            }
-
-        }
-
-
-        /// <summary>
-        /// Assign User and Computer IBoat lists
-        /// </summary>
-        /// <param name="userBoats"> User's boat list </param>
-        private void AssignBoats(List<IBoat> userBoats)
-        {
-            UserBoats = userBoats;
-            ComputerBoats = _boatPlacementGenerator.GenerateBoats(5, BoardDimention);
-        }
 
         /// <summary>
         /// Transforms List of IBoats to 2D array of TileStates, which functions as a grid/board
         /// </summary>
         private void TransformBoatsToBoard()
         {
-            UserGameBoard = TransformLocationToGrid(UserBoats, BoardDimention);
-            ComputerGameBoard = TransformLocationToGrid(ComputerBoats, BoardDimention);
+            User.GameBoard = _listToGridTransformer.TransformLocationToGrid(User.Boats, User.HitMarkers, BoardDimention);
+            Computer.GameBoard = _listToGridTransformer.TransformLocationToGrid(Computer.Boats, Computer.HitMarkers, BoardDimention);
         }
 
         /// <summary>
@@ -161,8 +155,8 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void PrepBoats()
         {
-            DeselectBoats(UserBoats);
-            HideBoats(ComputerBoats);
+            _boatApearanceManager.DeselectBoats(User.Boats);
+            _boatApearanceManager.HideBoats(Computer.Boats);
         }
 
         /// <summary>
@@ -173,8 +167,10 @@ namespace BattleBoats.Wpf.ViewModels
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
-            ToggleCPUBoatViewCommand = new RelayCommand(() => ToggleBoatView(ComputerBoats));
+            ToggleCPUBoatViewCommand = new RelayCommand(() => _boatApearanceManager.ToggleBoatView(Computer.Boats));
             UserShootCommand = new RelayCommand(() => UserShoot());
+            NavigateToWinningViewCommand = new RelayCommand(() => _navigator.Navigate(new WinnerViewModel(_navigator, _winner)));
+
         }
 
         /// <summary>
@@ -183,13 +179,14 @@ namespace BattleBoats.Wpf.ViewModels
         private async void BeginGameplay()
         {
             // Each loop is one players turn
-            while (UserHealth > 0 && ComputerHealth > 0)
+            while (User.Health > 0 && Computer.Health > 0)
             {
                 // Computer's turn
-                if (_currentPlayersTurn == Player.Computer)
+                if (_currentPlayersTurn == Computer)
                 {
-                    Shoot(_computerAlgorithm.NextShot(UserGameBoard), UserHitMarkers);
-                    _currentPlayersTurn = Player.User;
+                    Shoot(_computerAlgorithm.NextShot(User.GameBoard), User);
+                    _currentPlayersTurn = User;
+                    OnPropertyChanged(nameof(UserHealth));
                 }
                 // User's turn
                 else
@@ -200,11 +197,23 @@ namespace BattleBoats.Wpf.ViewModels
                         await WaitForUserPlay();
                     }
                     catch (TaskCanceledException) { }
+                    OnPropertyChanged(nameof(ComputerHealth));
                 }
-                //SaveGameState();
+                _saveGameService.SaveGame(new GameModel(User, Computer), "BattleBoatsGame.json");
             }
-            Player winner = UserHealth == 0 ? Player.Computer : Player.User;
-            _navigator.Navigate(new WinnerViewModel(_navigator, winner));
+            EndGameplay();
+        }
+
+        /// <summary>
+        /// Ends the game
+        /// </summary>
+        private void EndGameplay()
+        {
+            GameCompleted = true;
+            CanUserShoot = false;
+            Target.ShowItem = false;
+            OnPropertyChanged(nameof(GameCompleted));
+            _winner = User.Health == 0 ? Computer : User;
         }
 
         /// <summary>
@@ -218,89 +227,11 @@ namespace BattleBoats.Wpf.ViewModels
         }
 
         /// <summary>
-        /// Deselects every boat in the list
-        /// </summary>
-        /// <param name="boats"></param>
-        private void DeselectBoats(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.IsSelected = false;
-            }
-        }
-
-        /// <summary>
-        /// Sets all the boats in the list to hidden <br/>
-        /// Similar to <see cref="ToggleBoatView(List{IBoat})"/>
-        /// </summary>
-        /// <param name="boats"></param>
-        private void HideBoats(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.ShowItem = false;
-            }
-        }
-
-        /// <summary>
-        /// Create a random list of boats and their location for the computer
-        /// </summary>
-        /// <param name="quantity"> Quantitiy of boats to produce </param>
-        /// <returns> List of IBoats for the computers boats</returns>
-        private List<IBoat> GenerateComputerBoats(int quantity)
-        {
-            int[] lengths = { 5, 4, 3, 3, 2 };
-            List<IBoat> computerBoats = new List<IBoat>();
-            List<Coordinate> invalidCoordinates = new List<Coordinate>();
-            Random rnd = new Random();
-            for (int i = 0; i < quantity; i++)
-            {
-                IBoat newBoat;
-                bool validBoat;
-                do
-                {
-                    validBoat = true;
-                    int row = rnd.Next(BoardDimention + lengths[i] - 1);
-                    int column = rnd.Next(BoardDimention);
-
-                    newBoat = new Boat(column, row, lengths[i], BoardDimention);
-                    if (rnd.NextDouble() >= 0.5) newBoat.Rotate();
-                    foreach (Coordinate coordinate in newBoat.CoordinateRange.GetAllCoordinates())
-                    {
-                        foreach (Coordinate invalidCoordinate in invalidCoordinates)
-                        {
-                            if (coordinate.Equals(invalidCoordinate))
-                            {
-                                validBoat = false;
-                                break;
-                            }
-                        }
-                    }
-                } while (!validBoat);
-                computerBoats.Add(newBoat);
-                invalidCoordinates.AddRange(newBoat.CoordinateRange.GetAllCoordinates());
-            }
-            return computerBoats;
-        }
-
-        /// <summary>
-        /// Toggles the visibility of all the boats in the list
-        /// </summary>
-        /// <param name="boats"> the list of boats to effect </param>
-        private void ToggleBoatView(List<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                boat.ShowItem = !boat.ShowItem;
-            }
-        }
-
-        /// <summary>
         /// Checks if the target is in a valid tile i.e. not a tile already shot
         /// </summary>
         public void UpdateValidPlacement()
         {
-            TileState targetOverTileState = ComputerGameBoard[Target.Row, Target.Column];
+            TileState targetOverTileState = Computer.GameBoard[Target.Row, Target.Column];
             ValidTargetLocation = (targetOverTileState == TileState.Boat || targetOverTileState == TileState.Empty);
             OnPropertyChanged(nameof(CanUserShoot));
         }
@@ -314,9 +245,9 @@ namespace BattleBoats.Wpf.ViewModels
             {
                 return;
             }
-            Shoot(Target.Location, ComputerHitMarkers);
+            Shoot(Target.Location, Computer);
             UpdateValidPlacement();
-            _currentPlayersTurn = Player.Computer;
+            _currentPlayersTurn = Computer;
             _userShootTokenSource.Cancel();
         }
 
@@ -325,51 +256,33 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         /// <param name="location"> location to shoot </param>
         /// <param name="hitMarkers"> Collection of hitmarkers to add shot to</param>
-        private void Shoot(Coordinate location, ObservableCollection<IGameItem> hitMarkers)
+        private void Shoot(Coordinate location, Player targetPlayer)
         {
             // get tile state
-            TileState tileState = GetAssociatedGameBoard(hitMarkers)[location.YCoord, location.XCoord];
+            TileState tileState = targetPlayer.GameBoard[location.YCoord, location.XCoord];
 
             // if boat: display red 'x' on grid
             if (tileState == TileState.Boat)
             {
-                AddHitMarker(location, hitMarkers, TileState.Hit);
-
-                // Get the all of the boats for the associated player
-                IEnumerable<IBoat> boats = GetAssociatedBoatCollection(GetAssociatedGameBoard(hitMarkers));
+                AddHitMarker(location, targetPlayer, TileState.Hit);
 
                 // Locates the boat that has a coordinate equal to the coordinate being shot i.e. get the boat being shot
-                IBoat boatToHit = (from boat in boats
+                IBoat boatToHit = (from boat in targetPlayer.Boats
                                     from coord in boat.CoordinateRange.GetAllCoordinates()
                                     where coord.ToString() == location.ToString()
                                     select boat).ElementAt(0);
                 boatToHit.Health--;
 
                 // TODO: better way of doing this
-                OnPropertyChanged(nameof(UserHealth));
-                OnPropertyChanged(nameof(ComputerHealth));
+                OnPropertyChanged(nameof(User.Health));
+                OnPropertyChanged(nameof(Computer.Health));
 
-                CheckForSunkBoats(boats);
+                _boatApearanceManager.CheckForSunkBoats(targetPlayer.Boats);
             }
             // if empty: display green 'o' on grid
             else if (tileState == TileState.Empty)
             {
-                AddHitMarker(location, hitMarkers, TileState.Miss);
-            }
-        }
-
-        /// <summary>
-        /// Checks if boat collection has any sunk boats and makes them visible
-        /// </summary>
-        /// <param name="boats"> Boat colletion </param>
-        private void CheckForSunkBoats(IEnumerable<IBoat> boats)
-        {
-            foreach (IBoat boat in boats)
-            {
-                if (boat.Health == 0)
-                {
-                    boat.ShowItem = true;
-                }
+                AddHitMarker(location, targetPlayer, TileState.Miss);
             }
         }
 
@@ -379,113 +292,21 @@ namespace BattleBoats.Wpf.ViewModels
         /// <param name="location"> location of hit marker </param>
         /// <param name="hitMarkers"> ObservableCollection of the hit markers </param>
         /// <param name="tileState"> If tile is hit or miss </param>
-        private void AddHitMarker(Coordinate location, ObservableCollection<IGameItem> hitMarkers, TileState tileState)
+        private void AddHitMarker(Coordinate location, Player player, TileState tileState)
         {
-            hitMarkers.Add(new HitMarker(location, tileState));
-            UpdateGrid(hitMarkers);
-        }
-
-        /// <summary>
-        /// Adds a hit marker to (visual)board and collection of hitMarkers
-        /// </summary>
-        /// <param name="hitMarker"> New hitmarker to add to list </param>
-        /// <param name="hitMarkers"> ObservableCollection of the hit markers </param>
-        private void AddHitMarker(HitMarker hitMarker, ObservableCollection<IGameItem> hitMarkers)
-        {
-            hitMarkers.Add(hitMarker);
-            UpdateGrid(hitMarkers);
-        }
-
-        /// <summary>
-        /// Returns the GameBoard/2d array of the provided collection of hitmarkers
-        /// </summary>
-        /// <param name="hitMarkers"> Collection of hitmarkers </param>
-        /// <returns></returns>
-        private TileState[,] GetAssociatedGameBoard(ObservableCollection<IGameItem> hitMarkers)
-        {
-            if (Object.ReferenceEquals(hitMarkers, ComputerHitMarkers)) 
-            {
-                return ComputerGameBoard; 
-            }
-            else if (Object.ReferenceEquals(hitMarkers, UserHitMarkers)) 
-            {
-                return UserGameBoard; 
-            }
-            else 
-            {
-                throw new ArgumentException($"Unrecognised collection: {hitMarkers}"); 
-            }
-        }
-
-        /// <summary>
-        /// Gets the associated collection of boats associated with the game board
-        /// </summary>
-        /// <param name="gameBoard"></param>
-        /// <returns></returns>
-        private IEnumerable<IBoat> GetAssociatedBoatCollection(TileState[,] gameBoard)
-        {
-            if (Object.ReferenceEquals(gameBoard, ComputerGameBoard))
-            {
-                return ComputerBoats;
-            }
-            else if (Object.ReferenceEquals(gameBoard, UserGameBoard))
-            {
-                return UserBoats;
-            }
-            else
-            {
-                throw new ArgumentException($"Unrecognised board: {gameBoard}");
-            }
-        }
-
-        /// <summary>
-        /// Transforms list of boats, with their locations into a 2D array of boats, empty, and hit/miss tiles
-        /// </summary>
-        /// <param name="boats"> The list of boats </param>
-        /// <param name="gridSize"> Size of the 2D array (1 based and square)</param>
-        /// <returns> 2D array of TileState[,] type </returns>
-        private TileState[,] TransformLocationToGrid(List<IBoat> boats, int gridSize)
-        {
-            TileState[,] gameGrid = new TileState[gridSize, gridSize];
-            Populate2DArray(ref gameGrid, TileState.Empty);
-            foreach (IBoat boat in boats)
-            {
-                foreach (Coordinate coordinate in boat.CoordinateRange.GetAllCoordinates())
-                {
-                    gameGrid[coordinate.YCoord, coordinate.XCoord] = TileState.Boat;
-                }
-            }
-            return gameGrid;
+            player.HitMarkers.Add(new HitMarker(location, tileState));
+            UpdateGrid(player);
         }
 
         /// <summary>
         /// Adds all hitmarkers to the visual board
         /// </summary>
         /// <param name="boardHitMarkers"></param>
-        private void UpdateGrid(ObservableCollection<IGameItem> boardHitMarkers)
+        private void UpdateGrid(Player player)
         {
-            TileState[,] targetGrid = GetAssociatedGameBoard(boardHitMarkers);
-            foreach (IGameItem marker in boardHitMarkers)
+            foreach (IGameItem marker in player.HitMarkers)
             {
-                targetGrid[marker.Row, marker.Column] = ((HitMarker)marker).TileState;
-            }
-        }
-
-        /// <summary>
-        /// Fills 2D array with one value of type T
-        /// </summary>
-        /// <typeparam name="T"> Type of array </typeparam>
-        /// <param name="array"> 2D array to fill </param>
-        /// <param name="value"> Value to fill array as </param>
-        /// <returns></returns>
-        private void Populate2DArray<T>(ref T[,] array, T value)
-        {
-            for (int i = 0; i < array.GetLength(0); i++)
-            {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    array[i, j] = value;
-                }
+                player.GameBoard[marker.Row, marker.Column] = ((HitMarker)marker).TileState;
             }
         }
     }

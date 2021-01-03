@@ -31,11 +31,11 @@
         </Grid.RowDefinitions>
 
         <!-- User Board -->
-        <controls:GameBoardControl Boats="{Binding UserBoats, UpdateSourceTrigger=PropertyChanged}" 
+        <controls:GameBoardControl Boats="{Binding User.Boats, UpdateSourceTrigger=PropertyChanged}" 
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    BoardDimention="{Binding BoardDimention}"
-                                   HitMarkers="{Binding UserHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
+                                   HitMarkers="{Binding User.HitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" 
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
@@ -45,12 +45,12 @@
         </TextBlock>
 
         <!-- Computer Board-->
-        <controls:GameBoardControl Boats="{Binding ComputerBoats, UpdateSourceTrigger=PropertyChanged}" 
+        <controls:GameBoardControl Boats="{Binding Computer.Boats, UpdateSourceTrigger=PropertyChanged}" 
                                    Target="{Binding Target}"
                                    Grid.Row="0"
                                    Grid.Column="2"
                                    BoardDimention="{Binding BoardDimention}"
-                                   HitMarkers="{Binding ComputerHitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
+                                   HitMarkers="{Binding Computer.HitMarkers, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="2" 
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
@@ -73,6 +73,13 @@
                                Command="{Binding UpdateCurrentViewModelCommand}"
                                CommandParameter="{x:Static nav:ViewType.Menu}"
                                Grid.Column="0"
+                               Grid.Row="2"
+                               Height="50"
+                               CornerRadius="25"/>
+        <button:GradientButton Content="Done"
+                               Command="{Binding NavigateToWinningViewCommand}"
+                               Visibility="{Binding GameCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Grid.Column="2"
                                Grid.Row="2"
                                Height="50"
                                CornerRadius="25"/>

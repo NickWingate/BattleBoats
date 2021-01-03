@@ -32,7 +32,7 @@
         
         <!-- Board -->
         <controls:GameBoardControl x:Name="GameBoard" 
-                                   Boats="{Binding Boats, UpdateSourceTrigger=PropertyChanged}"
+                                   Boats="{Binding User.Boats, UpdateSourceTrigger=PropertyChanged}"
                                    BoardDimention="{Binding BoardDimention}"/>
 
         <!-- Movement Buttons -->

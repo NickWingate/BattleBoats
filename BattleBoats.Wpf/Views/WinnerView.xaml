@@ -10,7 +10,7 @@
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                    FontSize="100" Foreground="White">
             <Run Text="Winner:"/>
-            <Run Text="{Binding Winner, Mode=OneWay}"/>
+            <Run Text="{Binding Winner.Name, Mode=OneWay}"/>
         </TextBlock>
     </Grid>
 </UserControl>

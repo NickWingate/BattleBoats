@@ -1,4 +1,5 @@
 ﻿using BattleBoats.Wpf.Commands;
+using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;

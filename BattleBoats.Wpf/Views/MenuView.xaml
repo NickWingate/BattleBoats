@@ -34,7 +34,7 @@
                                GradientColor2="Tomato"/>
 
         <button:GradientButton Content="Load Game"
-                               Command="{Binding LoadGameCommand}"
+                               Click="GetFileLocation_OnClick"
                                Grid.Row="1" Grid.RowSpan="2" 
                                VerticalAlignment="Center"                
                                FontSize="45" FontWeight="UltraLight"
