@@ -76,6 +76,38 @@ namespace BattleBoats.Wpf.ViewModels
             BeginGameplay();
         }
 
+        public GameViewModel(INavigator navigator,
+                             IComputerAlgorithmService computerAlgorithm,
+                             IBoatPlacementGenerationService boatPlacementGenerator,
+                             IListToGridTransformer listToGridTransformer,
+                             IBoatApearanceManager boatApearanceManager,
+                             ISaveGameService saveGameService,
+                             GameModel game)
+        {
+            // Dependency Injection
+            _navigator = navigator;
+            _computerAlgorithm = computerAlgorithm;
+            _boatPlacementGenerator = boatPlacementGenerator;
+            _listToGridTransformer = listToGridTransformer;
+            _boatApearanceManager = boatApearanceManager;
+            _saveGameService = saveGameService;
+
+            // Assign fields and properties
+            User = game.User;
+            Computer = game.Computer;
+
+            _currentPlayersTurn = User;
+            AssignCommands(navigator);
+            AssignTarget();
+
+            // Prep data
+            TransformBoatsToBoard();
+            User.HitMarkers.CollectionChanged
+
+            // Start Game
+            BeginGameplay();
+        }
+
         private bool _canUserShoot = true;
         public bool CanUserShoot
         {
@@ -105,8 +137,8 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void TransformBoatsToBoard()
         {
-            User.GameBoard = _listToGridTransformer.TransformLocationToGrid(User.Boats, BoardDimention);
-            Computer.GameBoard = _listToGridTransformer.TransformLocationToGrid(Computer.Boats, BoardDimention);
+            User.GameBoard = _listToGridTransformer.TransformLocationToGrid(User.Boats, User.HitMarkers, BoardDimention);
+            Computer.GameBoard = _listToGridTransformer.TransformLocationToGrid(Computer.Boats, Computer.HitMarkers, BoardDimention);
         }
 
         /// <summary>
@@ -167,7 +199,7 @@ namespace BattleBoats.Wpf.ViewModels
                     catch (TaskCanceledException) { }
                     OnPropertyChanged(nameof(ComputerHealth));
                 }
-                _saveGameService.SaveGame(new GameModel(User, Computer), "BattleBoatsGame.txt");
+                _saveGameService.SaveGame(new GameModel(User, Computer), "BattleBoatsGame.json");
             }
             EndGameplay();
         }
@@ -233,9 +265,6 @@ namespace BattleBoats.Wpf.ViewModels
             if (tileState == TileState.Boat)
             {
                 AddHitMarker(location, targetPlayer, TileState.Hit);
-
-                // Get the all of the boats for the associated player
-                //IEnumerable<IBoat> boats = GetAssociatedBoatCollection(GetAssociatedGameBoard(hitMarkers));
 
                 // Locates the boat that has a coordinate equal to the coordinate being shot i.e. get the boat being shot
                 IBoat boatToHit = (from boat in targetPlayer.Boats

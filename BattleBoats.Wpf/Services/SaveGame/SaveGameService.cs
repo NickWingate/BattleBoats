@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace BattleBoats.Wpf.Services.SaveGame
 {
@@ -11,12 +11,11 @@ namespace BattleBoats.Wpf.Services.SaveGame
     {
         public void SaveGame(GameModel game, string destinationFilePath)
         {
-            var options = new JsonSerializerOptions
+            string gameString = JsonConvert.SerializeObject(game, Formatting.Indented, new JsonSerializerSettings
             {
-                WriteIndented = true,
-                IgnoreReadOnlyProperties = true
-            };
-            string gameString = JsonSerializer.Serialize(game, options);
+                TypeNameHandling = TypeNameHandling.All
+            });
+
             using (StreamWriter sw = new StreamWriter(@destinationFilePath))
             {
                 sw.Write(gameString);

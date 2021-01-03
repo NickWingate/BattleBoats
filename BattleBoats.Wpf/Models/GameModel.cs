@@ -11,6 +11,13 @@ namespace BattleBoats.Wpf.Models
             User = user;
             Computer = computer;
         }
+        /// <summary>
+        /// Paramaterless ctor only for json deseralization
+        /// </summary>
+        public GameModel()
+        {
+
+        }
 
         public Player User { get; set; }
         public Player Computer { get; set; }

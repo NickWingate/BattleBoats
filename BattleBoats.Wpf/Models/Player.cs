@@ -12,6 +12,12 @@ namespace BattleBoats.Wpf.Models
         {
             Name = name;
         }
+        /// <summary>
+        /// Paramaterless ctor only for json deseralization
+        /// </summary>
+        public Player()
+        {
+        }
 
         public ObservableCollection<IBoat> Boats { get; set; } = new ObservableCollection<IBoat>();
         public ObservableCollection<IGameItem> HitMarkers { get; set; } = new ObservableCollection<IGameItem>();
