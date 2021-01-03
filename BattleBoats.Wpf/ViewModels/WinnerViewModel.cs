@@ -1,4 +1,5 @@
 ﻿using BattleBoats.Wpf.Commands;
+using BattleBoats.Wpf.Models;
 using BattleBoats.Wpf.Services.Navigation;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace BattleBoats.Wpf.ViewModels
     {
         private readonly INavigator _navigator;
         public ICommand UpdateCurrentViewModelCommand { get;}
-        public string Winner { get; }
+        public Player Winner { get; }
 
-        public WinnerViewModel(INavigator navigator, string winner)
+        public WinnerViewModel(INavigator navigator, Player winner)
         {
             _navigator = navigator;
             Winner = winner;

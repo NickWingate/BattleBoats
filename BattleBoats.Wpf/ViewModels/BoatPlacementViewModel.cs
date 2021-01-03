@@ -11,13 +11,14 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using BattleBoats.Wpf.Services.SaveGame;
 
 namespace BattleBoats.Wpf.ViewModels
 {
     public class BoatPlacementViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
-        public ICommand UpdateCurrentViewModelCommand { get; }
+        public ICommand UpdateCurrentViewModelCommand { get; set; }
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand SwitchSelectedBoatCommand { get; set; }
         public ICommand PlayGameCommand { get; set; }
@@ -28,18 +29,23 @@ namespace BattleBoats.Wpf.ViewModels
         public BoatPlacementViewModel(INavigator navigator)
         {
             _navigator = navigator;
-            Boats = new List<IBoat>();
+            User = new Player("User");
 
-            AircraftCarrier = new Boat(0, 0, 5, BoardDimention);
-            Battleship = new Boat(0, 0, 4, BoardDimention);
-            Submarine = new Boat(0, 0, 3, BoardDimention);
-            Cruiser = new Boat(0, 0, 3, BoardDimention);
-            Destroyer = new Boat(0, 0, 2, BoardDimention);
-
-            Boats.AddRange(new IBoat[] { Destroyer, Cruiser, Submarine, Battleship, AircraftCarrier });
-            SelectedItem = Boats[0];
+            User.Boats = new ObservableCollection<IBoat>
+            {
+                new Boat(0, 0, 2, BoardDimention),
+                new Boat(0, 0, 3, BoardDimention),
+                new Boat(0, 0, 3, BoardDimention),
+                new Boat(0, 0, 4, BoardDimention),
+                new Boat(0, 0, 5, BoardDimention)
+            };
+            SelectedItem = User.Boats[0];
             SetSelectedBoatEnabled();
+            AssignCommands(navigator);
+        }
 
+        private void AssignCommands(INavigator navigator)
+        {
             SwitchSelectedBoatCommand = new RelayCommand(SwitchSelectedBoat);
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
             MoveGameItemCommand = new MoveGameItemCommand(this);
@@ -50,18 +56,6 @@ namespace BattleBoats.Wpf.ViewModels
         public bool ValidBoatPlacement => CheckValidBoatPlacement();
 
         public int BoardDimention => Settings.BoardDimention;
-
-        private List<IBoat> _boats;
-        public List<IBoat> Boats
-        {
-            get { return _boats; }
-            set 
-            {
-                _boats = value;
-                OnPropertyChanged(nameof(BoatsCollection));
-            }
-        }
-        public ObservableCollection<IBoat> BoatsCollection => new ObservableCollection<IBoat>(Boats);
 
         private IGameItem _selectedItem;
         public IGameItem SelectedItem
@@ -74,16 +68,7 @@ namespace BattleBoats.Wpf.ViewModels
             }
         }
 
-        // Length 5
-        public IBoat AircraftCarrier { get; set; }
-        // Length 4
-        public IBoat Battleship { get; set; }
-        // Length 3
-        public IBoat Submarine { get; set; }
-        // Length 3
-        public IBoat Cruiser { get; set; }
-        // Length 2
-        public IBoat Destroyer { get; set; }
+        public Player User { get; set; }
 
         public void UpdateValidPlacement()
         {
@@ -99,9 +84,9 @@ namespace BattleBoats.Wpf.ViewModels
                     new BoatPlacementGenerator(),
                     new ListToGridTransformer(),
                     new BoatApearanceManager(),
-                    Boats)
+                    new SaveGameService(),
+                    User)
                 );
-            //_navigator.Navigate(new GameViewModel(_navigator, new SuspiciouslyGoodAlgorithm(Boats), Boats));
         }
 
         /// <summary>
@@ -109,13 +94,12 @@ namespace BattleBoats.Wpf.ViewModels
         /// </summary>
         private void SwitchSelectedBoat()
         {
-            SelectedItem = Boats[(Boats.IndexOf((IBoat)SelectedItem) + 1) % Boats.Count];
+            SelectedItem = User.Boats[(User.Boats.IndexOf((IBoat)SelectedItem) + 1) % User.Boats.Count];
             SetSelectedBoatEnabled();
-            //OnPropertyChanged(nameof(ValidBoatPlacement));
         }
         private void SetSelectedBoatEnabled()
         {
-            foreach (IBoat boat in Boats)
+            foreach (IBoat boat in User.Boats)
             {
                 if (boat == SelectedItem)
                 {
@@ -132,7 +116,7 @@ namespace BattleBoats.Wpf.ViewModels
             // using string/serialized coord because List.Contains 
             // peforms refrence comparison not value comparison
             List<String> occupiedSpaces = new List<String>();
-            foreach (IBoat boat in Boats)
+            foreach (IBoat boat in User.Boats)
             {
                 foreach (Coordinate coord in boat.CoordinateRange.GetAllCoordinates())
                 {
@@ -150,13 +134,13 @@ namespace BattleBoats.Wpf.ViewModels
         }
         private void SetValidBoatPlacement()
         {
-            for (int i = 0; i < Boats.Count; i++)
+            for (int i = 0; i < User.Boats.Count; i++)
             {
-                if (Boats[i].Rotated)
+                if (User.Boats[i].Rotated)
                 {
-                    Boats[i].Rotate();
+                    User.Boats[i].Rotate();
                 }
-                Boats[i].Column = i;
+                User.Boats[i].Column = i;
             }
             UpdateValidPlacement();
         }

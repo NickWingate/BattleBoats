@@ -41,7 +41,7 @@
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
                    Foreground="White" FontSize="30">
             <Run Text="User Health: "/>
-            <Run Text="{Binding User.Health, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            <Run Text="{Binding UserHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </TextBlock>
 
         <!-- Computer Board-->
@@ -56,7 +56,7 @@
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"
                    Foreground="White" FontSize="30">
             <Run Text="Computer Health: "/>
-            <Run Text="{Binding Computer.Health, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            <Run Text="{Binding ComputerHealth, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </TextBlock>
 
         <StackPanel Grid.Row="0"
@@ -73,6 +73,13 @@
                                Command="{Binding UpdateCurrentViewModelCommand}"
                                CommandParameter="{x:Static nav:ViewType.Menu}"
                                Grid.Column="0"
+                               Grid.Row="2"
+                               Height="50"
+                               CornerRadius="25"/>
+        <button:GradientButton Content="Done"
+                               Command="{Binding NavigateToWinningViewCommand}"
+                               Visibility="{Binding GameCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Grid.Column="2"
                                Grid.Row="2"
                                Height="50"
                                CornerRadius="25"/>

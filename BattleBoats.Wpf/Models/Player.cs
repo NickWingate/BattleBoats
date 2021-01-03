@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace BattleBoats.Wpf.Models
 {
@@ -12,32 +13,10 @@ namespace BattleBoats.Wpf.Models
             Name = name;
         }
 
-        private ObservableCollection<IBoat> _boats = new ObservableCollection<IBoat>();
-        public ObservableCollection<IBoat> Boats
-        {
-            get { return _boats; }
-            set 
-            { 
-                _boats = value;
-                OnPropertyChanged(nameof(Boats));
-            }
-        }
+        public ObservableCollection<IBoat> Boats { get; set; } = new ObservableCollection<IBoat>();
+        public ObservableCollection<IGameItem> HitMarkers { get; set; } = new ObservableCollection<IGameItem>();
 
-        private ObservableCollection<IGameItem> _hitmarkers = new ObservableCollection<IGameItem>();
-        public ObservableCollection<IGameItem> HitMarkers
-        {
-            get { return _hitmarkers; }
-            set 
-            {
-                _hitmarkers = value;
-                OnPropertyChanged(nameof(HitMarkers));
-            }
-        }
-
-
-
-
-
+        [JsonIgnore]
         public TileState[,] GameBoard { get; set; }
         public int Health
         {

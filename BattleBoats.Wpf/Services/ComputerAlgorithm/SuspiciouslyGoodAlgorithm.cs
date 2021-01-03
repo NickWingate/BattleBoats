@@ -7,10 +7,10 @@ namespace BattleBoats.Wpf.Services.ComputerAlgorithm
 {
     public class SuspiciouslyGoodAlgorithm : IComputerAlgorithmService
     {
-        private List<IBoat> UserBoats;
+        private IEnumerable<IBoat> UserBoats;
         private Queue<Coordinate> TilesToShoot = new Queue<Coordinate>();
 
-        public SuspiciouslyGoodAlgorithm(List<IBoat> userBoats)
+        public SuspiciouslyGoodAlgorithm(IEnumerable<IBoat> userBoats)
         {
             UserBoats = userBoats;
             QueueBoats();

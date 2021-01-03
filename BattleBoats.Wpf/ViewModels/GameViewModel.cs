@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BattleBoats.Wpf.Services.SaveGame;
 
 namespace BattleBoats.Wpf.ViewModels
 {
@@ -28,22 +29,25 @@ namespace BattleBoats.Wpf.ViewModels
         private readonly IBoatPlacementGenerationService _boatPlacementGenerator;
         private readonly IListToGridTransformer _listToGridTransformer;
         private readonly IBoatApearanceManager _boatApearanceManager;
+        private readonly ISaveGameService _saveGameService;
 
         private Player _currentPlayersTurn;
+        private Player _winner;
         private CancellationTokenSource _userShootTokenSource;
 
         public ICommand UpdateCurrentViewModelCommand { get; set; }
         public ICommand MoveGameItemCommand { get; set; }
         public ICommand ToggleCPUBoatViewCommand { get; set; }
         public ICommand UserShootCommand { get; set; }
-
+        public ICommand NavigateToWinningViewCommand { get; set; }
 
         public GameViewModel(INavigator navigator, 
                              IComputerAlgorithmService computerAlgorithm, 
                              IBoatPlacementGenerationService boatPlacementGenerator,
                              IListToGridTransformer listToGridTransformer,
                              IBoatApearanceManager boatApearanceManager,
-                             IEnumerable<IBoat> boats)
+                             ISaveGameService saveGameService,
+                             Player user)
         {
             // Dependency Injection
             _navigator = navigator;
@@ -51,12 +55,16 @@ namespace BattleBoats.Wpf.ViewModels
             _boatPlacementGenerator = boatPlacementGenerator;
             _listToGridTransformer = listToGridTransformer;
             _boatApearanceManager = boatApearanceManager;
+            _saveGameService = saveGameService;
 
             // Assign fields and properties
-            User = new Player(nameof(User));
-            Computer = new Player(nameof(Computer));
+            User = user;
+            Computer = new Player(nameof(Computer)) 
+            {
+                Boats = new ObservableCollection<IBoat>(_boatPlacementGenerator.GenerateBoats(5, BoardDimention))
+            };
+
             _currentPlayersTurn = User;
-            AssignBoats(boats);
             AssignCommands(navigator);
             AssignTarget();
 
@@ -82,23 +90,15 @@ namespace BattleBoats.Wpf.ViewModels
 
         public Player User { get; set; }
         public Player Computer { get; set; }
+        public int UserHealth => User.Health;
+        public int ComputerHealth => Computer.Health;
         public bool GameCompleted { get; set; } = false;
         public int BoardDimention => Settings.BoardDimention;
         public bool ValidTargetLocation { get; private set; } = true;
         public IGameItem Target { get; set; }
         public IGameItem SelectedItem { get; set; }
+        public string DestinationFilePath { get; set; }
 
-
-        /// <summary>
-        /// Assign User and Computer IBoat lists
-        /// </summary>
-        /// <param name="userBoats"> User's boat list </param>
-        private void AssignBoats(IEnumerable<IBoat> userBoats)
-        {
-            User.Boats = new ObservableCollection<IBoat>(userBoats);
-            Computer.Boats = new ObservableCollection<IBoat>(
-                _boatPlacementGenerator.GenerateBoats(5, BoardDimention));
-        }
 
         /// <summary>
         /// Transforms List of IBoats to 2D array of TileStates, which functions as a grid/board
@@ -137,6 +137,8 @@ namespace BattleBoats.Wpf.ViewModels
             MoveGameItemCommand = new MoveGameItemCommand(this);
             ToggleCPUBoatViewCommand = new RelayCommand(() => _boatApearanceManager.ToggleBoatView(Computer.Boats));
             UserShootCommand = new RelayCommand(() => UserShoot());
+            NavigateToWinningViewCommand = new RelayCommand(() => _navigator.Navigate(new WinnerViewModel(_navigator, _winner)));
+
         }
 
         /// <summary>
@@ -152,6 +154,7 @@ namespace BattleBoats.Wpf.ViewModels
                 {
                     Shoot(_computerAlgorithm.NextShot(User.GameBoard), User);
                     _currentPlayersTurn = User;
+                    OnPropertyChanged(nameof(UserHealth));
                 }
                 // User's turn
                 else
@@ -162,11 +165,23 @@ namespace BattleBoats.Wpf.ViewModels
                         await WaitForUserPlay();
                     }
                     catch (TaskCanceledException) { }
+                    OnPropertyChanged(nameof(ComputerHealth));
                 }
-                //SaveGameState();
+                _saveGameService.SaveGame(new GameModel(User, Computer), "BattleBoatsGame.txt");
             }
-            Player winner = User.Health == 0 ? Computer : User;
-            _navigator.Navigate(new WinnerViewModel(_navigator, winner.Name));
+            EndGameplay();
+        }
+
+        /// <summary>
+        /// Ends the game
+        /// </summary>
+        private void EndGameplay()
+        {
+            GameCompleted = true;
+            CanUserShoot = false;
+            Target.ShowItem = false;
+            OnPropertyChanged(nameof(GameCompleted));
+            _winner = User.Health == 0 ? Computer : User;
         }
 
         /// <summary>
