@@ -1,6 +1,10 @@
 # Battle Boats
 Battle ships in WPF!
 
+## Example Gif:
+
+![](Example/BattleBoatsExample.gif)
+
 ## Success Criteria
 #### Programming practices:
 1. Loosely couple the UI/design from the business logic
