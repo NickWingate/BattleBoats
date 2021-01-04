@@ -17,11 +17,6 @@ using BattleBoats.Wpf.Services.SaveGame;
 
 namespace BattleBoats.Wpf.ViewModels
 {
-    //public enum Player
-    //{
-    //    User,
-    //    Computer,
-    //}
     public class GameViewModel : BaseViewModel, IBoatViewModel
     {
         private readonly INavigator _navigator;
@@ -102,7 +97,6 @@ namespace BattleBoats.Wpf.ViewModels
 
             // Prep data
             TransformBoatsToBoard();
-            User.HitMarkers.CollectionChanged
 
             // Start Game
             BeginGameplay();
